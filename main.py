@@ -18,35 +18,36 @@ def initial_grid(rows,cols,color):
 
 ## ► Drawing ◄
 
-#grid = initial_grid(PX_H,PX_W,BACKGROUND_COLOR)
-#for pixel in enumerate(grid):
-#    print(pixel)
-
-def draw_grid(win,grid):
+def draw_grid(canvas,grid):
     for i, row in enumerate(grid):
         for j, pixel in enumerate(row):
             #print(pixel)
-            pygame.draw.rect(win,pixel,(j*PX_SIZE,i*PX_SIZE,PX_SIZE,PX_SIZE)) #original and final coordinates
-
+            pygame.draw.rect(canvas,pixel,(j*PX_SIZE,i*PX_SIZE,PX_SIZE,PX_SIZE)) #original and final coordinates
     if GRID:
         #+1 so the grid won't be cropped by the window 
-        for i in range(PX_W + 1):
-            pygame.draw.line(win,LGREY,(0,i*PX_SIZE),(WIDTH,i*PX_SIZE))
-        for j in range(PX_H + 1):
-            pygame.draw.line(win,LGREY,(j*PX_SIZE,0),(j*PX_SIZE,HEIGHT-TOOLBAR_H))
+        for i in range(ROWS + 1):
+            pygame.draw.line(canvas,LGREY,(0,i*PX_SIZE),(WIDTH,i*PX_SIZE))
+        for j in range(COLS + 1):
+            pygame.draw.line(canvas,LGREY,(j*PX_SIZE,0),(j*PX_SIZE,HEIGHT-TOOLBAR))
+    if CANVAS_GRID:
+        for i in range(ROWS + 1):
+            pygame.draw.line(canvas,BLACK,(BORDERS_ROWS,i*PX_SIZE),(WIDTH - BORDERS_ROWS,i*PX_SIZE))
+        for j in range(COLS + 1):
+            pygame.draw.line(canvas,RED,(j*PX_SIZE,BORDERS_COLS),(j*PX_SIZE,HEIGHT-BORDERS_COLS))
 
-def draw(win, grid, buttons):
-    win.fill(BACKGROUND_COLOR)
-    draw_grid(win,grid)
+
+def draw(canvas, grid, buttons):
+    canvas.fill(BACKGROUND_COLOR)
+    draw_grid(canvas,grid)
     for button in buttons:
-        button.draw(win)
+        button.draw(canvas)
     pygame.display.update()
 
 def get_coord_position(pos):
     x, y = pos
     row = y // PX_SIZE
     col = x // PX_SIZE
-    if row >= PX_H:
+    if (row >= COLS or col >= ROWS):
         raise IndexError
     return row, col
     
@@ -56,14 +57,25 @@ def get_coord_position(pos):
 #variables
 using =  True
 clock = pygame.time.Clock()
-grid = initial_grid(PX_H,PX_W,BACKGROUND_COLOR)
+grid = initial_grid(COLS,ROWS,BACKGROUND_COLOR)
 drawing_col = BLACK
 
-button_y = HEIGHT - TOOLBAR_H/2 - 25
+#list for x coordinates of buttons
+X = []
+for i in range(10):
+    X.append(30 + i*60)
+button_x = 30
 buttons = [
-    Button(10, button_y, 50, 50, BLACK),
-    Button(70, button_y, 50, 50, ORANGE),
-    Button(130, button_y, 50, 50, WHITE, "erase", LGREY)
+    Button(button_x, X[0], 50, 50, BLACK),
+    Button(button_x, X[1], 50, 50, GREY),
+    Button(button_x, X[2], 50, 50, PURPLE),
+    Button(button_x, X[3], 50, 50, BLUE),
+    Button(button_x, X[4], 50, 50, GREEN),
+    Button(button_x, X[5], 50, 50, YELLOW),
+    Button(button_x, X[6], 50, 50, ORANGE),
+    Button(button_x, X[7], 50, 50, RED),
+    Button(button_x, X[8], 50, 50, PINK),
+    Button(button_x, X[9], 50, 50, WHITE, "erase", LGREY)
     ]
 
 while using: #run while the user does not close the window
