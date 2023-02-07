@@ -24,17 +24,17 @@ WIDTH = 1200
 HEIGHT = 700
 
 #size of the pixels
-ROWS = 80
-COLS = 80
+ROWS = 100
+COLS = 100
 PX_SIZE = WIDTH // ROWS
-print(PX_SIZE)
+#print(PX_SIZE)
 
 #dimensions of the canvas
 CANVAS_WIDTH = 700
 CANVAS_HEIGHT = 500
 
 #toolbar containing colors, eraser..
-TOOLBAR = WIDTH - HEIGHT
+TOOLBAR = WIDTH - 1140
 
 #color of the background
 BACKGROUND_COLOR = WHITE
