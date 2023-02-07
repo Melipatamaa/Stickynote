@@ -31,16 +31,16 @@ def draw_grid(canvas,grid):
             pygame.draw.line(canvas,LGREY,(j*PX_SIZE,0),(j*PX_SIZE,HEIGHT-TOOLBAR))
     if CANVAS_GRID:
         for i in range(ROWS):
-            pygame.draw.line(canvas,LGREY,(BORDERS_ROWS,BORDERS_COLS+i*PX_SIZE),(WIDTH - BORDERS_ROWS,BORDERS_COLS+i*PX_SIZE))
-        #pour faire une belle grille propre (ne dépasse pas, 40 et 50 valeurs random)
-        for k in range(40,50):
-            pygame.draw.line(canvas,WHITE,(BORDERS_ROWS,BORDERS_COLS+k*PX_SIZE),(WIDTH - BORDERS_ROWS,BORDERS_COLS+k*PX_SIZE))
+            #+2 pour bien fermer la grille
+            pygame.draw.line(canvas,LGREY,(BORDERS_ROWS,BORDERS_COLS+i*PX_SIZE),(WIDTH - BORDERS_ROWS+2,BORDERS_COLS+i*PX_SIZE))
+        #pour faire une belle grille propre (ne dépasse pas, 85 et 100 valeurs random pour ROWS = 200)
+        for k in range(85,100):
+            pygame.draw.line(canvas,WHITE,(BORDERS_ROWS,BORDERS_COLS+k*PX_SIZE),(WIDTH - BORDERS_ROWS+2,BORDERS_COLS+k*PX_SIZE))
         for j in range(COLS):
-            #+4 pour fermer le bas de la grille
-            pygame.draw.line(canvas,LGREY,(BORDERS_ROWS+j*PX_SIZE,BORDERS_COLS),(BORDERS_ROWS+j*PX_SIZE,HEIGHT-BORDERS_COLS + 4))
+            pygame.draw.line(canvas,LGREY,(BORDERS_ROWS+j*PX_SIZE,BORDERS_COLS),(BORDERS_ROWS+j*PX_SIZE,HEIGHT-BORDERS_COLS+3))
         #pour faire une belle grille propre
-        for l in range(65,75):
-            pygame.draw.line(canvas,WHITE,(BORDERS_ROWS+l*PX_SIZE,BORDERS_COLS),(BORDERS_ROWS+l*PX_SIZE,HEIGHT-BORDERS_COLS + 4))
+        for l in range(148,180):
+            pygame.draw.line(canvas,WHITE,(BORDERS_ROWS+l*PX_SIZE,BORDERS_COLS),(BORDERS_ROWS+l*PX_SIZE,HEIGHT-BORDERS_COLS+3))
 
 
 def draw(canvas, grid, buttons):
@@ -55,7 +55,7 @@ def get_coord_position(pos):
     row = y // PX_SIZE
     col = x // PX_SIZE
     #modification des valeurs rentrées en focntion des paramètres : pour + tard
-    if (col <= 7 or col >= 72 or row <= 3 or row >= 43):
+    if (col <= 26 or col >= 174 or row <= 16 or row >= 101):
         raise IndexError
     return row, col
 

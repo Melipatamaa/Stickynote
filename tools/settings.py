@@ -17,15 +17,15 @@ PINK = (244,72,153)
 PURPLE = (179, 46, 228)
 
 #to look for
-FPS = 300
+FPS = 1000
 
 #dimensions of the window
 WIDTH = 1200
 HEIGHT = 700
 
 #size of the pixels
-ROWS = 100
-COLS = 100
+ROWS = 200
+COLS = 200
 PX_SIZE = WIDTH // ROWS
 #print(PX_SIZE)
 
@@ -44,8 +44,8 @@ GRID = False
 
 CANVAS_GRID = True
 
-BORDERS_ROWS = 120
-BORDERS_COLS = 60
+BORDERS_ROWS = 160
+BORDERS_COLS = 100
 
 #create a font
 def get_font(size):
