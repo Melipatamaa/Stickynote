@@ -43,7 +43,6 @@ def draw_grid(canvas,grid):
         for l in range(148,180):
             pygame.draw.line(canvas,WHITE,(BORDERS_ROWS+l*PX_SIZE,BORDERS_COLS),(BORDERS_ROWS+l*PX_SIZE,HEIGHT-BORDERS_COLS+3))
 
-
 def draw(canvas, grid, buttons):
     canvas.fill(BACKGROUND_COLOR)
     draw_grid(canvas,grid)
@@ -62,6 +61,48 @@ def get_coord_position(pos):
         raise IndexError
     return row, col
 
+def get_size(grid,row,col,size):
+    if size > 1:
+        grid[row+1][col] = drawing_col
+        grid[row-1][col] = drawing_col
+        grid[row][col+1] = drawing_col
+        grid[row][col-1] = drawing_col
+        if size > 2:
+            grid[row+1][col+1] = drawing_col
+            grid[row-1][col-1] = drawing_col
+            grid[row-1][col+1] = drawing_col
+            grid[row+1][col-1] = drawing_col
+            grid[row+2][col-1] = drawing_col
+            grid[row+2][col] = drawing_col
+            grid[row+2][col+1] = drawing_col
+            grid[row-2][col-1] = drawing_col
+            grid[row-2][col] = drawing_col
+            grid[row-2][col+1] = drawing_col
+            grid[row-1][col+2] = drawing_col
+            grid[row][col+2] = drawing_col
+            grid[row+1][col+2] = drawing_col
+            grid[row-1][col-2] = drawing_col
+            grid[row][col-2] = drawing_col
+            grid[row+1][col-2] = drawing_col
+            if size > 3:
+                grid[row+2][col+2] = drawing_col
+                grid[row-2][col-2] = drawing_col
+                grid[row-2][col+2] = drawing_col
+                grid[row+2][col-2] = drawing_col
+                grid[row+3][col-1] = drawing_col
+                grid[row+3][col] = drawing_col
+                grid[row+3][col+1] = drawing_col
+                grid[row-3][col-1] = drawing_col
+                grid[row-3][col] = drawing_col
+                grid[row-3][col+1] = drawing_col
+                grid[row-1][col+3] = drawing_col
+                grid[row][col+3] = drawing_col
+                grid[row+1][col+3] = drawing_col
+                grid[row-1][col-3] = drawing_col
+                grid[row][col-3] = drawing_col
+                grid[row+1][col-3] = drawing_col
+    return 
+
 ## ► Program ◄
 
 #variables
@@ -73,8 +114,8 @@ size = 1
 
 #list for x coordinates of buttons
 X = []
-for i in range(10):
-    X.append(30 + i*60)
+for i in range(11):
+    X.append(30 + i*45)
 button_x = 30
 button_w_h = 30
 buttons = [
@@ -88,12 +129,14 @@ buttons = [
     Button(button_x, X[7], button_w_h, button_w_h, RED),
     Button(button_x, X[8], button_w_h, button_w_h, PINK),
     Button(button_x, X[9], button_w_h, button_w_h, WHITE, "erase", LGREY),
+    Button(button_x, X[10], button_w_h, button_w_h, WHITE, "clear", LGREY)
     ]
 
 brushes = [ 
     Brush(button_x*2 + 10, X[0], button_w_h, button_w_h, 1, WHITE, "1", LGREY),
     Brush(button_x*2 + 10, X[1], button_w_h, button_w_h, 2,  WHITE, "2", LGREY),
-    Brush(button_x*2 + 10, X[2], button_w_h, button_w_h, 3, WHITE, "3", LGREY)
+    Brush(button_x*2 + 10, X[2], button_w_h, button_w_h, 3, WHITE, "3", LGREY),
+    Brush(button_x*2 + 10, X[3], button_w_h, button_w_h, 4, WHITE, "4", LGREY)
     ]
 
 while using: #run while the user does not close the window
@@ -110,33 +153,13 @@ while using: #run while the user does not close the window
             try :
                 row, col = get_coord_position(position)
                 grid[row][col] = drawing_col
-                if size > 1:
-                    grid[row+1][col] = drawing_col
-                    grid[row-1][col] = drawing_col
-                    grid[row][col+1] = drawing_col
-                    grid[row][col-1] = drawing_col
-                    if size > 2:
-                        grid[row+1][col+1] = drawing_col
-                        grid[row-1][col-1] = drawing_col
-                        grid[row-1][col+1] = drawing_col
-                        grid[row+1][col-1] = drawing_col
-                        grid[row+2][col-1] = drawing_col
-                        grid[row+2][col] = drawing_col
-                        grid[row+2][col+1] = drawing_col
-                        grid[row-2][col-1] = drawing_col
-                        grid[row-2][col] = drawing_col
-                        grid[row-2][col+1] = drawing_col
-                        grid[row-1][col+2] = drawing_col
-                        grid[row][col+2] = drawing_col
-                        grid[row+1][col+2] = drawing_col
-                        grid[row-1][col-2] = drawing_col
-                        grid[row][col-2] = drawing_col
-                        grid[row+1][col-2] = drawing_col
-
+                get_size(grid,row,col,size)
             except IndexError:
                 for button in buttons:
                     if not button.clicked(position):
                         continue
+                    if button.text == "clear":
+                        grid = initial_grid(ROWS,COLS,BACKGROUND_COLOR)
                     drawing_col = button.color
                 for brush in brushes:
                     if not brush.clicked(position):
