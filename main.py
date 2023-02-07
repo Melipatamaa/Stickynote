@@ -1,4 +1,5 @@
 from tools import *
+from tools.brush import Brush
 
 #display opens the window
 WINDOW = pygame.display.set_mode((WIDTH,HEIGHT))
@@ -48,6 +49,8 @@ def draw(canvas, grid, buttons):
     draw_grid(canvas,grid)
     for button in buttons:
         button.draw(canvas)
+    for brush in brushes:
+        brush.draw(canvas)
     pygame.display.update()
 
 def get_coord_position(pos):
@@ -66,23 +69,31 @@ using =  True
 clock = pygame.time.Clock()
 grid = initial_grid(COLS,ROWS,BACKGROUND_COLOR)
 drawing_col = BLACK
+size = 1
 
 #list for x coordinates of buttons
 X = []
 for i in range(10):
     X.append(30 + i*60)
 button_x = 30
+button_w_h = 30
 buttons = [
-    Button(button_x, X[0], 50, 50, BLACK),
-    Button(button_x, X[1], 50, 50, GREY),
-    Button(button_x, X[2], 50, 50, PURPLE),
-    Button(button_x, X[3], 50, 50, BLUE),
-    Button(button_x, X[4], 50, 50, GREEN),
-    Button(button_x, X[5], 50, 50, YELLOW),
-    Button(button_x, X[6], 50, 50, ORANGE),
-    Button(button_x, X[7], 50, 50, RED),
-    Button(button_x, X[8], 50, 50, PINK),
-    Button(button_x, X[9], 50, 50, WHITE, "erase", LGREY)
+    Button(button_x, X[0], button_w_h, button_w_h, BLACK),
+    Button(button_x, X[1], button_w_h, button_w_h, GREY),
+    Button(button_x, X[2], button_w_h, button_w_h, PURPLE),
+    Button(button_x, X[3], button_w_h, button_w_h, BLUE),
+    Button(button_x, X[4], button_w_h, button_w_h, GREEN),
+    Button(button_x, X[5], button_w_h, button_w_h, YELLOW),
+    Button(button_x, X[6], button_w_h, button_w_h, ORANGE),
+    Button(button_x, X[7], button_w_h, button_w_h, RED),
+    Button(button_x, X[8], button_w_h, button_w_h, PINK),
+    Button(button_x, X[9], button_w_h, button_w_h, WHITE, "erase", LGREY),
+    ]
+
+brushes = [ 
+    Brush(button_x*2 + 10, X[0], button_w_h, button_w_h, 1, WHITE, "1", LGREY),
+    Brush(button_x*2 + 10, X[1], button_w_h, button_w_h, 2,  WHITE, "2", LGREY),
+    Brush(button_x*2 + 10, X[2], button_w_h, button_w_h, 3, WHITE, "3", LGREY)
     ]
 
 while using: #run while the user does not close the window
@@ -99,11 +110,38 @@ while using: #run while the user does not close the window
             try :
                 row, col = get_coord_position(position)
                 grid[row][col] = drawing_col
+                if size > 1:
+                    grid[row+1][col] = drawing_col
+                    grid[row-1][col] = drawing_col
+                    grid[row][col+1] = drawing_col
+                    grid[row][col-1] = drawing_col
+                    if size > 2:
+                        grid[row+1][col+1] = drawing_col
+                        grid[row-1][col-1] = drawing_col
+                        grid[row-1][col+1] = drawing_col
+                        grid[row+1][col-1] = drawing_col
+                        grid[row+2][col-1] = drawing_col
+                        grid[row+2][col] = drawing_col
+                        grid[row+2][col+1] = drawing_col
+                        grid[row-2][col-1] = drawing_col
+                        grid[row-2][col] = drawing_col
+                        grid[row-2][col+1] = drawing_col
+                        grid[row-1][col+2] = drawing_col
+                        grid[row][col+2] = drawing_col
+                        grid[row+1][col+2] = drawing_col
+                        grid[row-1][col-2] = drawing_col
+                        grid[row][col-2] = drawing_col
+                        grid[row+1][col-2] = drawing_col
+
             except IndexError:
                 for button in buttons:
                     if not button.clicked(position):
                         continue
                     drawing_col = button.color
+                for brush in brushes:
+                    if not brush.clicked(position):
+                        continue
+                    size = brush.size
 
     draw(WINDOW, grid, buttons)
 
