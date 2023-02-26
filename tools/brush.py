@@ -14,7 +14,7 @@ class Brush(Button) :
         self.text = text
         self.text_color = text_color
 
-    def set_size(self,grid,drawing_col,row,col,size):
+    def draw_on_grid(self,grid,drawing_col,row,col,size):
         if size > 1:
             grid[row+1][col] = drawing_col
             grid[row-1][col] = drawing_col

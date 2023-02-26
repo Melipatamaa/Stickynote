@@ -3,6 +3,7 @@ from tools import *
 from tools.brush import Brush
 from tools.save import Save
 from tools.layer import Layer
+from tools.pipette import Pipette
 
 #display opens the window
 WINDOW = pygame.display.set_mode((WIDTH,HEIGHT))
@@ -22,7 +23,7 @@ def initial_grid(rows,cols,color):
 
 ## ► Drawing ◄
 
-def draw_grid(canvas,grid):
+def create_grid(canvas,grid):
     for i, row in enumerate(grid):
         for j, pixel in enumerate(row):
             #print(pixel)
@@ -48,7 +49,7 @@ def draw_grid(canvas,grid):
 
 def draw(canvas, grid, buttons):
     canvas.fill(BACKGROUND_COLOR)
-    draw_grid(canvas,grid)
+    create_grid(canvas,grid)
     for button in buttons:
         button.draw(canvas)
     for brush in brushes:
@@ -57,6 +58,7 @@ def draw(canvas, grid, buttons):
         save.draw(canvas)
     for layer in layers:
         layer.draw(canvas)
+    pipette.draw(canvas)
     pygame.display.update()
 
 def get_coord_position(pos):
@@ -67,6 +69,47 @@ def get_coord_position(pos):
     if (col <= 26 or col >= 174 or row <= 16 or row >= 101):
         raise IndexError
     return row, col
+
+def draw_on_grid(grid,drawing_col,row,col,size):
+    if size > 1:
+        grid[row+1][col] = drawing_col
+        grid[row-1][col] = drawing_col
+        grid[row][col+1] = drawing_col
+        grid[row][col-1] = drawing_col
+        if size > 2:
+            grid[row+1][col+1] = drawing_col
+            grid[row-1][col-1] = drawing_col
+            grid[row-1][col+1] = drawing_col
+            grid[row+1][col-1] = drawing_col
+            grid[row+2][col-1] = drawing_col
+            grid[row+2][col] = drawing_col
+            grid[row+2][col+1] = drawing_col
+            grid[row-2][col-1] = drawing_col
+            grid[row-2][col] = drawing_col
+            grid[row-2][col+1] = drawing_col
+            grid[row-1][col+2] = drawing_col
+            grid[row][col+2] = drawing_col
+            grid[row+1][col+2] = drawing_col
+            grid[row-1][col-2] = drawing_col
+            grid[row][col-2] = drawing_col
+            grid[row+1][col-2] = drawing_col
+            if size > 3:
+                grid[row+2][col+2] = drawing_col
+                grid[row-2][col-2] = drawing_col
+                grid[row-2][col+2] = drawing_col
+                grid[row+2][col-2] = drawing_col
+                grid[row+3][col-1] = drawing_col
+                grid[row+3][col] = drawing_col
+                grid[row+3][col+1] = drawing_col
+                grid[row-3][col-1] = drawing_col
+                grid[row-3][col] = drawing_col
+                grid[row-3][col+1] = drawing_col
+                grid[row-1][col+3] = drawing_col
+                grid[row][col+3] = drawing_col
+                grid[row+1][col+3] = drawing_col
+                grid[row-1][col-3] = drawing_col
+                grid[row][col-3] = drawing_col
+                grid[row+1][col-3] = drawing_col
 
 #def get_size(grid,row,col,size):
     if size > 1:
@@ -154,11 +197,14 @@ layers = [
     Layer(1075, X[2], button_w_h + 60, button_w_h + 20, WINDOW, WHITE, "Layer", LGREY)
 ]
 
+pipette = Pipette(button_x*2 + 10, X[5], button_w_h, button_w_h, 1, 1, WHITE, "pip", LGREY)
+
+
+visible = False
 while using: #run while the user does not close the window
 
     #can't be faster than the intial FPS
     clock.tick(FPS)
-    visible = False 
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -168,8 +214,13 @@ while using: #run while the user does not close the window
             position = pygame.mouse.get_pos()
             try :
                 row, col = get_coord_position(position)
-                grid[row][col] = drawing_col
-                brush.set_size(grid,drawing_col,row,col,size)
+                if pipette.activated:
+                    drawing_col = grid[row][col]
+                    pipette.color = drawing_col
+                    pipette.activated = False
+                else:
+                    grid[row][col] = drawing_col
+                    draw_on_grid(grid,drawing_col,row,col,size) # mettre unpar defaut plutot
             except IndexError:
                 for button in buttons:
                     if not button.clicked(position):
@@ -185,6 +236,10 @@ while using: #run while the user does not close the window
                     if not save.clicked(position):
                         continue
                     save.save(WINDOW)
+                
+                if pipette.clicked(position):
+                    pipette.activated = True
+
                 for layer in layers:
                     if not layer.clicked(position):
                         continue
