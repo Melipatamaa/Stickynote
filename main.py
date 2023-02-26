@@ -1,5 +1,7 @@
 from tools import *
 from tools.brush import Brush
+from tools.save import Save
+
 
 #display opens the window
 WINDOW = pygame.display.set_mode((WIDTH,HEIGHT))
@@ -50,6 +52,8 @@ def draw(canvas, grid, buttons):
         button.draw(canvas)
     for brush in brushes:
         brush.draw(canvas)
+    for save in saves:
+        save.draw(canvas)
     pygame.display.update()
 
 def get_coord_position(pos):
@@ -139,6 +143,10 @@ brushes = [
     Brush(button_x*2 + 10, X[3], button_w_h, button_w_h, 4, WHITE, "4", LGREY)
     ]
 
+saves = [
+    Save(button_x*2 + 10, X[4], button_w_h, button_w_h, WINDOW, WHITE, "save", LGREY)
+]
+
 while using: #run while the user does not close the window
 
     #can't be faster than the intial FPS
@@ -165,6 +173,12 @@ while using: #run while the user does not close the window
                     if not brush.clicked(position):
                         continue
                     size = brush.size
+                for save in saves:
+                    if not save.clicked(position):
+                        continue
+                    save.save()
+                    
+
 
     draw(WINDOW, grid, buttons)
 
