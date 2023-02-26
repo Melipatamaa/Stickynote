@@ -15,14 +15,13 @@ class Layer(Button) :
     def stick_layer(self,screen,visible):
         layer = pygame.image.load('screenshot1.jpg')
         if visible:
-            pygame.Surface.set_alpha(layer,50)
+            pygame.Surface.set_alpha(layer,100)
             screen.blit(layer,(BORDERS_ROWS,BORDERS_COLS))
-            print(visible)
         else:
-            layer.set_alpha(0)
+            pygame.Surface.set_alpha(layer,0)
             screen.blit(layer,(BORDERS_ROWS,BORDERS_COLS))
         #màj de l'écran
-        pygame.display.flip()
+        pygame.display.update()
             
         
         
