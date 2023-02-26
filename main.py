@@ -68,7 +68,7 @@ def get_coord_position(pos):
         raise IndexError
     return row, col
 
-def get_size(grid,row,col,size):
+#def get_size(grid,row,col,size):
     if size > 1:
         grid[row+1][col] = drawing_col
         grid[row-1][col] = drawing_col
@@ -140,10 +140,10 @@ buttons = [
     ]
 
 brushes = [ 
-    Brush(button_x*2 + 10, X[0], button_w_h, button_w_h, 1, WHITE, "1", LGREY),
-    Brush(button_x*2 + 10, X[1], button_w_h, button_w_h, 2,  WHITE, "2", LGREY),
-    Brush(button_x*2 + 10, X[2], button_w_h, button_w_h, 3, WHITE, "3", LGREY),
-    Brush(button_x*2 + 10, X[3], button_w_h, button_w_h, 4, WHITE, "4", LGREY)
+    Brush(button_x*2 + 10, X[0], button_w_h, button_w_h, 1, 1, 1, WHITE, "1", LGREY),
+    Brush(button_x*2 + 10, X[1], button_w_h, button_w_h, 2, 1, 1, WHITE, "2", LGREY),
+    Brush(button_x*2 + 10, X[2], button_w_h, button_w_h, 3, 1, 1, WHITE, "3", LGREY),
+    Brush(button_x*2 + 10, X[3], button_w_h, button_w_h, 4, 1, 1, WHITE, "4", LGREY)
     ]
 
 saves = [
@@ -169,7 +169,7 @@ while using: #run while the user does not close the window
             try :
                 row, col = get_coord_position(position)
                 grid[row][col] = drawing_col
-                get_size(grid,row,col,size)
+                brush.set_size(grid,drawing_col,row,col,size)
             except IndexError:
                 for button in buttons:
                     if not button.clicked(position):
