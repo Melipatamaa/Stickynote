@@ -18,7 +18,4 @@ class Save(Button) :
         screenshot = pygame.Surface((CANVAS_WIDTH, CANVAS_HEIGHT))
         screenshot.blit(sub, (0,0))
         pygame.image.save(screenshot, "screenshot.jpg")
-
-    def coucou(self):
-        print("coucou")
             

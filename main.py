@@ -1,7 +1,8 @@
 from tools import *
+
 from tools.brush import Brush
 from tools.save import Save
-
+from tools.layer import Layer
 
 #display opens the window
 WINDOW = pygame.display.set_mode((WIDTH,HEIGHT))
@@ -54,6 +55,8 @@ def draw(canvas, grid, buttons):
         brush.draw(canvas)
     for save in saves:
         save.draw(canvas)
+    for layer in layers:
+        layer.draw(canvas)
     pygame.display.update()
 
 def get_coord_position(pos):
@@ -147,10 +150,15 @@ saves = [
     Save(button_x*2 + 10, X[4], button_w_h, button_w_h, WINDOW, WHITE, "save", LGREY)
 ]
 
+layers = [
+    Layer(1075, X[2], button_w_h + 60, button_w_h + 20, WINDOW, WHITE, "Layer", LGREY)
+]
+
 while using: #run while the user does not close the window
 
     #can't be faster than the intial FPS
-    clock.tick(FPS) 
+    clock.tick(FPS)
+    visible = False 
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -161,7 +169,6 @@ while using: #run while the user does not close the window
             try :
                 row, col = get_coord_position(position)
                 grid[row][col] = drawing_col
-                print(row,col)
                 get_size(grid,row,col,size)
             except IndexError:
                 for button in buttons:
@@ -178,7 +185,14 @@ while using: #run while the user does not close the window
                     if not save.clicked(position):
                         continue
                     save.save(WINDOW)
-                    
+                for layer in layers:
+                    if not layer.clicked(position):
+                        continue
+                    visible = True
+                    layer.stick_layer(WINDOW,visible)
+                    if layer.clicked(position):
+                        visible = False
+                        continue
 
 
     draw(WINDOW, grid, buttons)
