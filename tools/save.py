@@ -17,5 +17,5 @@ class Save(Button) :
         sub = screen.subsurface(rect)
         screenshot = pygame.Surface((CANVAS_WIDTH, CANVAS_HEIGHT))
         screenshot.blit(sub, (0,0))
-        pygame.image.save(screenshot, "screenshot.jpg")
+        pygame.image.save(screenshot, "screenshot1.jpg")
             

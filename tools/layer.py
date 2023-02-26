@@ -13,7 +13,7 @@ class Layer(Button) :
         self.text_color = text_color
 
     def stick_layer(self,screen,visible):
-        layer = pygame.image.load('screenshot.jpg')
+        layer = pygame.image.load('screenshot1.jpg')
         if visible == True:
             layer.set_alpha(50)
             screen.blit(layer,(BORDERS_ROWS,BORDERS_COLS))

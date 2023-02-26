@@ -190,10 +190,9 @@ while using: #run while the user does not close the window
                         continue
                     visible = True
                     layer.stick_layer(WINDOW,visible)
-                    if layer.clicked(position):
-                        visible = False
-                        continue
-
+                    #if layer.clicked(position):
+                    #    visible = False
+                    #    continue
 
     draw(WINDOW, grid, buttons)
 
