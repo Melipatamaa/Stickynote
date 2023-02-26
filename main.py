@@ -161,6 +161,7 @@ while using: #run while the user does not close the window
             try :
                 row, col = get_coord_position(position)
                 grid[row][col] = drawing_col
+                print(row,col)
                 get_size(grid,row,col,size)
             except IndexError:
                 for button in buttons:
@@ -176,7 +177,7 @@ while using: #run while the user does not close the window
                 for save in saves:
                     if not save.clicked(position):
                         continue
-                    save.save()
+                    save.save(WINDOW)
                     
 
 

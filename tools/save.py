@@ -1,9 +1,8 @@
 from .settings import *
 from .button import *
-from tkinter import filedialog, messagebox, colorchooser
 
 class Save(Button) :
-    def __init__(self,x,y,width,height,WINDOW,color,text=None,text_color=BLACK):
+    def __init__(self,x,y,width,height,screen,color,text=None,text_color=BLACK):
         self.x = x
         self.y = y
         self.width = width
@@ -11,13 +10,14 @@ class Save(Button) :
         self.color = color
         self.text = text
         self.text_color = text_color
-        self.WINDOW = WINDOW
+        self.screen = screen
 
-    def save(self):
-        filename = filedialog.asksaveasfilename(initialfile="untitled.png",defaultextension="png",filetypes=[("PNG","JPG"),(".png","jpg")])
-        print("coucou")
-        if filename != "":
-            self.image.save(filename)
+    def save(self,screen):
+        rect = pygame.Rect(BORDERS_ROWS, BORDERS_COLS, CANVAS_WIDTH, CANVAS_HEIGHT)
+        sub = screen.subsurface(rect)
+        screenshot = pygame.Surface((WIDTH, HEIGHT))
+        screenshot.blit(sub, (0,0))
+        pygame.image.save(screenshot, "screenshot.jpg")
 
     def coucou(self):
         print("coucou")

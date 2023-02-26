@@ -30,8 +30,8 @@ PX_SIZE = WIDTH // ROWS
 #print(PX_SIZE)
 
 #dimensions of the canvas
-CANVAS_WIDTH = 700
-CANVAS_HEIGHT = 500
+CANVAS_WIDTH = 883
+CANVAS_HEIGHT = 505
 
 #toolbar containing colors, eraser..
 TOOLBAR = WIDTH - 1140
