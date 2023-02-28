@@ -4,6 +4,7 @@ from tools.brush import Brush
 from tools.save import Save
 from tools.layer import Layer
 from tools.pipette import Pipette
+from tools.cancel import Cancel
 
 #display opens the window
 WINDOW = pygame.display.set_mode((WIDTH,HEIGHT))
@@ -47,7 +48,7 @@ def create_grid(canvas,grid):
         for l in range(148,180):
             pygame.draw.line(canvas,WHITE,(BORDERS_ROWS+l*PX_SIZE,BORDERS_COLS),(BORDERS_ROWS+l*PX_SIZE,HEIGHT-BORDERS_COLS+3))
 
-def draw(canvas, grid, buttons):
+def create_all(canvas, grid, buttons):
     canvas.fill(BACKGROUND_COLOR)
     create_grid(canvas,grid)
     for button in buttons:
@@ -58,6 +59,11 @@ def draw(canvas, grid, buttons):
         save.draw(canvas)
     layer.draw(canvas)
     pipette.draw(canvas)
+    pygame.display.update()
+
+def create_canvas(canvas, grid):
+    canvas.fill(BACKGROUND_COLOR)
+    create_grid(canvas,grid)
     pygame.display.update()
 
 def get_coord_position(pos):
@@ -196,6 +202,7 @@ layer = Layer(1075, X[2], button_w_h + 60, button_w_h + 20, WINDOW, WHITE, "Laye
 
 pipette = Pipette(button_x*2 + 10, X[5], button_w_h, button_w_h, 1, 1, WHITE, "pip", LGREY)
 
+cancel = Cancel(1075, X[3], button_w_h + 60, button_w_h + 20, WINDOW, WHITE, "◄◄", LGREY)
 
 visible = False
 while using: #run while the user does not close the window
@@ -215,8 +222,9 @@ while using: #run while the user does not close the window
                     pipette.color = drawing_col
                     pipette.activated = False
                 else:
-                    grid[row][col] = drawing_col
-                    draw_on_grid(grid,drawing_col,row,col,size)
+                    while pygame.mouse.get_pressed()[0]:
+                        grid[row][col] = drawing_col
+                        draw_on_grid(grid,drawing_col,row,col,size)
             except IndexError:
                 for button in buttons:
                     if not button.clicked(position):
@@ -236,6 +244,6 @@ while using: #run while the user does not close the window
                     pipette.activated = True
                 if layer.clicked(position):
                     visible = True
-    draw(WINDOW, grid, buttons)
+    create_all(WINDOW, grid, buttons)
     layer.stick_layer(WINDOW,visible)
 pygame.quit()
