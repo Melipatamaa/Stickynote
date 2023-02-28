@@ -202,10 +202,8 @@ cancel = Cancel(1075, X[4], button_w_h + 60, button_w_h + 20, WINDOW, WHITE, "â—
 
 visible = False
 cancelled = False
-prev_drawing = grid
-new_drawing = grid
 
-states_of_drawing = []
+states_of_drawing = [grid]
 
 while using: #run while the user does not close the window
 
@@ -215,7 +213,6 @@ while using: #run while the user does not close the window
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             using = False
-        new_drawing = prev_drawing
         if pygame.mouse.get_pressed()[0]: #0 for left mouse button
             position = pygame.mouse.get_pos()
             try :
@@ -225,9 +222,10 @@ while using: #run while the user does not close the window
                     pipette.color = drawing_col
                     pipette.activated = False
                 else:
-                    #while pygame.mouse.get_pressed()[0]: n'aime pas du tout
                     grid[row][col] = drawing_col
                     draw_on_grid(grid,drawing_col,row,col,size)
+                    #print(states_of_drawing[0][0])
+                    states_of_drawing.append(grid)
             except IndexError:
                 for button in buttons:
                     if not button.clicked(position):
@@ -249,13 +247,11 @@ while using: #run while the user does not close the window
                     visible = True
                 if cancel.clicked(position):
                     cancelled = True
-    new_drawing = grid
     if cancelled:
-        print(cancelled)
-        prev_drawing = initial_grid(ROWS,COLS,BACKGROUND_COLOR)
-        create_all(WINDOW, prev_drawing, buttons)
+        print(states_of_drawing[-1])
+        create_all(WINDOW, states_of_drawing[-1], buttons)
     else :
-        create_all(WINDOW, new_drawing, buttons)
+        create_all(WINDOW, grid, buttons)
     layer.stick_layer(WINDOW,visible)
     cancelled = False
 pygame.quit()
