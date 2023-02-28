@@ -248,8 +248,8 @@ while using: #run while the user does not close the window
                 if cancel.clicked(position):
                     cancelled = True
     if cancelled:
-        print(states_of_drawing[-1])
-        create_all(WINDOW, states_of_drawing[-1], buttons)
+        grid = states_of_drawing[-2]
+        create_all(WINDOW, grid, buttons)
     else :
         create_all(WINDOW, grid, buttons)
     layer.stick_layer(WINDOW,visible)
