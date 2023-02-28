@@ -59,11 +59,7 @@ def create_all(canvas, grid, buttons):
         save.draw(canvas)
     layer.draw(canvas)
     pipette.draw(canvas)
-    pygame.display.update()
-
-def create_canvas(canvas, grid):
-    canvas.fill(BACKGROUND_COLOR)
-    create_grid(canvas,grid)
+    cancel.draw(canvas)
     pygame.display.update()
 
 def get_coord_position(pos):
@@ -202,9 +198,13 @@ layer = Layer(1075, X[2], button_w_h + 60, button_w_h + 20, WINDOW, WHITE, "Laye
 
 pipette = Pipette(button_x*2 + 10, X[5], button_w_h, button_w_h, 1, 1, WHITE, "pip", LGREY)
 
-cancel = Cancel(1075, X[3], button_w_h + 60, button_w_h + 20, WINDOW, WHITE, "◄◄", LGREY)
+cancel = Cancel(1075, X[4], button_w_h + 60, button_w_h + 20, WINDOW, WHITE, "◄◄", LGREY)
 
 visible = False
+cancelled = False
+prev_drawing = grid
+new_drawing = grid
+
 while using: #run while the user does not close the window
 
     #can't be faster than the intial FPS
@@ -244,6 +244,15 @@ while using: #run while the user does not close the window
                     pipette.activated = True
                 if layer.clicked(position):
                     visible = True
-    create_all(WINDOW, grid, buttons)
+                if cancel.clicked(position):
+                    cancelled = True
+    new_drawing = grid
+    prev_drawing = grid
+    if cancelled:
+        create_all(WINDOW, prev_drawing, buttons)
+        cancelled = False
+    else :
+        create_all(WINDOW, new_drawing, buttons)
+        new_drawing = prev_drawing
     layer.stick_layer(WINDOW,visible)
 pygame.quit()
