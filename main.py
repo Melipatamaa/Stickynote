@@ -222,9 +222,10 @@ while using: #run while the user does not close the window
                     pipette.color = drawing_col
                     pipette.activated = False
                 else:
-                    while pygame.mouse.get_pressed()[0]:
-                        grid[row][col] = drawing_col
-                        draw_on_grid(grid,drawing_col,row,col,size)
+                    #while pygame.mouse.get_pressed()[0]: n'aime pas du tout
+                    grid[row][col] = drawing_col
+                    draw_on_grid(grid,drawing_col,row,col,size)
+                    prev_drawing = grid
             except IndexError:
                 for button in buttons:
                     if not button.clicked(position):
@@ -247,7 +248,6 @@ while using: #run while the user does not close the window
                 if cancel.clicked(position):
                     cancelled = True
     new_drawing = grid
-    prev_drawing = grid
     if cancelled:
         create_all(WINDOW, prev_drawing, buttons)
         cancelled = False
