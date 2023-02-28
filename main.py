@@ -205,6 +205,8 @@ cancelled = False
 prev_drawing = grid
 new_drawing = grid
 
+states_of_drawing = []
+
 while using: #run while the user does not close the window
 
     #can't be faster than the intial FPS
@@ -213,6 +215,7 @@ while using: #run while the user does not close the window
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             using = False
+        new_drawing = prev_drawing
         if pygame.mouse.get_pressed()[0]: #0 for left mouse button
             position = pygame.mouse.get_pos()
             try :
@@ -225,7 +228,6 @@ while using: #run while the user does not close the window
                     #while pygame.mouse.get_pressed()[0]: n'aime pas du tout
                     grid[row][col] = drawing_col
                     draw_on_grid(grid,drawing_col,row,col,size)
-                    prev_drawing = grid
             except IndexError:
                 for button in buttons:
                     if not button.clicked(position):
@@ -249,10 +251,11 @@ while using: #run while the user does not close the window
                     cancelled = True
     new_drawing = grid
     if cancelled:
+        print(cancelled)
+        prev_drawing = initial_grid(ROWS,COLS,BACKGROUND_COLOR)
         create_all(WINDOW, prev_drawing, buttons)
-        cancelled = False
     else :
         create_all(WINDOW, new_drawing, buttons)
-        new_drawing = prev_drawing
     layer.stick_layer(WINDOW,visible)
+    cancelled = False
 pygame.quit()
