@@ -244,7 +244,8 @@ while using: #run while the user does not close the window
                         continue
                     size = brush.size
                 if color_picker.clicked(position):
-                    color_picker.set_color()
+                    color_picker.set_color(WINDOW)
+                    print("pouet")
                 for save in saves:
                     if not save.clicked(position):
                         continue
