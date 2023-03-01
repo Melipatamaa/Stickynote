@@ -251,8 +251,11 @@ while using: #run while the user does not close the window
                     cancelled = True
     if cancelled:
         grid = states_of_drawing[-nb_actions-1]
+        #matches = [match for match in grid if (0,0,0) in match]
+        #print(matches)
         create_all(WINDOW, grid, buttons)
-        print(nb_actions+1)
+        print("nb tracé : ",nb_actions)
+        print("taille states", len(states_of_drawing))
         nb_actions = 0
     else :
         create_all(WINDOW, grid, buttons)
