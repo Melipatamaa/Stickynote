@@ -204,6 +204,7 @@ visible = False
 cancelled = False
 
 states_of_drawing = [grid]
+nb_actions = 0
 
 while using: #run while the user does not close the window
 
@@ -226,6 +227,7 @@ while using: #run while the user does not close the window
                     draw_on_grid(grid,drawing_col,row,col,size)
                     #print(states_of_drawing[0][0])
                     states_of_drawing.append(grid)
+                    nb_actions += 1
             except IndexError:
                 for button in buttons:
                     if not button.clicked(position):
@@ -248,8 +250,10 @@ while using: #run while the user does not close the window
                 if cancel.clicked(position):
                     cancelled = True
     if cancelled:
-        grid = states_of_drawing[-2]
+        grid = states_of_drawing[-nb_actions-1]
         create_all(WINDOW, grid, buttons)
+        print(nb_actions+1)
+        nb_actions = 0
     else :
         create_all(WINDOW, grid, buttons)
     layer.stick_layer(WINDOW,visible)
