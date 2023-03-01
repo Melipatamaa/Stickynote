@@ -5,6 +5,7 @@ from tools.save import Save
 from tools.layer import Layer
 from tools.pipette import Pipette
 from tools.cancel import Cancel
+from tools.color_picker import ColorPicker
 
 #display opens the window
 WINDOW = pygame.display.set_mode((WIDTH,HEIGHT))
@@ -60,6 +61,7 @@ def create_all(canvas, grid, buttons):
     layer.draw(canvas)
     pipette.draw(canvas)
     cancel.draw(canvas)
+    color_picker.draw(canvas)
     pygame.display.update()
 
 def get_coord_position(pos):
@@ -200,6 +202,8 @@ pipette = Pipette(button_x*2 + 10, X[5], button_w_h, button_w_h, 1, 1, WHITE, "p
 
 cancel = Cancel(1075, X[4], button_w_h + 60, button_w_h + 20, WINDOW, WHITE, "◄◄", LGREY)
 
+color_picker = ColorPicker(button_x*2 + 10, X[5], button_w_h, button_w_h, WHITE, "colorpic", LGREY)
+
 visible = False
 cancelled = False
 
@@ -239,6 +243,8 @@ while using: #run while the user does not close the window
                     if not brush.clicked(position):
                         continue
                     size = brush.size
+                if color_picker.clicked(position):
+                    color_picker.set_color()
                 for save in saves:
                     if not save.clicked(position):
                         continue
