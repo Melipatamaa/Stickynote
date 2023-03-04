@@ -6,6 +6,8 @@ from tools.layer import Layer
 from tools.pipette import Pipette
 from tools.cancel import Cancel
 from tools.color_picker import ColorPicker
+from tools.grid import *
+from copy import deepcopy
 
 #display opens the window
 WINDOW = pygame.display.set_mode((WIDTH,HEIGHT))
@@ -13,20 +15,10 @@ WINDOW = pygame.display.set_mode((WIDTH,HEIGHT))
 #name of our window
 pygame.display.set_caption("Stickynote Studio")
 
-## ► Grid ◄
-
-def initial_grid(rows,cols,color):
-    grid = []
-    for i in range(rows):
-        grid.append([])
-        for j in range(cols):
-            grid[i].append(color)
-    return grid
-
 ## ► Drawing ◄
 
-def create_grid(canvas,grid):
-    for i, row in enumerate(grid):
+def create_grid(canvas,grid:Grid):
+    for i, row in enumerate(grid.grid):
         for j, pixel in enumerate(row):
             #print(pixel)
             pygame.draw.rect(canvas,pixel,(j*PX_SIZE,i*PX_SIZE,PX_SIZE,PX_SIZE)) #original and final coordinates
@@ -49,7 +41,7 @@ def create_grid(canvas,grid):
         for l in range(148,180):
             pygame.draw.line(canvas,WHITE,(BORDERS_ROWS+l*PX_SIZE,BORDERS_COLS),(BORDERS_ROWS+l*PX_SIZE,HEIGHT-BORDERS_COLS+3))
 
-def create_all(canvas, grid, buttons):
+def create_all(canvas, grid:Grid, buttons):
     canvas.fill(BACKGROUND_COLOR)
     create_grid(canvas,grid)
     for button in buttons:
@@ -73,87 +65,87 @@ def get_coord_position(pos):
         raise IndexError
     return row, col
 
-def draw_on_grid(grid,drawing_col,row,col,size):
+def draw_on_grid(grid:Grid,drawing_col,row,col,size):
     if size > 1:
-        grid[row+1][col] = drawing_col
-        grid[row-1][col] = drawing_col
-        grid[row][col+1] = drawing_col
-        grid[row][col-1] = drawing_col
+        grid.grid[row+1][col] = drawing_col
+        grid.grid[row-1][col] = drawing_col
+        grid.grid[row][col+1] = drawing_col
+        grid.grid[row][col-1] = drawing_col
         if size > 2:
-            grid[row+1][col+1] = drawing_col
-            grid[row-1][col-1] = drawing_col
-            grid[row-1][col+1] = drawing_col
-            grid[row+1][col-1] = drawing_col
-            grid[row+2][col-1] = drawing_col
-            grid[row+2][col] = drawing_col
-            grid[row+2][col+1] = drawing_col
-            grid[row-2][col-1] = drawing_col
-            grid[row-2][col] = drawing_col
-            grid[row-2][col+1] = drawing_col
-            grid[row-1][col+2] = drawing_col
-            grid[row][col+2] = drawing_col
-            grid[row+1][col+2] = drawing_col
-            grid[row-1][col-2] = drawing_col
-            grid[row][col-2] = drawing_col
-            grid[row+1][col-2] = drawing_col
+            grid.grid[row+1][col+1] = drawing_col
+            grid.grid[row-1][col-1] = drawing_col
+            grid.grid[row-1][col+1] = drawing_col
+            grid.grid[row+1][col-1] = drawing_col
+            grid.grid[row+2][col-1] = drawing_col
+            grid.grid[row+2][col] = drawing_col
+            grid.grid[row+2][col+1] = drawing_col
+            grid.grid[row-2][col-1] = drawing_col
+            grid.grid[row-2][col] = drawing_col
+            grid.grid[row-2][col+1] = drawing_col
+            grid.grid[row-1][col+2] = drawing_col
+            grid.grid[row][col+2] = drawing_col
+            grid.grid[row+1][col+2] = drawing_col
+            grid.grid[row-1][col-2] = drawing_col
+            grid.grid[row][col-2] = drawing_col
+            grid.grid[row+1][col-2] = drawing_col
             if size > 3:
-                grid[row+2][col+2] = drawing_col
-                grid[row-2][col-2] = drawing_col
-                grid[row-2][col+2] = drawing_col
-                grid[row+2][col-2] = drawing_col
-                grid[row+3][col-1] = drawing_col
-                grid[row+3][col] = drawing_col
-                grid[row+3][col+1] = drawing_col
-                grid[row-3][col-1] = drawing_col
-                grid[row-3][col] = drawing_col
-                grid[row-3][col+1] = drawing_col
-                grid[row-1][col+3] = drawing_col
-                grid[row][col+3] = drawing_col
-                grid[row+1][col+3] = drawing_col
-                grid[row-1][col-3] = drawing_col
-                grid[row][col-3] = drawing_col
-                grid[row+1][col-3] = drawing_col
+                grid.grid[row+2][col+2] = drawing_col
+                grid.grid[row-2][col-2] = drawing_col
+                grid.grid[row-2][col+2] = drawing_col
+                grid.grid[row+2][col-2] = drawing_col
+                grid.grid[row+3][col-1] = drawing_col
+                grid.grid[row+3][col] = drawing_col
+                grid.grid[row+3][col+1] = drawing_col
+                grid.grid[row-3][col-1] = drawing_col
+                grid.grid[row-3][col] = drawing_col
+                grid.grid[row-3][col+1] = drawing_col
+                grid.grid[row-1][col+3] = drawing_col
+                grid.grid[row][col+3] = drawing_col
+                grid.grid[row+1][col+3] = drawing_col
+                grid.grid[row-1][col-3] = drawing_col
+                grid.grid[row][col-3] = drawing_col
+                grid.grid[row+1][col-3] = drawing_col
 
 #def get_size(grid,row,col,size):
     if size > 1:
-        grid[row+1][col] = drawing_col
-        grid[row-1][col] = drawing_col
-        grid[row][col+1] = drawing_col
-        grid[row][col-1] = drawing_col
+        grid.grid[row+1][col] = drawing_col
+        grid.grid[row-1][col] = drawing_col
+        grid.grid[row][col+1] = drawing_col
+        grid.grid[row][col-1] = drawing_col
         if size > 2:
-            grid[row+1][col+1] = drawing_col
-            grid[row-1][col-1] = drawing_col
-            grid[row-1][col+1] = drawing_col
-            grid[row+1][col-1] = drawing_col
-            grid[row+2][col-1] = drawing_col
-            grid[row+2][col] = drawing_col
-            grid[row+2][col+1] = drawing_col
-            grid[row-2][col-1] = drawing_col
-            grid[row-2][col] = drawing_col
-            grid[row-2][col+1] = drawing_col
-            grid[row-1][col+2] = drawing_col
-            grid[row][col+2] = drawing_col
-            grid[row+1][col+2] = drawing_col
-            grid[row-1][col-2] = drawing_col
-            grid[row][col-2] = drawing_col
-            grid[row+1][col-2] = drawing_col
+            grid.grid[row+1][col+1] = drawing_col
+            grid.grid[row-1][col-1] = drawing_col
+            grid.grid[row-1][col+1] = drawing_col
+            grid.grid[row+1][col-1] = drawing_col
+            grid.grid[row+2][col-1] = drawing_col
+            grid.grid[row+2][col] = drawing_col
+            grid.grid[row+2][col+1] = drawing_col
+            grid.grid[row-2][col-1] = drawing_col
+            grid.grid[row-2][col] = drawing_col
+            grid.grid[row-2][col+1] = drawing_col
+            grid.grid[row-1][col+2] = drawing_col
+            grid.grid[row][col+2] = drawing_col
+            grid.grid[row+1][col+2] = drawing_col
+            grid.grid[row-1][col-2] = drawing_col
+            grid.grid[row][col-2] = drawing_col
+            grid.grid[row+1][col-2] = drawing_col
             if size > 3:
-                grid[row+2][col+2] = drawing_col
-                grid[row-2][col-2] = drawing_col
-                grid[row-2][col+2] = drawing_col
-                grid[row+2][col-2] = drawing_col
-                grid[row+3][col-1] = drawing_col
-                grid[row+3][col] = drawing_col
-                grid[row+3][col+1] = drawing_col
-                grid[row-3][col-1] = drawing_col
-                grid[row-3][col] = drawing_col
-                grid[row-3][col+1] = drawing_col
-                grid[row-1][col+3] = drawing_col
-                grid[row][col+3] = drawing_col
-                grid[row+1][col+3] = drawing_col
-                grid[row-1][col-3] = drawing_col
-                grid[row][col-3] = drawing_col
-                grid[row+1][col-3] = drawing_col
+                grid.grid[row+2][col+2] = drawing_col
+                grid.grid[row-2][col-2] = drawing_col
+                grid.grid[row-2][col+2] = drawing_col
+                grid.grid[row+2][col-2] = drawing_col
+                grid.grid[row+3][col-1] = drawing_col
+                grid.grid[row+3][col] = drawing_col
+                grid.grid[row+3][col+1] = drawing_col
+                grid.grid[row-3][col-1] = drawing_col
+                grid.grid[row-3][col] = drawing_col
+                grid.grid[row-3][col+1] = drawing_col
+                grid.grid[row-1][col+3] = drawing_col
+                grid.grid[row][col+3] = drawing_col
+                grid.grid[row+1][col+3] = drawing_col
+                grid.grid[row-1][col-3] = drawing_col
+                grid.grid[row][col-3] = drawing_col
+                grid.grid[row+1][col-3] = drawing_col
     return 
 
 ## ► Program ◄
@@ -161,7 +153,7 @@ def draw_on_grid(grid,drawing_col,row,col,size):
 #variables
 using =  True
 clock = pygame.time.Clock()
-grid = initial_grid(COLS,ROWS,BACKGROUND_COLOR)
+grid = Grid()
 drawing_col = BLACK
 size = 1
 
@@ -207,9 +199,8 @@ color_picker = ColorPicker(button_x*2 + 10, X[5], button_w_h, button_w_h, WHITE,
 visible = False
 cancelled = False
 
-states_of_drawing = [grid]
+states_of_drawing = [deepcopy(grid)]
 nb_actions = 0
-
 while using: #run while the user does not close the window
 
     #can't be faster than the intial FPS
@@ -223,21 +214,29 @@ while using: #run while the user does not close the window
             try :
                 row, col = get_coord_position(position)
                 if pipette.activated:
-                    drawing_col = grid[row][col]
+                    drawing_col = grid.grid[row][col]
                     pipette.color = drawing_col
                     pipette.activated = False
                 else:
-                    grid[row][col] = drawing_col
+                    grid.grid[row][col] = drawing_col
                     draw_on_grid(grid,drawing_col,row,col,size)
                     #print(states_of_drawing[0][0])
-                    states_of_drawing.append(grid)
-                    nb_actions += 1
+                    if(len(states_of_drawing)<=100):
+                        newgrid = Grid([[i for i in row] for row in grid.grid])
+                        states_of_drawing.append(newgrid)
+                    else:
+                        del states_of_drawing[0]
+                        newgrid = Grid([[i for i in row] for row in grid.grid])
+                        # for row in grid.grid:
+                        #     for i in row:
+                        #         newgrid[row][i] = i
+                        states_of_drawing.append(newgrid)
             except IndexError:
                 for button in buttons:
                     if not button.clicked(position):
                         continue
                     if button.text == "clear":
-                        grid = initial_grid(ROWS,COLS,BACKGROUND_COLOR)
+                        grid = Grid()
                     drawing_col = button.color
                 for brush in brushes:
                     if not brush.clicked(position):
@@ -257,13 +256,12 @@ while using: #run while the user does not close the window
                 if cancel.clicked(position):
                     cancelled = True
     if cancelled:
-        grid = states_of_drawing[-nb_actions-1]
         #matches = [match for match in grid if (0,0,0) in match]
-        #print(matches)
+        if(len(states_of_drawing)>0):
+            grid = states_of_drawing[-1]
+            del states_of_drawing[-1]
+
         create_all(WINDOW, grid, buttons)
-        print("nb tracé : ",nb_actions)
-        print("taille states", len(states_of_drawing))
-        nb_actions = 0
     else :
         create_all(WINDOW, grid, buttons)
     layer.stick_layer(WINDOW,visible)
