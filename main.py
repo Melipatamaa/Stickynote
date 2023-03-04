@@ -1,12 +1,16 @@
-from tools import *
+from pygame import Button
+import pygame
+from scripts.settings import *
 
-from tools.brush import Brush
-from tools.save import Save
-from tools.layer import Layer
-from tools.pipette import Pipette
-from tools.cancel import Cancel
-from tools.color_picker import ColorPicker
-from tools.grid import *
+from scripts.brush import Brush
+from scripts.save import Save
+from scripts.layer import Layer
+from scripts.pipette import Pipette
+from scripts.cancel import Cancel
+from scripts.color_picker import ColorPicker
+from scripts.grid import *
+from scripts.utils import *
+
 from copy import deepcopy
 
 #display opens the window
@@ -14,141 +18,6 @@ WINDOW = pygame.display.set_mode((WIDTH,HEIGHT))
 
 #name of our window
 pygame.display.set_caption("Stickynote Studio")
-
-## ► Drawing ◄
-
-def create_grid(canvas,grid:Grid):
-    for i, row in enumerate(grid.grid):
-        for j, pixel in enumerate(row):
-            #print(pixel)
-            pygame.draw.rect(canvas,pixel,(j*PX_SIZE,i*PX_SIZE,PX_SIZE,PX_SIZE)) #original and final coordinates
-    if GRID:
-        #+1 so the grid won't be cropped by the window 
-        for i in range(ROWS + 1):
-            pygame.draw.line(canvas,LGREY,(0,i*PX_SIZE),(WIDTH,i*PX_SIZE))
-        for j in range(COLS + 1):
-            pygame.draw.line(canvas,LGREY,(j*PX_SIZE,0),(j*PX_SIZE,HEIGHT-TOOLBAR))
-    if CANVAS_GRID:
-        for i in range(ROWS):
-            #+2 pour bien fermer la grille
-            pygame.draw.line(canvas,LGREY,(BORDERS_ROWS,BORDERS_COLS+i*PX_SIZE),(WIDTH - BORDERS_ROWS+2,BORDERS_COLS+i*PX_SIZE))
-        #pour faire une belle grille propre (ne dépasse pas, 85 et 100 valeurs random pour ROWS = 200)
-        for k in range(85,100):
-            pygame.draw.line(canvas,WHITE,(BORDERS_ROWS,BORDERS_COLS+k*PX_SIZE),(WIDTH - BORDERS_ROWS+2,BORDERS_COLS+k*PX_SIZE))
-        for j in range(COLS):
-            pygame.draw.line(canvas,LGREY,(BORDERS_ROWS+j*PX_SIZE,BORDERS_COLS),(BORDERS_ROWS+j*PX_SIZE,HEIGHT-BORDERS_COLS+3))
-        #pour faire une belle grille propre
-        for l in range(148,180):
-            pygame.draw.line(canvas,WHITE,(BORDERS_ROWS+l*PX_SIZE,BORDERS_COLS),(BORDERS_ROWS+l*PX_SIZE,HEIGHT-BORDERS_COLS+3))
-
-def create_all(canvas, grid:Grid, buttons):
-    canvas.fill(BACKGROUND_COLOR)
-    create_grid(canvas,grid)
-    for button in buttons:
-        button.draw(canvas)
-    for brush in brushes:
-        brush.draw(canvas)
-    for save in saves:
-        save.draw(canvas)
-    layer.draw(canvas)
-    pipette.draw(canvas)
-    cancel.draw(canvas)
-    color_picker.draw(canvas)
-    pygame.display.update()
-
-def get_coord_position(pos):
-    x, y = pos
-    row = y // PX_SIZE
-    col = x // PX_SIZE
-    #modification des valeurs rentrées en focntion des paramètres : pour + tard
-    if (col <= 26 or col >= 174 or row <= 16 or row >= 101):
-        raise IndexError
-    return row, col
-
-def draw_on_grid(grid:Grid,drawing_col,row,col,size):
-    if size > 1:
-        grid.grid[row+1][col] = drawing_col
-        grid.grid[row-1][col] = drawing_col
-        grid.grid[row][col+1] = drawing_col
-        grid.grid[row][col-1] = drawing_col
-        if size > 2:
-            grid.grid[row+1][col+1] = drawing_col
-            grid.grid[row-1][col-1] = drawing_col
-            grid.grid[row-1][col+1] = drawing_col
-            grid.grid[row+1][col-1] = drawing_col
-            grid.grid[row+2][col-1] = drawing_col
-            grid.grid[row+2][col] = drawing_col
-            grid.grid[row+2][col+1] = drawing_col
-            grid.grid[row-2][col-1] = drawing_col
-            grid.grid[row-2][col] = drawing_col
-            grid.grid[row-2][col+1] = drawing_col
-            grid.grid[row-1][col+2] = drawing_col
-            grid.grid[row][col+2] = drawing_col
-            grid.grid[row+1][col+2] = drawing_col
-            grid.grid[row-1][col-2] = drawing_col
-            grid.grid[row][col-2] = drawing_col
-            grid.grid[row+1][col-2] = drawing_col
-            if size > 3:
-                grid.grid[row+2][col+2] = drawing_col
-                grid.grid[row-2][col-2] = drawing_col
-                grid.grid[row-2][col+2] = drawing_col
-                grid.grid[row+2][col-2] = drawing_col
-                grid.grid[row+3][col-1] = drawing_col
-                grid.grid[row+3][col] = drawing_col
-                grid.grid[row+3][col+1] = drawing_col
-                grid.grid[row-3][col-1] = drawing_col
-                grid.grid[row-3][col] = drawing_col
-                grid.grid[row-3][col+1] = drawing_col
-                grid.grid[row-1][col+3] = drawing_col
-                grid.grid[row][col+3] = drawing_col
-                grid.grid[row+1][col+3] = drawing_col
-                grid.grid[row-1][col-3] = drawing_col
-                grid.grid[row][col-3] = drawing_col
-                grid.grid[row+1][col-3] = drawing_col
-
-#def get_size(grid,row,col,size):
-    if size > 1:
-        grid.grid[row+1][col] = drawing_col
-        grid.grid[row-1][col] = drawing_col
-        grid.grid[row][col+1] = drawing_col
-        grid.grid[row][col-1] = drawing_col
-        if size > 2:
-            grid.grid[row+1][col+1] = drawing_col
-            grid.grid[row-1][col-1] = drawing_col
-            grid.grid[row-1][col+1] = drawing_col
-            grid.grid[row+1][col-1] = drawing_col
-            grid.grid[row+2][col-1] = drawing_col
-            grid.grid[row+2][col] = drawing_col
-            grid.grid[row+2][col+1] = drawing_col
-            grid.grid[row-2][col-1] = drawing_col
-            grid.grid[row-2][col] = drawing_col
-            grid.grid[row-2][col+1] = drawing_col
-            grid.grid[row-1][col+2] = drawing_col
-            grid.grid[row][col+2] = drawing_col
-            grid.grid[row+1][col+2] = drawing_col
-            grid.grid[row-1][col-2] = drawing_col
-            grid.grid[row][col-2] = drawing_col
-            grid.grid[row+1][col-2] = drawing_col
-            if size > 3:
-                grid.grid[row+2][col+2] = drawing_col
-                grid.grid[row-2][col-2] = drawing_col
-                grid.grid[row-2][col+2] = drawing_col
-                grid.grid[row+2][col-2] = drawing_col
-                grid.grid[row+3][col-1] = drawing_col
-                grid.grid[row+3][col] = drawing_col
-                grid.grid[row+3][col+1] = drawing_col
-                grid.grid[row-3][col-1] = drawing_col
-                grid.grid[row-3][col] = drawing_col
-                grid.grid[row-3][col+1] = drawing_col
-                grid.grid[row-1][col+3] = drawing_col
-                grid.grid[row][col+3] = drawing_col
-                grid.grid[row+1][col+3] = drawing_col
-                grid.grid[row-1][col-3] = drawing_col
-                grid.grid[row][col-3] = drawing_col
-                grid.grid[row+1][col-3] = drawing_col
-    return 
-
-## ► Program ◄
 
 #variables
 using =  True
@@ -191,6 +60,23 @@ saves = [
 layer = Layer(1075, X[2], button_w_h + 60, button_w_h + 20, WINDOW, WHITE, "Layer", LGREY)
 
 pipette = Pipette(button_x*2 + 10, X[5], button_w_h, button_w_h, 1, 1, WHITE, "pip", LGREY)
+
+# utilise les variables globales
+def create_all(canvas, grid:Grid):
+    canvas.fill(BACKGROUND_COLOR)
+    draw_grid_on_canvas(canvas,grid)
+    for button in buttons:
+        button.draw(canvas)
+    for brush in brushes:
+        brush.draw(canvas)
+    for save in saves:
+        save.draw(canvas)
+    layer.draw(canvas)
+    pipette.draw(canvas)
+    cancel.draw(canvas)
+    color_picker.draw(canvas)
+    pygame.display.update()
+    
 
 cancel = Cancel(1075, X[4], button_w_h + 60, button_w_h + 20, WINDOW, WHITE, "◄◄", LGREY)
 
@@ -256,7 +142,7 @@ while using: #run while the user does not close the window
                 if cancel.clicked(position):
                     cancelled = True
     if cancelled:
-        #matches = [match for match in grid if (0,0,0) in match]
+        
         if(len(states_of_drawing)>0):
             grid = states_of_drawing[-1]
             del states_of_drawing[-1]

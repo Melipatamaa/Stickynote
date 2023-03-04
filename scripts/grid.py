@@ -1,5 +1,5 @@
 import pygame
-from tools.settings import *
+from scripts.settings import *
 from copy import deepcopy
 
 class Grid:
