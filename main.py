@@ -1,4 +1,4 @@
-from pygame import Button
+from scripts import Button
 import pygame
 from scripts.settings import *
 
@@ -61,6 +61,11 @@ layer = Layer(1075, X[2], button_w_h + 60, button_w_h + 20, WINDOW, WHITE, "Laye
 
 pipette = Pipette(button_x*2 + 10, X[5], button_w_h, button_w_h, 1, 1, WHITE, "pip", LGREY)
 
+cancel = Cancel(1075, X[4], button_w_h + 60, button_w_h + 20, WINDOW, WHITE, "◄◄", LGREY)
+
+color_picker = ColorPicker(button_x*2 + 10, X[6], button_w_h, button_w_h, WHITE, "colorpic", LGREY)
+
+
 # utilise les variables globales
 def create_all(canvas, grid:Grid):
     canvas.fill(BACKGROUND_COLOR)
@@ -77,11 +82,6 @@ def create_all(canvas, grid:Grid):
     color_picker.draw(canvas)
     pygame.display.update()
     
-
-cancel = Cancel(1075, X[4], button_w_h + 60, button_w_h + 20, WINDOW, WHITE, "◄◄", LGREY)
-
-color_picker = ColorPicker(button_x*2 + 10, X[5], button_w_h, button_w_h, WHITE, "colorpic", LGREY)
-
 visible = False
 cancelled = False
 
@@ -142,14 +142,12 @@ while using: #run while the user does not close the window
                 if cancel.clicked(position):
                     cancelled = True
     if cancelled:
-        
         if(len(states_of_drawing)>0):
             grid = states_of_drawing[-1]
             del states_of_drawing[-1]
-
-        create_all(WINDOW, grid, buttons)
+        create_all(WINDOW, grid)
     else :
-        create_all(WINDOW, grid, buttons)
+        create_all(WINDOW, grid)
     layer.stick_layer(WINDOW,visible)
     cancelled = False
 pygame.quit()
