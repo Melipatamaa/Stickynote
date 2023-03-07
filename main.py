@@ -1,7 +1,10 @@
-from scripts import Button
 import pygame
-from scripts.settings import *
+import pygame_gui
 
+from pygame_gui.windows import UIColourPickerDialog
+
+from scripts.settings import *
+from scripts import Button
 from scripts.brush import Brush
 from scripts.save import Save
 from scripts.layer import Layer
@@ -106,16 +109,12 @@ while using: #run while the user does not close the window
                 else:
                     grid.grid[row][col] = drawing_col
                     draw_on_grid(grid,drawing_col,row,col,size)
-                    #print(states_of_drawing[0][0])
                     if(len(states_of_drawing)<=100):
                         newgrid = Grid([[i for i in row] for row in grid.grid])
                         states_of_drawing.append(newgrid)
                     else:
                         del states_of_drawing[0]
                         newgrid = Grid([[i for i in row] for row in grid.grid])
-                        # for row in grid.grid:
-                        #     for i in row:
-                        #         newgrid[row][i] = i
                         states_of_drawing.append(newgrid)
             except IndexError:
                 for button in buttons:
@@ -129,8 +128,11 @@ while using: #run while the user does not close the window
                         continue
                     size = brush.size
                 if color_picker.clicked(position):
-                    color_picker.set_color(WINDOW)
-                    print("pouet")
+                    ui_manager = pygame_gui.UIManager((800,600))
+                    UIColourPickerDialog(pygame.Rect(160,50,420,400),ui_manager,window_title="Choose color !")
+                    print("huhu")
+                    if event.type == pygame_gui.UI_COLOUR_PICKER_COLOUR_PICKED:
+                        drawing_col = event.color
                 for save in saves:
                     if not save.clicked(position):
                         continue

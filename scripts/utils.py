@@ -4,7 +4,6 @@ import pygame
 def draw_grid_on_canvas(canvas,grid:Grid):
     for i, row in enumerate(grid.grid):
         for j, pixel in enumerate(row):
-            #print(pixel)
             pygame.draw.rect(canvas,pixel,(j*PX_SIZE,i*PX_SIZE,PX_SIZE,PX_SIZE)) #original and final coordinates
     if GRID:
         #+1 so the grid won't be cropped by the window 
