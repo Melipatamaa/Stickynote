@@ -11,6 +11,8 @@ from scripts.layer import Layer
 from scripts.pipette import Pipette
 from scripts.cancel import Cancel
 from scripts.color_picker import ColorPicker
+from scripts.filler import Filler
+
 from scripts.grid import *
 from scripts.utils import *
 
@@ -69,6 +71,7 @@ cancel = Cancel(1075, X[4], button_w_h + 60, button_w_h + 20, WINDOW, WHITE, "â—
 
 color_picker = ColorPicker(button_x*2 + 10, X[6], button_w_h, button_w_h, WHITE, "colorpic", LGREY)
 
+filler = Filler(button_x*2 + 10, X[7], button_w_h, button_w_h, 1, 1, WHITE, "fill", LGREY)
 
 # utilise les variables globales
 def create_all(canvas, grid:Grid):
@@ -84,6 +87,7 @@ def create_all(canvas, grid:Grid):
     pipette.draw(canvas)
     cancel.draw(canvas)
     color_picker.draw(canvas)
+    filler.draw(canvas)
     pygame.display.update()
     
 visible = False
@@ -108,6 +112,9 @@ while using: #run while the user does not close the window
                     drawing_col = grid.grid[row][col]
                     pipette.color = drawing_col
                     pipette.activated = False
+                if filler.filling:
+                    filler.fill(grid.grid,row,col,drawing_col)
+                    filler.filling = False
                 else:
                     grid.grid[row][col] = drawing_col
                     draw_on_grid(grid,drawing_col,row,col,size)
@@ -145,6 +152,8 @@ while using: #run while the user does not close the window
                     visible = True
                 if cancel.clicked(position):
                     cancelled = True
+                if filler.clicked(position):
+                    filler.filling = True
     if cancelled:
         if(len(states_of_drawing)>0):
             grid = states_of_drawing[-1]
