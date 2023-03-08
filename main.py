@@ -114,7 +114,6 @@ while using: #run while the user does not close the window
                     pipette.activated = False
                 if filler.filling:
                     filler.fill(grid.grid,row,col,drawing_col)
-                    filler.filling = False
                 else:
                     grid.grid[row][col] = drawing_col
                     draw_on_grid(grid,drawing_col,row,col,size)
@@ -126,6 +125,7 @@ while using: #run while the user does not close the window
                         newgrid = Grid([[i for i in row] for row in grid.grid])
                         states_of_drawing.append(newgrid)
             except IndexError:
+                filler.filling = False
                 for button in buttons:
                     if not button.clicked(position):
                         continue

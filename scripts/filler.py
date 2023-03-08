@@ -1,3 +1,6 @@
+import sys
+sys.setrecursionlimit(100000)
+
 from .settings import *
 from .button import *
 
