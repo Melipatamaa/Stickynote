@@ -14,6 +14,7 @@ from scripts.color_picker import ColorPicker
 from scripts.grid import *
 from scripts.utils import *
 
+import colorsys
 from copy import deepcopy
 
 #display opens the window
@@ -87,6 +88,7 @@ def create_all(canvas, grid:Grid):
     
 visible = False
 cancelled = False
+ui_manager = pygame_gui.UIManager((800, 600))
 
 states_of_drawing = [deepcopy(grid)]
 nb_actions = 0
@@ -128,8 +130,8 @@ while using: #run while the user does not close the window
                         continue
                     size = brush.size
                 if color_picker.clicked(position):
-                    ui_manager = pygame_gui.UIManager((800,600))
-                    UIColourPickerDialog(pygame.Rect(160,50,420,400),ui_manager,window_title="Choose color !")
+                    colour_picker = UIColourPickerDialog(pygame.Rect(160,50,420,400), ui_manager, window_title="change colour",initial_colour=colorsys.rgb_to_hsv(drawing_col[0],drawing_col[1],drawing_col[2]))
+                    ui_manager.process_events(event)
                     print("huhu")
                     if event.type == pygame_gui.UI_COLOUR_PICKER_COLOUR_PICKED:
                         drawing_col = event.color
