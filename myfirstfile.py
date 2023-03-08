@@ -1,53 +1,46 @@
 import pygame
-
-class ColorPicker:
-    def __init__(self, x, y, w, h):
-        self.rect = pygame.Rect(x, y, w, h)
-        self.image = pygame.Surface((w, h))
-        self.image.fill((255, 255, 255))
-        self.rad = h//2
-        self.pwidth = w-self.rad*2
-        for i in range(self.pwidth):
-            color = pygame.Color(0)
-            color.hsla = (int(360*i/self.pwidth), 100, 50, 100)
-            pygame.draw.rect(self.image, color, (i+self.rad, h//3, 1, h-2*h//3))
-        self.p = 0
-
-    def get_color(self):
-        color = pygame.Color(0)
-        color.hsla = (int(self.p * self.pwidth), 100, 50, 100)
-        return color
-
-    def update(self):
-        moude_buttons = pygame.mouse.get_pressed()
-        mouse_pos = pygame.mouse.get_pos()
-        if moude_buttons[0] and self.rect.collidepoint(mouse_pos):
-            self.p = (mouse_pos[0] - self.rect.left - self.rad) / self.pwidth
-            self.p = (max(0, min(self.p, 1)))
-
-    def draw(self, surf):
-        surf.blit(self.image, self.rect)
-        center = self.rect.left + self.rad + self.p * self.pwidth, self.rect.centery
-        pygame.draw.circle(surf, self.get_color(), center, self.rect.height // 2)
-
+import sys
+import pygame_gui
+ 
+from pygame_gui.elements import UIButton
+from pygame_gui.windows import UIColourPickerDialog
+ 
+ 
 pygame.init()
-window = pygame.display.set_mode((500, 200))
+ 
+pygame.display.set_caption('Colour Picking App')
+SCREEN = pygame.display.set_mode((800, 600))
+ 
+ui_manager = pygame_gui.UIManager((800, 600))
+background = pygame.Surface((800, 600))
+background.fill("#3a3b3c")
+colour_picker_button = UIButton(relative_rect=pygame.Rect(-180,-60,150,30), text='pick color', manager=ui_manager, anchors={'left':'right','right':'right','top':'bottom','bottom':'bottom'})
+ 
+colour_picker = None                                    
+current_colour = pygame.Color(0, 0, 0)
+picked_colour_surface = pygame.Surface((400, 400))
+picked_colour_surface.fill(current_colour)
+ 
 clock = pygame.time.Clock()
-
-cp = ColorPicker(50, 50, 400, 60)
-
-run = True
-while run:
-    clock.tick(100)
+ 
+while True:
+    time_delta = clock.tick(60) / 1000
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            run = False 
-
-    cp.update()
-
-    window.fill(0)
-    cp.draw(window)
-    pygame.display.flip()
-    
-pygame.quit()
-exit()
+            pygame.quit()
+            sys.exit()
+        if event.type == pygame_gui.UI_BUTTON_PRESSED and event.ui_element == colour_picker_button:
+            colour_picker = UIColourPickerDialog(pygame.Rect(160,50,420,400), ui_manager, window_title="change colour",initial_colour=current_colour)
+        ui_manager.process_events(event)
+        if event.type == pygame_gui.UI_COLOUR_PICKER_COLOUR_PICKED:
+            current_colour = event.colour
+            picked_colour_surface.fill(current_colour)
+        
+    ui_manager.update(time_delta)
+ 
+    SCREEN.blit(background, (0, 0))
+    SCREEN.blit(picked_colour_surface, (200, 100))
+ 
+    ui_manager.draw_ui(SCREEN)
+ 
+    pygame.display.update()
