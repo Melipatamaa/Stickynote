@@ -2,7 +2,7 @@ from .settings import *
 from .button import *
 
 class Save(Button) :
-    def __init__(self,x,y,width,height,screen,color,text=None,text_color=BLACK):
+    def __init__(self,x,y,width,height,screen,color,text=None,text_color=BLACK,icon = None):
         self.x = x
         self.y = y
         self.width = width
@@ -10,6 +10,7 @@ class Save(Button) :
         self.color = color
         self.text = text
         self.text_color = text_color
+        self.icon = icon
         self.screen = screen
 
     def save(self,screen):

@@ -2,7 +2,7 @@ from .settings import *
 from .button import *
 
 class Pipette(Button) :
-    def __init__(self,x,y,width,height,row,col,color,text=None,text_color=BLACK):
+    def __init__(self,x,y,width,height,row,col,color,text=None,text_color=BLACK,icon=None):
         self.x = x
         self.y = y
         self.width = width
@@ -12,4 +12,5 @@ class Pipette(Button) :
         self.color = color  
         self.text = text
         self.text_color = text_color
+        self.icon = icon
         self.activated = False

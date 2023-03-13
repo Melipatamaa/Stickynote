@@ -48,30 +48,30 @@ buttons = [
     Button(button_x, X[6], button_w_h, button_w_h, ORANGE),
     Button(button_x, X[7], button_w_h, button_w_h, RED),
     Button(button_x, X[8], button_w_h, button_w_h, PINK),
-    Button(button_x, X[9], button_w_h, button_w_h, WHITE, "erase", LGREY),
-    Button(button_x, X[10], button_w_h, button_w_h, WHITE, "clear", LGREY)
+    Button(button_x, X[9], button_w_h, button_w_h, WHITE, icon=pygame.image.load('scripts\icons\\gomme.png')),
+    Button(button_x, X[10], button_w_h, button_w_h, WHITE, icon=pygame.image.load('scripts\icons\\clear.png'))
     ]
 
 brushes = [ 
-    Brush(button_x*2 + 10, X[0], button_w_h, button_w_h, 1, 1, 1, WHITE, "1", LGREY),
-    Brush(button_x*2 + 10, X[1], button_w_h, button_w_h, 2, 1, 1, WHITE, "2", LGREY),
-    Brush(button_x*2 + 10, X[2], button_w_h, button_w_h, 3, 1, 1, WHITE, "3", LGREY),
-    Brush(button_x*2 + 10, X[3], button_w_h, button_w_h, 4, 1, 1, WHITE, "4", LGREY)
+    Brush(button_x*2 + 10, X[0], button_w_h, button_w_h, 1, 1, 1, WHITE, icon=pygame.image.load('scripts\icons\\size_one.png')),
+    Brush(button_x*2 + 10, X[1], button_w_h, button_w_h, 2, 1, 1, WHITE, icon=pygame.image.load('scripts\icons\\size_two.png')),
+    Brush(button_x*2 + 10, X[2], button_w_h, button_w_h, 3, 1, 1, WHITE, icon=pygame.image.load('scripts\icons\\size_three.png')),
+    Brush(button_x*2 + 10, X[3], button_w_h, button_w_h, 4, 1, 1, WHITE, icon=pygame.image.load('scripts\icons\\size_four.png'))
     ]
 
 saves = [
-    Save(button_x*2 + 10, X[4], button_w_h, button_w_h, WINDOW, WHITE, "save", LGREY)
+    Save(button_x*2 + 10, X[4], button_w_h, button_w_h, WINDOW, WHITE, icon=pygame.image.load('scripts\icons\\save.png'))
 ]
 
 layer = Layer(1075, X[2], button_w_h + 60, button_w_h + 20, WINDOW, WHITE, "Layer", LGREY)
 
-pipette = Pipette(button_x*2 + 10, X[5], button_w_h, button_w_h, 1, 1, WHITE, "pip", LGREY)
+pipette = Pipette(button_x*2 + 10, X[5], button_w_h, button_w_h, 1, 1, WHITE, icon=pygame.image.load('scripts\icons\\pipette.png'))
 
 cancel = Cancel(1075, X[4], button_w_h + 60, button_w_h + 20, WINDOW, WHITE, "◄◄", LGREY)
 
-color_picker = ColorPicker(button_x*2 + 10, X[6], button_w_h, button_w_h, WHITE, "colorpic", LGREY)
+color_picker = ColorPicker(button_x*2 + 10, X[6], button_w_h, button_w_h, WHITE, icon=pygame.image.load('scripts\icons\\colorpick.png'))
 
-filler = Filler(button_x*2 + 10, X[7], button_w_h, button_w_h, 1, 1, WHITE, "fill", LGREY)
+filler = Filler(button_x*2 + 10, X[7], button_w_h, button_w_h, 1, 1, WHITE, icon=pygame.image.load('scripts\icons\\fill.png'))
 
 # utilise les variables globales
 def create_all(canvas, grid:Grid,open_picker):

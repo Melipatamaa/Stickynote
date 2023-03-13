@@ -2,7 +2,7 @@ from .settings import *
 from .button import *
 
 class Layer(Button) :
-    def __init__(self,x,y,width,height,screen,color,text=None,text_color=BLACK):
+    def __init__(self,x,y,width,height,screen,color,text=None,text_color=BLACK,icon=None):
         self.x = x
         self.y = y
         self.width = width
@@ -11,6 +11,7 @@ class Layer(Button) :
         self.color = color
         self.text = text
         self.text_color = text_color
+        self.icon = icon
 
     def stick_layer(self,screen,visible):
         layer = pygame.image.load('screenshot1.jpg')
