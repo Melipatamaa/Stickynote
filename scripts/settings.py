@@ -17,7 +17,7 @@ PINK = (244,72,153)
 PURPLE = (179, 46, 228)
 
 #to look for
-FPS = 1000
+FPS = 60
 
 #dimensions of the window
 WIDTH = 1200

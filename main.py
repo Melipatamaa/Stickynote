@@ -74,93 +74,107 @@ color_picker = ColorPicker(button_x*2 + 10, X[6], button_w_h, button_w_h, WHITE,
 filler = Filler(button_x*2 + 10, X[7], button_w_h, button_w_h, 1, 1, WHITE, "fill", LGREY)
 
 # utilise les variables globales
-def create_all(canvas, grid:Grid):
+def create_all(canvas, grid:Grid,open_picker):
     canvas.fill(BACKGROUND_COLOR)
-    draw_grid_on_canvas(canvas,grid)
-    for button in buttons:
-        button.draw(canvas)
-    for brush in brushes:
-        brush.draw(canvas)
-    for save in saves:
-        save.draw(canvas)
-    layer.draw(canvas)
-    pipette.draw(canvas)
-    cancel.draw(canvas)
-    color_picker.draw(canvas)
-    filler.draw(canvas)
+    if(open_picker):
+        ui_manager.update(time_delta)
+        ui_manager.draw_ui(WINDOW)
+    else:
+        draw_grid_on_canvas(canvas,grid)
+        for button in buttons:
+            button.draw(canvas)
+        for brush in brushes:
+            brush.draw(canvas)
+        for save in saves:
+            save.draw(canvas)
+        layer.draw(canvas)
+        pipette.draw(canvas)
+        cancel.draw(canvas)
+        color_picker.draw(canvas)
+        filler.draw(canvas)
+
     pygame.display.update()
     
 visible = False
 cancelled = False
 ui_manager = pygame_gui.UIManager((800, 600))
-
+is_picker_opened = False
 states_of_drawing = [deepcopy(grid)]
 nb_actions = 0
 while using: #run while the user does not close the window
 
     #can't be faster than the intial FPS
-    clock.tick(FPS)
+    time_delta = clock.tick(FPS)/1000
 
     for event in pygame.event.get():
+        ui_manager.process_events(event)
         if event.type == pygame.QUIT:
             using = False
-        if pygame.mouse.get_pressed()[0]: #0 for left mouse button
-            position = pygame.mouse.get_pos()
-            try :
-                row, col = get_coord_position(position)
-                if pipette.activated:
-                    drawing_col = grid.grid[row][col]
-                    pipette.color = drawing_col
-                    pipette.activated = False
-                if filler.filling:
-                    filler.fill(grid.grid,row,col,drawing_col)
-                else:
-                    grid.grid[row][col] = drawing_col
-                    draw_on_grid(grid,drawing_col,row,col,size)
-                    if(len(states_of_drawing)<=100):
-                        newgrid = Grid([[i for i in row] for row in grid.grid])
-                        states_of_drawing.append(newgrid)
+        if(is_picker_opened==False):
+            if pygame.mouse.get_pressed()[0]: #0 for left mouse button
+                position = pygame.mouse.get_pos()
+                try :
+                    row, col = get_coord_position(position)
+                    if pipette.activated:
+                        drawing_col = grid.grid[row][col]
+                        pipette.color = drawing_col
+                        pipette.activated = False
+                    if filler.filling:
+                        filler.fill(grid.grid,row,col,drawing_col)
                     else:
-                        del states_of_drawing[0]
-                        newgrid = Grid([[i for i in row] for row in grid.grid])
-                        states_of_drawing.append(newgrid)
-            except IndexError:
-                filler.filling = False
-                for button in buttons:
-                    if not button.clicked(position):
-                        continue
-                    if button.text == "clear":
-                        grid = Grid()
-                    drawing_col = button.color
-                for brush in brushes:
-                    if not brush.clicked(position):
-                        continue
-                    size = brush.size
-                if color_picker.clicked(position):
-                    colour_picker = UIColourPickerDialog(pygame.Rect(160,50,420,400), ui_manager, window_title="change colour",initial_colour=colorsys.rgb_to_hsv(drawing_col[0],drawing_col[1],drawing_col[2]))
-                    ui_manager.process_events(event)
-                    print("huhu")
-                    if event.type == pygame_gui.UI_COLOUR_PICKER_COLOUR_PICKED:
-                        drawing_col = event.color
-                for save in saves:
-                    if not save.clicked(position):
-                        continue
-                    save.save(WINDOW)
-                if pipette.clicked(position):
-                    pipette.activated = True
-                if layer.clicked(position):
-                    visible = True
-                if cancel.clicked(position):
-                    cancelled = True
-                if filler.clicked(position):
-                    filler.filling = True
+                        grid.grid[row][col] = drawing_col
+                        draw_on_grid(grid,drawing_col,row,col,size)
+                        if(len(states_of_drawing)<=100):
+                            newgrid = Grid([[i for i in row] for row in grid.grid])
+                            states_of_drawing.append(newgrid)
+                        else:
+                            del states_of_drawing[0]
+                            newgrid = Grid([[i for i in row] for row in grid.grid])
+                            states_of_drawing.append(newgrid)
+                except IndexError:
+                    filler.filling = False
+                    for button in buttons:
+                        if not button.clicked(position):
+                            continue
+                        if button.text == "clear":
+                            grid = Grid()
+                        drawing_col = button.color
+                    for brush in brushes:
+                        if not brush.clicked(position):
+                            continue
+                        size = brush.size
+                    if color_picker.clicked(position):
+                        colour_picker = UIColourPickerDialog(pygame.Rect(160,50,420,400), ui_manager, window_title="change colour",initial_colour=pygame.Color(drawing_col))
+                        is_picker_opened=True
+                    for save in saves:
+                        if not save.clicked(position):
+                            continue
+                        save.save(WINDOW)
+                    if pipette.clicked(position):
+                        pipette.activated = True
+                    if layer.clicked(position):
+                        visible = True
+                    if cancel.clicked(position):
+                        cancelled = True
+                    if filler.clicked(position):
+                        filler.filling = True
+        else:
+            if event.type == pygame_gui.UI_COLOUR_PICKER_COLOUR_PICKED:
+                is_picker_opened=False
+                drawing_col = event.colour
+                color_picker.color = event.colour
+            if event.type ==pygame_gui.UI_WINDOW_CLOSE:
+                is_picker_opened = False
+
     if cancelled:
         if(len(states_of_drawing)>0):
             grid = states_of_drawing[-1]
             del states_of_drawing[-1]
-        create_all(WINDOW, grid)
+        create_all(WINDOW, grid,is_picker_opened)
     else :
-        create_all(WINDOW, grid)
+        create_all(WINDOW, grid,is_picker_opened)
+
+    
     layer.stick_layer(WINDOW,visible)
     cancelled = False
 pygame.quit()

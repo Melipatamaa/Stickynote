@@ -1,5 +1,5 @@
 import sys
-sys.setrecursionlimit(100000)
+sys.setrecursionlimit(10**9)
 
 from .settings import *
 from .button import *
@@ -17,17 +17,19 @@ class Filler(Button) :
         self.text_color = text_color
         self.filling = False
 
-    def fillRec(self,screen, row, col, prevC, newC):
-        if (row < 0 or row >= HEIGHT or col < 0 or col >= WIDTH or screen[row][col] != prevC or screen[row][col] == newC):
+    def fillRec(self,screen, row, col, prev_color, new_color):
+        print(row)
+
+        if (row < 0 or row >= (CANVAS_HEIGHT) or col < 0 or col >= (CANVAS_WIDTH) or screen[row][col] != prev_color or screen[row][col] == new_color):
             return
-        screen[row][col] = newC
-        self.fillRec(screen, row + 1, col, prevC, newC)
-        self.fillRec(screen, row - 1, col, prevC, newC)
-        self.fillRec(screen, row, col + 1, prevC, newC)
-        self.fillRec(screen, row, col - 1, prevC, newC)
+        screen[row][col] = new_color
+        self.fillRec(screen, row + 1, col, prev_color, new_color)
+        self.fillRec(screen, row - 1, col, prev_color, new_color)
+        self.fillRec(screen, row, col + 1, prev_color, new_color)
+        self.fillRec(screen, row, col - 1, prev_color, new_color)
  
-    def fill(self,screen, row, col, newC):
-        prevC = screen[row][col]
-        if(prevC==newC):
+    def fill(self,screen, row, col, new_color):
+        prev_color = screen[row][col]
+        if(prev_color==new_color):
             return
-        self.fillRec(screen, row, col, prevC, newC)
+        self.fillRec(screen, row, col, prev_color, new_color)
