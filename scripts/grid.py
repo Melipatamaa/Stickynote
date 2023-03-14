@@ -3,7 +3,6 @@ from scripts.settings import *
 from copy import deepcopy
 
 class Grid:
-
     def __init__(self,grid=None,rows=ROWS,cols=COLS,color=BACKGROUND_COLOR):
         self.rows = rows
         self.cols = cols

@@ -12,6 +12,9 @@ from scripts.pipette import Pipette
 from scripts.cancel import Cancel
 from scripts.color_picker import ColorPicker
 from scripts.filler import Filler
+from scripts.add_frame import AddFrame
+from scripts.choose_frame import ChooseFrame
+
 
 from scripts.grid import *
 from scripts.utils import *
@@ -73,6 +76,10 @@ color_picker = ColorPicker(button_x*2 + 10, X[6], button_w_h, button_w_h, WHITE,
 
 filler = Filler(button_x*2 + 10, X[7], button_w_h, button_w_h, 1, 1, WHITE, icon=pygame.image.load('scripts\icons\\fill.png'))
 
+add_frame = AddFrame(1075, X[10], button_w_h + 60, button_w_h + 20, WINDOW, WHITE, "Add frame", LGREY)
+previous_frame = ChooseFrame(1075, X[10]+60, button_w_h + 60, button_w_h + 20, WINDOW, WHITE, "prev frame", LGREY)
+next_frame = ChooseFrame(1075, X[10]+80, button_w_h + 60, button_w_h + 20, WINDOW, WHITE, "prev frame", LGREY)
+
 # utilise les variables globales
 def create_all(canvas, grid:Grid,open_picker):
     canvas.fill(BACKGROUND_COLOR)
@@ -92,6 +99,9 @@ def create_all(canvas, grid:Grid,open_picker):
         cancel.draw(canvas)
         color_picker.draw(canvas)
         filler.draw(canvas)
+        add_frame.draw(canvas)
+        previous_frame.draw(canvas)
+        next_frame.draw(canvas)
 
     pygame.display.update()
     
@@ -101,6 +111,10 @@ ui_manager = pygame_gui.UIManager((800, 600))
 is_picker_opened = False
 states_of_drawing = [deepcopy(grid)]
 nb_actions = 0
+
+animation_list = [deepcopy(grid)]
+
+
 while using: #run while the user does not close the window
 
     #can't be faster than the intial FPS
@@ -158,6 +172,7 @@ while using: #run while the user does not close the window
                         cancelled = True
                     if filler.clicked(position):
                         filler.filling = True
+                    
         else:
             if event.type == pygame_gui.UI_COLOUR_PICKER_COLOUR_PICKED:
                 is_picker_opened=False
