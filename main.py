@@ -114,7 +114,6 @@ nb_actions = 0
 
 animation_list = [deepcopy(grid)]
 
-
 while using: #run while the user does not close the window
 
     #can't be faster than the intial FPS
@@ -177,9 +176,11 @@ while using: #run while the user does not close the window
                         new_frame = Grid()
                         animation_list.append(new_frame)
                     if previous_frame.clicked(position):
-                        previous_frame.choose = True
+                        #previous_frame.choose = True
+                        grid = animation_list[-1]
                     if next_frame.clicked(position):
-                        next_frame.choose = True      
+                        #next_frame.choose = True
+                        grid = animation_list[-1]      
         else:
             if event.type == pygame_gui.UI_COLOUR_PICKER_COLOUR_PICKED:
                 is_picker_opened=False
