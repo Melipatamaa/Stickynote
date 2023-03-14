@@ -76,9 +76,9 @@ color_picker = ColorPicker(button_x*2 + 10, X[6], button_w_h, button_w_h, WHITE,
 
 filler = Filler(button_x*2 + 10, X[7], button_w_h, button_w_h, 1, 1, WHITE, icon=pygame.image.load('scripts\icons\\fill.png'))
 
-add_frame = AddFrame(1075, X[10], button_w_h + 60, button_w_h + 20, WINDOW, WHITE, "Add frame", LGREY)
-previous_frame = ChooseFrame(1075, X[10]+60, button_w_h + 60, button_w_h + 20, WINDOW, WHITE, "prev frame", LGREY)
-next_frame = ChooseFrame(1075, X[10]+80, button_w_h + 60, button_w_h + 20, WINDOW, WHITE, "prev frame", LGREY)
+add_frame = AddFrame(1075, X[6], button_w_h + 60, button_w_h + 20, WHITE, "Add frame", LGREY)
+previous_frame = ChooseFrame(1075, X[8], button_w_h + 60, button_w_h + 20, WHITE, "prev frame", LGREY)
+next_frame = ChooseFrame(1075, X[10], button_w_h + 60, button_w_h + 20, WHITE, "next frame", LGREY)
 
 # utilise les variables globales
 def create_all(canvas, grid:Grid,open_picker):
@@ -172,7 +172,14 @@ while using: #run while the user does not close the window
                         cancelled = True
                     if filler.clicked(position):
                         filler.filling = True
-                    
+                    if add_frame.clicked(position):
+                        add_frame.add = True
+                        new_frame = Grid()
+                        animation_list.append(new_frame)
+                    if previous_frame.clicked(position):
+                        previous_frame.choose = True
+                    if next_frame.clicked(position):
+                        next_frame.choose = True      
         else:
             if event.type == pygame_gui.UI_COLOUR_PICKER_COLOUR_PICKED:
                 is_picker_opened=False
@@ -180,16 +187,17 @@ while using: #run while the user does not close the window
                 color_picker.color = event.colour
             if event.type ==pygame_gui.UI_WINDOW_CLOSE:
                 is_picker_opened = False
-
     if cancelled:
         if(len(states_of_drawing)>0):
             grid = states_of_drawing[-1]
             del states_of_drawing[-1]
         create_all(WINDOW, grid,is_picker_opened)
+    if add_frame.add:
+        create_all(WINDOW, new_frame,is_picker_opened)
+        grid = new_frame
+        add_frame.add = False
     else :
         create_all(WINDOW, grid,is_picker_opened)
-
-    
     layer.stick_layer(WINDOW,visible)
     cancelled = False
 pygame.quit()
