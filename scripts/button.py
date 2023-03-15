@@ -1,19 +1,20 @@
 from .settings import *
 
 class Button :
-    def __init__(self,x,y,width,height,color,text=None,text_color=BLACK,icon=None):
+    def __init__(self,x,y,width,height,color,border_color=LGREY,text=None,text_color=LGREY,icon=None):
         self.x = x
         self.y = y
         self.width = width
         self.height = height
         self.color = color
+        self.border_color = border_color
         self.text = text
         self.text_color = text_color
         self.icon = icon
     
     def draw(self,win):
         pygame.draw.rect(win,self.color,(self.x,self.y,self.width,self.height))
-        pygame.draw.rect(win,LGREY,(self.x,self.y,self.width,self.height), 2)
+        pygame.draw.rect(win,self.border_color,(self.x,self.y,self.width,self.height), 2)
         if self.icon:
             win.blit(self.icon,(self.x,self.y))
         if self.text:
@@ -29,3 +30,6 @@ class Button :
         if not (y > self.y and y <= self.y + self.height):
             return False
         return True
+    
+    def give_feedback(self):
+        self.border_color = ORANGE

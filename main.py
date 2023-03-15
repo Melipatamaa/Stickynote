@@ -15,7 +15,6 @@ from scripts.filler import Filler
 from scripts.add_frame import AddFrame
 from scripts.choose_frame import ChooseFrame
 
-
 from scripts.grid import *
 from scripts.utils import *
 
@@ -66,19 +65,19 @@ saves = [
     Save(button_x*2 + 10, X[4], button_w_h, button_w_h, WINDOW, WHITE, icon=pygame.image.load('scripts\icons\\save.png'))
 ]
 
-layer = Layer(1075, X[2], button_w_h + 60, button_w_h + 20, WINDOW, WHITE, "Layer", LGREY)
+layer = Layer(1075, X[2], button_w_h + 60, button_w_h + 20, WINDOW, WHITE, LGREY, "Layer", LGREY)
 
 pipette = Pipette(button_x*2 + 10, X[5], button_w_h, button_w_h, 1, 1, WHITE, icon=pygame.image.load('scripts\icons\\pipette.png'))
 
-cancel = Cancel(1075, X[4], button_w_h + 60, button_w_h + 20, WINDOW, WHITE, "◄◄", LGREY)
+cancel = Cancel(1075, X[4], button_w_h + 60, button_w_h + 20, WINDOW, WHITE, LGREY, "◄◄", LGREY)
 
 color_picker = ColorPicker(button_x*2 + 10, X[6], button_w_h, button_w_h, WHITE, icon=pygame.image.load('scripts\icons\\colorpick.png'))
 
 filler = Filler(button_x*2 + 10, X[7], button_w_h, button_w_h, 1, 1, WHITE, icon=pygame.image.load('scripts\icons\\fill.png'))
 
-add_frame = AddFrame(1075, X[6], button_w_h + 60, button_w_h + 20, WHITE, "Add frame", LGREY)
-previous_frame = ChooseFrame(1075, X[8], button_w_h + 60, button_w_h + 20, WHITE, "prev frame", LGREY)
-next_frame = ChooseFrame(1075, X[10], button_w_h + 60, button_w_h + 20, WHITE, "next frame", LGREY)
+add_frame = AddFrame(1075, X[6], button_w_h + 60, button_w_h + 20, WHITE, LGREY, "Add frame", LGREY)
+previous_frame = ChooseFrame(1075, X[8], button_w_h + 60, button_w_h + 20, WHITE, LGREY, "prev frame", LGREY)
+next_frame = ChooseFrame(1075, X[10], button_w_h + 60, button_w_h + 20, WHITE, LGREY, "next frame", LGREY)
 
 # utilise les variables globales
 def create_all(canvas, grid:Grid,open_picker):
@@ -152,25 +151,33 @@ while using: #run while the user does not close the window
                         if button.text == "clear":
                             grid = Grid()
                         drawing_col = button.color
+                        button.give_feedback()
                     for brush in brushes:
                         if not brush.clicked(position):
                             continue
                         size = brush.size
+                        brush.give_feedback()
                     if color_picker.clicked(position):
                         colour_picker = UIColourPickerDialog(pygame.Rect(160,50,420,400), ui_manager, window_title="change colour",initial_colour=pygame.Color(drawing_col))
                         is_picker_opened=True
+                        color_picker.give_feedback()
                     for save in saves:
                         if not save.clicked(position):
                             continue
                         save.save(WINDOW)
+                        save.give_feedback()
                     if pipette.clicked(position):
                         pipette.activated = True
+                        pipette.give_feedback()
                     if layer.clicked(position):
                         visible = True
+                        layer.give_feedback()
                     if cancel.clicked(position):
                         cancelled = True
+                        cancel.give_feedback()
                     if filler.clicked(position):
                         filler.filling = True
+                        filler.give_feedback()
                     if add_frame.clicked(position):
                         add_frame.add = True
                         new_frame = Grid()
