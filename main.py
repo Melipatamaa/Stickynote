@@ -4,8 +4,9 @@ import pygame_gui
 from pygame_gui.windows import UIColourPickerDialog
 
 from scripts.settings import *
-from scripts import Button
+from scripts.color import Color
 from scripts.brush import Brush
+from scripts.clear import Clear
 from scripts.save import Save
 from scripts.layer import Layer
 from scripts.pipette import Pipette
@@ -18,7 +19,6 @@ from scripts.choose_frame import ChooseFrame
 from scripts.grid import *
 from scripts.utils import *
 
-import colorsys
 from copy import deepcopy
 
 #display opens the window
@@ -40,18 +40,17 @@ for i in range(11):
     X.append(30 + i*45)
 button_x = 30
 button_w_h = 30
-buttons = [
-    Button(button_x, X[0], button_w_h, button_w_h, BLACK),
-    Button(button_x, X[1], button_w_h, button_w_h, GREY),
-    Button(button_x, X[2], button_w_h, button_w_h, PURPLE),
-    Button(button_x, X[3], button_w_h, button_w_h, BLUE),
-    Button(button_x, X[4], button_w_h, button_w_h, GREEN),
-    Button(button_x, X[5], button_w_h, button_w_h, YELLOW),
-    Button(button_x, X[6], button_w_h, button_w_h, ORANGE),
-    Button(button_x, X[7], button_w_h, button_w_h, RED),
-    Button(button_x, X[8], button_w_h, button_w_h, PINK),
-    Button(button_x, X[9], button_w_h, button_w_h, WHITE, icon=pygame.image.load('scripts\icons\\gomme.png')),
-    Button(button_x, X[10], button_w_h, button_w_h, WHITE, icon=pygame.image.load('scripts\icons\\clear.png'))
+colors = [
+    Color(button_x, X[0], button_w_h, button_w_h, BLACK),
+    Color(button_x, X[1], button_w_h, button_w_h, GREY),
+    Color(button_x, X[2], button_w_h, button_w_h, PURPLE),
+    Color(button_x, X[3], button_w_h, button_w_h, BLUE),
+    Color(button_x, X[4], button_w_h, button_w_h, GREEN),
+    Color(button_x, X[5], button_w_h, button_w_h, YELLOW),
+    Color(button_x, X[6], button_w_h, button_w_h, ORANGE),
+    Color(button_x, X[7], button_w_h, button_w_h, RED),
+    Color(button_x, X[8], button_w_h, button_w_h, PINK),
+    Color(button_x, X[9], button_w_h, button_w_h, WHITE, icon=pygame.image.load('scripts\icons\\gomme.png')),
     ]
 
 brushes = [ 
@@ -61,9 +60,9 @@ brushes = [
     Brush(button_x*2 + 10, X[3], button_w_h, button_w_h, 4, 1, 1, WHITE, icon=pygame.image.load('scripts\icons\\size_four.png'))
     ]
 
-saves = [
-    Save(button_x*2 + 10, X[4], button_w_h, button_w_h, WINDOW, WHITE, icon=pygame.image.load('scripts\icons\\save.png'))
-]
+clear = Clear(button_x, X[10], button_w_h, button_w_h, WHITE, icon=pygame.image.load('scripts\icons\\clear.png'))
+
+save = Save(button_x*2 + 10, X[4], button_w_h, button_w_h, WINDOW, WHITE, icon=pygame.image.load('scripts\icons\\save.png'))
 
 layer = Layer(1075, X[2], button_w_h + 60, button_w_h + 20, WINDOW, WHITE, LGREY, "Layer", LGREY)
 
@@ -87,12 +86,12 @@ def create_all(canvas, grid:Grid,open_picker):
         ui_manager.draw_ui(WINDOW)
     else:
         draw_grid_on_canvas(canvas,grid)
-        for button in buttons:
-            button.draw(canvas)
+        for color in colors:
+            color.draw(canvas)
         for brush in brushes:
             brush.draw(canvas)
-        for save in saves:
-            save.draw(canvas)
+        clear.draw(canvas)
+        save.draw(canvas)
         layer.draw(canvas)
         pipette.draw(canvas)
         cancel.draw(canvas)
@@ -146,13 +145,11 @@ while using: #run while the user does not close the window
                             states_of_drawing.append(newgrid)
                 except IndexError:
                     filler.filling = False
-                    for button in buttons:
-                        if not button.clicked(position):
+                    for color in colors:
+                        if not color.clicked(position):
                             continue
-                        if button.text == "clear":
-                            grid = Grid()
-                        drawing_col = button.color
-                        button.button_activated = True
+                        drawing_col = color.color
+                        color.button_activated = True
                     for brush in brushes:
                         if not brush.clicked(position):
                             continue
@@ -162,7 +159,9 @@ while using: #run while the user does not close the window
                         colour_picker = UIColourPickerDialog(pygame.Rect(160,50,420,400), ui_manager, window_title="change colour",initial_colour=pygame.Color(drawing_col))
                         is_picker_opened=True
                         color_picker.button_activated = True
-                    for save in saves:
+                    if clear.clicked(position):
+                        clear.button_activated = True
+                    if save.clicked(position):
                         if not save.clicked(position):
                             continue
                         save.save(WINDOW)
