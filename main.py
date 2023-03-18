@@ -64,14 +64,17 @@ clear = Clear(button_x, X[10], button_w_h, button_w_h, WHITE, icon=pygame.image.
 
 save = Save(button_x*2 + 10, X[4], button_w_h, button_w_h, WINDOW, WHITE, icon=pygame.image.load('scripts\icons\\save.png'))
 
+#
 layer = Layer(1075, X[2], button_w_h + 60, button_w_h + 20, WINDOW, WHITE, LGREY, "Layer", LGREY)
 
+#
 pipette = Pipette(button_x*2 + 10, X[5], button_w_h, button_w_h, 1, 1, WHITE, icon=pygame.image.load('scripts\icons\\pipette.png'))
 
 cancel = Cancel(1075, X[4], button_w_h + 60, button_w_h + 20, WINDOW, WHITE, LGREY, "◄◄", LGREY)
 
 color_picker = ColorPicker(button_x*2 + 10, X[6], button_w_h, button_w_h, WHITE, icon=pygame.image.load('scripts\icons\\colorpick.png'))
 
+#
 filler = Filler(button_x*2 + 10, X[7], button_w_h, button_w_h, 1, 1, WHITE, icon=pygame.image.load('scripts\icons\\fill.png'))
 
 add_frame = AddFrame(1075, X[6], button_w_h + 60, button_w_h + 20, WHITE, LGREY, "Add frame", LGREY)
@@ -113,6 +116,8 @@ nb_actions = 0
 animation_list = [deepcopy(grid)]
 
 while using: #run while the user does not close the window
+    clear.button_activated = False
+    cancel.button_activated = False
 
     #can't be faster than the intial FPS
     time_delta = clock.tick(FPS)/1000
@@ -144,22 +149,34 @@ while using: #run while the user does not close the window
                             newgrid = Grid([[i for i in row] for row in grid.grid])
                             states_of_drawing.append(newgrid)
                 except IndexError:
-                    filler.filling = False
                     for color in colors:
                         if not color.clicked(position):
                             continue
                         drawing_col = color.color
                         color.button_activated = True
+                        # desactive tous les autres boutons colors
+                        for c in colors:
+                            if(c!=color):
+                                c.button_activated=False
+                        color_picker.button_activated=False
+                        pipette.button_activated=False
                     for brush in brushes:
                         if not brush.clicked(position):
                             continue
                         size = brush.size
                         brush.button_activated = True   
+                        for b in brushes:
+                            if(b!=brush):
+                                b.button_activated=False
+                        filler.desactivate_filler()
                     if color_picker.clicked(position):
                         colour_picker = UIColourPickerDialog(pygame.Rect(160,50,420,400), ui_manager, window_title="change colour",initial_colour=pygame.Color(drawing_col))
-                        is_picker_opened=True
+                        is_picker_opened = True
                         color_picker.button_activated = True
+                        for c in colors:
+                            c.button_activated = False
                     if clear.clicked(position):
+                        grid = Grid()
                         clear.button_activated = True
                     if save.clicked(position):
                         if not save.clicked(position):
@@ -168,16 +185,33 @@ while using: #run while the user does not close the window
                         save.button_activated = True
                     if pipette.clicked(position):
                         pipette.activated = True
-                        pipette.button_activated = True
+                        if(pipette.button_activated):
+                            pipette.button_activated = False
+                        else:
+                            pipette.button_activated = True
+                        for c in colors:
+                            c.button_activated=False
+                        color_picker.button_activated=False
+                        filler.desactivate_filler()
                     if layer.clicked(position):
                         visible = True
-                        layer.button_activated = True
+                        if(layer.button_activated):
+                            layer.button_activated = False
+                        else:
+                            layer.button_activated = True
                     if cancel.clicked(position):
                         cancelled = True
                         cancel.button_activated = True
                     if filler.clicked(position):
-                        filler.filling = True
-                        filler.button_activated = True
+                        if(filler.button_activated):
+                            filler.desactivate_filler()
+                        else:
+                            filler.filling = True
+                            filler.button_activated = True
+                            # deactivate all the brushes
+                            for b in brushes:
+                                b.button_activated=False
+                            pipette.button_activated = False
                     if add_frame.clicked(position):
                         add_frame.add = True
                         new_frame = Grid()

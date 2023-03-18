@@ -27,3 +27,7 @@ class Filler(Button) :
         if(prev_color==new_color):
             return
         self.fillRec(screen, row, col, prev_color, new_color)
+
+    def desactivate_filler(self):
+        self.filling = False
+        self.button_activated = False
