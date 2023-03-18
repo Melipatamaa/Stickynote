@@ -11,6 +11,7 @@ class Button :
         self.text = text
         self.text_color = text_color
         self.icon = icon
+        self.button_activated = False
     
     def draw(self,win):
         pygame.draw.rect(win,self.color,(self.x,self.y,self.width,self.height))
@@ -22,6 +23,8 @@ class Button :
             text_surface = button_font.render(self.text, 1 , self.text_color)
             win.blit(text_surface,(self.x + self.width/2 - text_surface.get_width()/2,
                                     self.y + self.height/2 - text_surface.get_height()/2))
+            
+        self.give_feedback()
 
     def clicked(self, position):
         x, y = position 
@@ -32,4 +35,7 @@ class Button :
         return True
     
     def give_feedback(self):
-        self.border_color = ORANGE
+        if(self.button_activated):
+            self.border_color = ORANGE
+        else:
+            self.border_color = LGREY

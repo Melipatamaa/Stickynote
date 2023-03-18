@@ -131,6 +131,7 @@ while using: #run while the user does not close the window
                         drawing_col = grid.grid[row][col]
                         pipette.color = drawing_col
                         pipette.activated = False
+                        pipette.button_activated = False
                     if filler.filling:
                         filler.fill(grid.grid,row,col,drawing_col)
                     else:
@@ -151,33 +152,33 @@ while using: #run while the user does not close the window
                         if button.text == "clear":
                             grid = Grid()
                         drawing_col = button.color
-                        button.give_feedback()
+                        button.button_activated = True
                     for brush in brushes:
                         if not brush.clicked(position):
                             continue
                         size = brush.size
-                        brush.give_feedback()
+                        brush.button_activated = True   
                     if color_picker.clicked(position):
                         colour_picker = UIColourPickerDialog(pygame.Rect(160,50,420,400), ui_manager, window_title="change colour",initial_colour=pygame.Color(drawing_col))
                         is_picker_opened=True
-                        color_picker.give_feedback()
+                        color_picker.button_activated = True
                     for save in saves:
                         if not save.clicked(position):
                             continue
                         save.save(WINDOW)
-                        save.give_feedback()
+                        save.button_activated = True
                     if pipette.clicked(position):
                         pipette.activated = True
-                        pipette.give_feedback()
+                        pipette.button_activated = True
                     if layer.clicked(position):
                         visible = True
-                        layer.give_feedback()
+                        layer.button_activated = True
                     if cancel.clicked(position):
                         cancelled = True
-                        cancel.give_feedback()
+                        cancel.button_activated = True
                     if filler.clicked(position):
                         filler.filling = True
-                        filler.give_feedback()
+                        filler.button_activated = True
                     if add_frame.clicked(position):
                         add_frame.add = True
                         new_frame = Grid()
@@ -195,12 +196,13 @@ while using: #run while the user does not close the window
                 color_picker.color = event.colour
             if event.type ==pygame_gui.UI_WINDOW_CLOSE:
                 is_picker_opened = False
+    
     if cancelled:
         if(len(states_of_drawing)>0):
             grid = states_of_drawing[-1]
             del states_of_drawing[-1]
         create_all(WINDOW, grid,is_picker_opened)
-    if add_frame.add:
+    elif add_frame.add:
         create_all(WINDOW, new_frame,is_picker_opened)
         grid = new_frame
         add_frame.add = False

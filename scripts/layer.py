@@ -3,16 +3,7 @@ from .button import *
 
 class Layer(Button) :
     def __init__(self,x,y,width,height,screen,color,border_color=LGREY,text=None,text_color=BLACK,icon=None):
-        self.x = x
-        self.y = y
-        self.width = width
-        self.height = height
-        self.screen = screen
-        self.color = color
-        self.border_color = border_color
-        self.text = text
-        self.text_color = text_color
-        self.icon = icon
+        super().__init__(x,y,width,height,color,border_color,text,text_color,icon)
 
     def stick_layer(self,screen,visible):
         layer = pygame.image.load('screenshot1.jpg')
