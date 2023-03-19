@@ -2,6 +2,13 @@ from scripts.grid import *
 import pygame
 
 def draw_grid_on_canvas(canvas,grid:Grid):
+    """
+    It draws a grid on the canvas on the center of the screen.
+    
+    :param canvas: the surface to draw on
+    :param grid: the grid object
+    :type grid: Grid
+    """
     for i, row in enumerate(grid.grid):
         for j, pixel in enumerate(row):
             pygame.draw.rect(canvas,pixel,(j*PX_SIZE,i*PX_SIZE,PX_SIZE,PX_SIZE)) #original and final coordinates
@@ -25,6 +32,12 @@ def draw_grid_on_canvas(canvas,grid:Grid):
             pygame.draw.line(canvas,WHITE,(BORDERS_ROWS+l*PX_SIZE,BORDERS_COLS),(BORDERS_ROWS+l*PX_SIZE,HEIGHT-BORDERS_COLS+3))
 
 def get_coord_position(pos):
+    """
+    It takes a position (x, y) and returns the row and column of the corresponding pixel in the image.
+    
+    :param pos: the position of the mouse click
+    :return: The row and column of the pixel that was clicked.
+    """
     x, y = pos
     row = y // PX_SIZE
     col = x // PX_SIZE
@@ -34,6 +47,16 @@ def get_coord_position(pos):
     return row, col
 
 def draw_on_grid(grid:Grid,drawing_col,row,col,size):
+    """
+    It draws a shape depending on the size of the brush on the canvas.
+    
+    :param grid: the grid object
+    :type grid: Grid
+    :param drawing_col: The color of the drawing
+    :param row: the row of the grid you want to draw on
+    :param col: the column of the grid you want to draw on
+    :param size: the size of the square you want to draw
+    """
     if size > 1:
         grid.grid[row+1][col] = drawing_col
         grid.grid[row-1][col] = drawing_col

@@ -1,6 +1,9 @@
 from .settings import *
 from .button import *
 
+# The Layer class is a subclass of the Button class. It creates a reference image that the user can display on 
+# his current drawing to get a better and smoother animation.
+
 class Layer(Button) :
     def __init__(self,x,y,width,height,screen,color,border_color=LGREY,text=None,text_color=BLACK,icon=None):
         super().__init__(x,y,width,height,color,border_color,text,text_color,icon)
