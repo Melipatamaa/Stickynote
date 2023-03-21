@@ -8,6 +8,9 @@ clock = pygame.time.Clock()
 
 a = 20
 
+sticky = pygame.image.load('scripts\icons\\sticky.png')
+sticky = pygame.transform.scale(sticky, (250, 72))
+
 while using:
     time_delta = clock.tick(FPS)/1000
     for event in pygame.event.get():
@@ -35,6 +38,8 @@ while using:
         pygame.draw.rect(WINDOW,ORANGE,(WIDTH-3*a,HEIGHT-2*a,a,a))
 
         pygame.draw.rect(WINDOW,ORANGE,(BORDERS_ROWS,BORDERS_COLS,CANVAS_WIDTH,CANVAS_HEIGHT), 10)
+
+        WINDOW.blit(sticky,(460,25))
 
         pygame.display.flip()
         if event.type == pygame.QUIT:
