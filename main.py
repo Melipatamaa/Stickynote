@@ -73,21 +73,21 @@ clear = Clear(button_x, X[10], button_w_h, button_w_h, WHITE, icon=pygame.image.
 # Saving the drawing
 save = Save(button_x + 45, X[10] + 30, button_w_h, button_w_h, WINDOW, WHITE, icon=pygame.image.load('scripts\icons\\save.png'))
 # Adding a reference layer
-layer = Layer(1075, X[2], button_w_h + 60, button_w_h + 20, WINDOW, WHITE, LGREY, "Layer", LGREY)
+layer = Layer(1075, X[1] + 20, button_w_h + 60, button_w_h + 20, WINDOW, WHITE, LGREY, "Layer", LGREY)
 # Getting the color of any pixel on the drawing
 pipette = Pipette(button_x + 45, X[6], button_w_h, button_w_h, 1, 1, WHITE, icon=pygame.image.load('scripts\icons\\pipette.png'))
 # Cancelling the previous drawings
-cancel = Cancel(1075, X[4], button_w_h + 60, button_w_h + 20, WINDOW, WHITE, LGREY, "◄◄", LGREY)
+cancel = Cancel(1075, X[0], button_w_h + 60, button_w_h + 20, WINDOW, WHITE, LGREY, "◄◄", LGREY)
 # Choosing any color from the RGB/TSL codes
 color_picker = ColorPicker(button_x + 45, X[7], button_w_h, button_w_h, WHITE, icon=pygame.image.load('scripts\icons\\colorpick.png'))
 # Filling a cell with the drawing color
 filler = Filler(button_x + 45, X[8], button_w_h, button_w_h, 1, 1, WHITE, icon=pygame.image.load('scripts\icons\\fill.png'))
 # Adding a new frame to the animation
-add_frame = AddFrame(1075, X[6], button_w_h + 60, button_w_h + 20, WHITE, LGREY, "Add frame", LGREY)
+add_frame = AddFrame(1075, X[4], button_w_h + 60, button_w_h + 20, WHITE, LGREY, "Add frame", LGREY)
 # Getting back to a previous frame already created
-previous_frame = ChooseFrame(1075, X[8], button_w_h + 60, button_w_h + 20, WHITE, LGREY, "prev frame", LGREY)
+previous_frame = ChooseFrame(1075, X[5] + 20, button_w_h + 60, button_w_h + 20, WHITE, LGREY, "prev frame", LGREY)
 # Getting forward to the next frame already created
-next_frame = ChooseFrame(1075, X[10], button_w_h + 60, button_w_h + 20, WHITE, LGREY, "next frame", LGREY)
+next_frame = ChooseFrame(1075, X[6] + 40, button_w_h + 60, button_w_h + 20, WHITE, LGREY, "next frame", LGREY)
 
 # Loading the image of Stikynote Studio and rescaling it.
 sticky = pygame.image.load('scripts\icons\\sticky.png')
