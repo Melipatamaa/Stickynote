@@ -59,7 +59,7 @@ def draw_on_grid(grid:Grid,drawing_col,row,col,size):
     :param col: the column of the grid you want to draw on
     :param size: the size of the square you want to draw
     """
-    if size > 1:
+    if (size > 1 and size <5):
         grid.grid[row+1][col] = drawing_col
         grid.grid[row-1][col] = drawing_col
         grid.grid[row][col+1] = drawing_col
@@ -98,6 +98,20 @@ def draw_on_grid(grid:Grid,drawing_col,row,col,size):
                 grid.grid[row-1][col-3] = drawing_col
                 grid.grid[row][col-3] = drawing_col
                 grid.grid[row+1][col-3] = drawing_col
+    if (size > 4 and size < 6):
+        grid.grid[row+3][col] = drawing_col
+        grid.grid[row+2][col] = drawing_col
+        grid.grid[row+1][col] = drawing_col
+        grid.grid[row-1][col] = drawing_col
+        grid.grid[row-2][col] = drawing_col
+        grid.grid[row-3][col] = drawing_col
+    if size > 5:
+        grid.grid[row][col+3] = drawing_col
+        grid.grid[row][col+2] = drawing_col
+        grid.grid[row][col+1] = drawing_col
+        grid.grid[row][col-1] = drawing_col
+        grid.grid[row][col-2] = drawing_col
+        grid.grid[row][col-3] = drawing_col
 
 def display_interface(WINDOW,sticky):
     a = 20

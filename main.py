@@ -38,8 +38,8 @@ size = 1
 # list for x coordinates of some buttons
 X = []
 for i in range(11):
-    X.append(30 + i*45)
-button_x = 30
+    X.append(105 + i*45)
+button_x = 50
 button_w_h = 30
 
 # Creating a list of colors
@@ -53,15 +53,17 @@ colors = [
     Color(button_x, X[6], button_w_h, button_w_h, ORANGE),
     Color(button_x, X[7], button_w_h, button_w_h, RED),
     Color(button_x, X[8], button_w_h, button_w_h, PINK),
-    Color(button_x, X[9], button_w_h, button_w_h, WHITE, icon=pygame.image.load('scripts\icons\\gomme.png')),
+    Color(button_x + 45, X[10], button_w_h, button_w_h, WHITE, icon=pygame.image.load('scripts\icons\\gomme.png')),
     ]
 
 # Creating a list of brushes
 brushes = [ 
-    Brush(button_x*2 + 10, X[0], button_w_h, button_w_h, 1, 1, 1, WHITE, icon=pygame.image.load('scripts\icons\\size_one.png')),
-    Brush(button_x*2 + 10, X[1], button_w_h, button_w_h, 2, 1, 1, WHITE, icon=pygame.image.load('scripts\icons\\size_two.png')),
-    Brush(button_x*2 + 10, X[2], button_w_h, button_w_h, 3, 1, 1, WHITE, icon=pygame.image.load('scripts\icons\\size_three.png')),
-    Brush(button_x*2 + 10, X[3], button_w_h, button_w_h, 4, 1, 1, WHITE, icon=pygame.image.load('scripts\icons\\size_four.png'))
+    Brush(button_x + 45, X[0], button_w_h, button_w_h, 1, 1, 1, WHITE, icon=pygame.image.load('scripts\icons\\size_one.png')),
+    Brush(button_x + 45, X[1], button_w_h, button_w_h, 2, 1, 1, WHITE, icon=pygame.image.load('scripts\icons\\size_two.png')),
+    Brush(button_x + 45, X[2], button_w_h, button_w_h, 3, 1, 1, WHITE, icon=pygame.image.load('scripts\icons\\size_three.png')),
+    Brush(button_x + 45, X[3], button_w_h, button_w_h, 4, 1, 1, WHITE, icon=pygame.image.load('scripts\icons\\size_four.png')),
+    Brush(button_x + 45, X[4], button_w_h, button_w_h, 5, 1, 1, WHITE, icon=pygame.image.load('scripts\icons\\verti.png')),
+    Brush(button_x + 45, X[5], button_w_h, button_w_h, 6, 1, 1, WHITE, icon=pygame.image.load('scripts\icons\\horiz.png'))
     ]
 
 # Creating the other buttons needed
@@ -69,17 +71,17 @@ brushes = [
 # Clearing the canvas, erasing everything
 clear = Clear(button_x, X[10], button_w_h, button_w_h, WHITE, icon=pygame.image.load('scripts\icons\\clear.png'))
 # Saving the drawing
-save = Save(button_x*2 + 10, X[4], button_w_h, button_w_h, WINDOW, WHITE, icon=pygame.image.load('scripts\icons\\save.png'))
+save = Save(button_x + 45, X[10] + 30, button_w_h, button_w_h, WINDOW, WHITE, icon=pygame.image.load('scripts\icons\\save.png'))
 # Adding a reference layer
 layer = Layer(1075, X[2], button_w_h + 60, button_w_h + 20, WINDOW, WHITE, LGREY, "Layer", LGREY)
 # Getting the color of any pixel on the drawing
-pipette = Pipette(button_x*2 + 10, X[5], button_w_h, button_w_h, 1, 1, WHITE, icon=pygame.image.load('scripts\icons\\pipette.png'))
+pipette = Pipette(button_x + 45, X[6], button_w_h, button_w_h, 1, 1, WHITE, icon=pygame.image.load('scripts\icons\\pipette.png'))
 # Cancelling the previous drawings
 cancel = Cancel(1075, X[4], button_w_h + 60, button_w_h + 20, WINDOW, WHITE, LGREY, "◄◄", LGREY)
 # Choosing any color from the RGB/TSL codes
-color_picker = ColorPicker(button_x*2 + 10, X[6], button_w_h, button_w_h, WHITE, icon=pygame.image.load('scripts\icons\\colorpick.png'))
+color_picker = ColorPicker(button_x + 45, X[7], button_w_h, button_w_h, WHITE, icon=pygame.image.load('scripts\icons\\colorpick.png'))
 # Filling a cell with the drawing color
-filler = Filler(button_x*2 + 10, X[7], button_w_h, button_w_h, 1, 1, WHITE, icon=pygame.image.load('scripts\icons\\fill.png'))
+filler = Filler(button_x + 45, X[8], button_w_h, button_w_h, 1, 1, WHITE, icon=pygame.image.load('scripts\icons\\fill.png'))
 # Adding a new frame to the animation
 add_frame = AddFrame(1075, X[6], button_w_h + 60, button_w_h + 20, WHITE, LGREY, "Add frame", LGREY)
 # Getting back to a previous frame already created
@@ -138,7 +140,7 @@ animation_list = [deepcopy(grid)]
 while using: # Running while the user does not close the window
     clear.button_activated = False
     cancel.button_activated = False
-
+    save.button_activated = False
     # Setting the FPS
     time_delta = clock.tick(FPS)/1000
     for event in pygame.event.get():
