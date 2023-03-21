@@ -87,6 +87,10 @@ previous_frame = ChooseFrame(1075, X[8], button_w_h + 60, button_w_h + 20, WHITE
 # Getting forward to the next frame already created
 next_frame = ChooseFrame(1075, X[10], button_w_h + 60, button_w_h + 20, WHITE, LGREY, "next frame", LGREY)
 
+# Loading the image of Stikynote Studio and rescaling it.
+sticky = pygame.image.load('scripts\icons\\sticky.png')
+sticky = pygame.transform.scale(sticky, (250, 72))
+
 def create_all(canvas, grid:Grid,open_picker):
     """
     This method creates the interface of Stickynote Studio. It draws the grid, the colors, the brushes, 
@@ -100,12 +104,13 @@ def create_all(canvas, grid:Grid,open_picker):
     :param grid: the grid object,
     :param open_picker: boolean, if true, the color picker is opened
     """
-    canvas.fill(BACKGROUND_COLOR)
+    #canvas.fill(BACKGROUND_COLOR)
     if(open_picker):
         ui_manager.update(time_delta)
         ui_manager.draw_ui(WINDOW)
     else:
         draw_grid_on_canvas(canvas,grid)
+        display_interface(WINDOW,sticky)
         for color in colors:
             color.draw(canvas)
         for brush in brushes:
@@ -136,7 +141,6 @@ while using: # Running while the user does not close the window
 
     # Setting the FPS
     time_delta = clock.tick(FPS)/1000
-
     for event in pygame.event.get():
         ui_manager.process_events(event)
         # Checking if the user has clicked on the red cross to close the window. If so, the program

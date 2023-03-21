@@ -9,6 +9,7 @@ def draw_grid_on_canvas(canvas,grid:Grid):
     :param grid: the grid object
     :type grid: Grid
     """
+    #pygame.draw.rect(canvas,WHITE,(BORDERS_ROWS,BORDERS_COLS,CANVAS_WIDTH,CANVAS_HEIGHT))
     for i, row in enumerate(grid.grid):
         for j, pixel in enumerate(row):
             pygame.draw.rect(canvas,pixel,(j*PX_SIZE,i*PX_SIZE,PX_SIZE,PX_SIZE)) #original and final coordinates
@@ -30,6 +31,7 @@ def draw_grid_on_canvas(canvas,grid:Grid):
         #pour faire une belle grille propre
         for l in range(148,180):
             pygame.draw.line(canvas,WHITE,(BORDERS_ROWS+l*PX_SIZE,BORDERS_COLS),(BORDERS_ROWS+l*PX_SIZE,HEIGHT-BORDERS_COLS+3))
+
 
 def get_coord_position(pos):
     """
@@ -96,3 +98,41 @@ def draw_on_grid(grid:Grid,drawing_col,row,col,size):
                 grid.grid[row-1][col-3] = drawing_col
                 grid.grid[row][col-3] = drawing_col
                 grid.grid[row+1][col-3] = drawing_col
+
+def display_interface(WINDOW,sticky):
+    a = 20
+
+    # White background of the interface
+    pygame.draw.rect(WINDOW,WHITE,(0,0,WIDTH,BORDERS_COLS))
+    pygame.draw.rect(WINDOW,WHITE,(0,0,BORDERS_ROWS,HEIGHT))
+    pygame.draw.rect(WINDOW,WHITE,(0,HEIGHT-BORDERS_COLS,WIDTH,BORDERS_COLS))
+    pygame.draw.rect(WINDOW,WHITE,(WIDTH-BORDERS_ROWS,0,BORDERS_ROWS,HEIGHT))
+
+    # Orange border
+    pygame.draw.rect(WINDOW,ORANGE,(0,0,WIDTH,HEIGHT), 20)
+
+    # Some *fancy* details to top left corner...
+    pygame.draw.rect(WINDOW,ORANGE,(a,a,a,a))
+    pygame.draw.rect(WINDOW,ORANGE,(a+a,a,a,a))
+    pygame.draw.rect(WINDOW,ORANGE,(a,a+a,a,a))
+
+    # ...to the bottom left corner...
+    pygame.draw.rect(WINDOW,ORANGE,(a,HEIGHT-2*a,a,a))
+    pygame.draw.rect(WINDOW,ORANGE,(a+a,HEIGHT-2*a,a,a))
+    pygame.draw.rect(WINDOW,ORANGE,(a,HEIGHT-3*a,a,a))
+
+    # ...to the top right corner...
+    pygame.draw.rect(WINDOW,ORANGE,(WIDTH-2*a,a,a,a))
+    pygame.draw.rect(WINDOW,ORANGE,(WIDTH-2*a,a+a,a,a))
+    pygame.draw.rect(WINDOW,ORANGE,(WIDTH-3*a,a,a,a))
+
+    # ...and to the bottom right corner !
+    pygame.draw.rect(WINDOW,ORANGE,(WIDTH-2*a,HEIGHT-2*a,a,a))
+    pygame.draw.rect(WINDOW,ORANGE,(WIDTH-2*a,HEIGHT-3*a,a,a))
+    pygame.draw.rect(WINDOW,ORANGE,(WIDTH-3*a,HEIGHT-2*a,a,a))
+
+    # Drawing a border around the grid
+    pygame.draw.rect(WINDOW,ORANGE,(BORDERS_ROWS - 5,BORDERS_COLS - 5,CANVAS_WIDTH + 5,CANVAS_HEIGHT + 5), 10)
+
+    # Displaying the logo of Stickynote Studio
+    WINDOW.blit(sticky,(460,25))
