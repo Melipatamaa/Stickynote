@@ -14,9 +14,9 @@ class Save(Button) :
         
         :param screen: the screen that you want to save
         """
-        rect = pygame.Rect(BORDERS_ROWS, BORDERS_COLS, CANVAS_WIDTH, CANVAS_HEIGHT)
+        rect = pygame.Rect(BORDERS_ROWS, BORDERS_COLS, CANVAS_WIDTH-5, CANVAS_HEIGHT-5)
         sub = screen.subsurface(rect)
-        screenshot = pygame.Surface((CANVAS_WIDTH, CANVAS_HEIGHT))
+        screenshot = pygame.Surface((CANVAS_WIDTH-5, CANVAS_HEIGHT-5))
         screenshot.blit(sub, (0,0))
         pygame.image.save(screenshot, "screenshot1.jpg")
             
