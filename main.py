@@ -135,8 +135,8 @@ cancelled = False
 ui_manager = pygame_gui.UIManager((800, 600))
 is_picker_opened = False
 states_of_drawing = [deepcopy(grid)]
-animation_list = [deepcopy(grid)]
-
+animation_list = [grid]
+current_frame_index = 0
 while using: # Running while the user does not close the window
     clear.button_activated = False
     cancel.button_activated = False
@@ -264,16 +264,21 @@ while using: # Running while the user does not close the window
                     # Adding a new frame to the animation list if the button is clicked.
                     if add_frame.clicked(position):
                         add_frame.add = True
+                        current_frame_index+=1
                         new_frame = Grid()
                         animation_list.append(new_frame)
                     # Checking if the previous frame button is clicked. If it is, it sets the grid to the
                     # last frame in the animation list.
                     if previous_frame.clicked(position):
-                        #previous_frame.choose = True
-                        grid = animation_list[-1]
+                        if(current_frame_index>=1):
+                            #previous_frame.choose = True
+                            current_frame_index-=1
+                            grid = animation_list[current_frame_index]
                     if next_frame.clicked(position):
-                        #next_frame.choose = True
-                        grid = animation_list[-1]      
+                        if(current_frame_index < len(animation_list)-1):
+                            current_frame_index+=1
+                            #next_frame.choose = True
+                            grid = animation_list[current_frame_index]      
         else:
             # Setting the color of the color picker to the color that was picked and closing it when it is done.
             if event.type == pygame_gui.UI_COLOUR_PICKER_COLOUR_PICKED:

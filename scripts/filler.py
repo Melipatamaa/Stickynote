@@ -30,6 +30,7 @@ class Filler(Button) :
             return
         screen[row][col] = new_color
         self.fillRec(screen, row + 1, col, prev_color, new_color)
+        print("dsoijoij")
         self.fillRec(screen, row - 1, col, prev_color, new_color)
         self.fillRec(screen, row, col + 1, prev_color, new_color)
         self.fillRec(screen, row, col - 1, prev_color, new_color)
