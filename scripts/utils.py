@@ -1,6 +1,9 @@
 from scripts.grid import *
 import pygame
 
+font = pygame.font.SysFont(None, 24)
+text_speed = font.render('Speed : ', True, ORANGE)
+
 def draw_grid_on_canvas(canvas,grid:Grid):
     """
     It draws a grid on the canvas on the center of the screen.
@@ -150,3 +153,5 @@ def display_interface(WINDOW,sticky):
 
     # Displaying the logo of Stickynote Studio
     WINDOW.blit(sticky,(460,25))
+
+    WINDOW.blit(text_speed, (BORDERS_ROWS - 8, HEIGHT - 72))

@@ -1,9 +1,10 @@
 import pygame
 import pygame_gui
 
-# Importing the modules from the scripts folder.
 from pygame_gui.windows import UIColourPickerDialog
+#from moviepy.editor import *
 
+# Importing the modules from the scripts folder.
 from scripts.settings import *
 from scripts.color import Color
 from scripts.brush import Brush
@@ -16,6 +17,8 @@ from scripts.color_picker import ColorPicker
 from scripts.filler import Filler
 from scripts.add_frame import AddFrame
 from scripts.choose_frame import ChooseFrame
+from scripts.speed import Speed
+from scripts.play import Play
 
 from scripts.grid import *
 from scripts.utils import *
@@ -34,6 +37,8 @@ clock = pygame.time.Clock()
 grid = Grid()
 drawing_col = BLACK
 size = 1
+frame_speed = 1
+animation_list = [grid]
 
 # list for x coordinates of some buttons
 X = []
@@ -71,23 +76,36 @@ brushes = [
 # Clearing the canvas, erasing everything
 clear = Clear(button_x, X[10], button_w_h, button_w_h, WHITE, icon=pygame.image.load('scripts\icons\\clear.png'))
 # Saving the drawing
-save = Save(button_x + 45, X[10] + 30, button_w_h, button_w_h, WINDOW, WHITE, icon=pygame.image.load('scripts\icons\\save.png'))
+save = Save(1085, X[1] + 30, button_w_h + 20, button_w_h + 20, WINDOW, WHITE, icon=pygame.image.load('scripts\icons\\save.png'))
 # Adding a reference layer
-layer = Layer(1075, X[1] + 20, button_w_h + 60, button_w_h + 20, WINDOW, WHITE, LGREY, "Layer", LGREY)
+layer = Layer(1068, X[3] + 20, button_w_h + 60, button_w_h + 20, WINDOW, WHITE, LGREY, "Layer", LGREY)
 # Getting the color of any pixel on the drawing
 pipette = Pipette(button_x + 45, X[6], button_w_h, button_w_h, 1, 1, WHITE, icon=pygame.image.load('scripts\icons\\pipette.png'))
 # Cancelling the previous drawings
-cancel = Cancel(1075, X[0], button_w_h + 60, button_w_h + 20, WINDOW, WHITE, LGREY, "◄◄", LGREY)
+cancel = Cancel(1085, X[0], button_w_h + 20, button_w_h + 20, WINDOW, WHITE, icon=pygame.image.load('scripts\icons\\undo.png'))
 # Choosing any color from the RGB/TSL codes
 color_picker = ColorPicker(button_x + 45, X[7], button_w_h, button_w_h, WHITE, icon=pygame.image.load('scripts\icons\\colorpick.png'))
 # Filling a cell with the drawing color
 filler = Filler(button_x + 45, X[8], button_w_h, button_w_h, 1, 1, WHITE, icon=pygame.image.load('scripts\icons\\fill.png'))
 # Adding a new frame to the animation
-add_frame = AddFrame(1075, X[4], button_w_h + 60, button_w_h + 20, WHITE, LGREY, "Add frame", LGREY)
+add_frame = AddFrame(1068, X[9], button_w_h + 60, button_w_h + 20, WHITE, LGREY, "Add frame", LGREY)
 # Getting back to a previous frame already created
-previous_frame = ChooseFrame(1075, X[5] + 20, button_w_h + 60, button_w_h + 20, WHITE, LGREY, "prev frame", LGREY)
+previous_frame = ChooseFrame(730, HEIGHT - 85, button_w_h + 20, button_w_h + 20, WHITE, LGREY, "prev frame", LGREY)
 # Getting forward to the next frame already created
-next_frame = ChooseFrame(1075, X[6] + 40, button_w_h + 60, button_w_h + 20, WHITE, LGREY, "next frame", LGREY)
+next_frame = ChooseFrame(730 + 160, HEIGHT - 85, button_w_h + 20, button_w_h + 20, WHITE, LGREY, "next frame", LGREY)
+
+speeds = [
+    Speed(120 + X[0], HEIGHT - 80, button_w_h, button_w_h, 1, WHITE,LGREY, "1", ORANGE),
+    Speed(120 + X[1], HEIGHT - 80, button_w_h, button_w_h, 2, WHITE, LGREY, "2", ORANGE),
+    Speed(120 + X[2], HEIGHT - 80, button_w_h, button_w_h, 3, WHITE, LGREY, "3", ORANGE),
+    Speed(120 + X[3], HEIGHT - 80, button_w_h, button_w_h, 4, WHITE, LGREY, "4", ORANGE),
+    Speed(120 + X[4], HEIGHT - 80, button_w_h, button_w_h, 5, WHITE, LGREY, "5", ORANGE),
+    Speed(120 + X[5], HEIGHT - 80, button_w_h, button_w_h, 6, WHITE, LGREY, "6", ORANGE),
+    Speed(120 + X[6], HEIGHT - 80, button_w_h, button_w_h, 7, WHITE, LGREY, "7", ORANGE),
+    Speed(120 + X[7], HEIGHT - 80, button_w_h, button_w_h, 8, WHITE, LGREY, "8", ORANGE)
+    ]
+
+play = Play(730 + 80, HEIGHT - 85, button_w_h + 20, button_w_h + 20, animation_list, WHITE, LGREY, "PLAY", LGREY)
 
 # Loading the image of Stikynote Studio and rescaling it.
 sticky = pygame.image.load('scripts\icons\\sticky.png')
@@ -127,6 +145,9 @@ def create_all(canvas, grid:Grid,open_picker):
         add_frame.draw(canvas)
         previous_frame.draw(canvas)
         next_frame.draw(canvas)
+        for speed in speeds:
+            speed.draw(canvas)
+        play.draw(canvas)
     pygame.display.update()
     
 # Initializing other variables that will be used in the program.
@@ -135,8 +156,8 @@ cancelled = False
 ui_manager = pygame_gui.UIManager((800, 600))
 is_picker_opened = False
 states_of_drawing = [deepcopy(grid)]
-animation_list = [grid]
 current_frame_index = 0
+
 while using: # Running while the user does not close the window
     clear.button_activated = False
     cancel.button_activated = False
@@ -278,7 +299,17 @@ while using: # Running while the user does not close the window
                         if(current_frame_index < len(animation_list)-1):
                             current_frame_index+=1
                             #next_frame.choose = True
-                            grid = animation_list[current_frame_index]      
+                            grid = animation_list[current_frame_index]
+                    for speed in speeds:
+                        if not speed.clicked(position):
+                            continue
+                        frame_speed = speed.frame_speed
+                        speed.button_activated = True
+                        for s in speeds:
+                            if(s!=speed):
+                                s.button_activated=False
+                    if play.clicked(position):
+                        play.button_activated = True
         else:
             # Setting the color of the color picker to the color that was picked and closing it when it is done.
             if event.type == pygame_gui.UI_COLOUR_PICKER_COLOUR_PICKED:
