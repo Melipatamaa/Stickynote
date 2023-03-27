@@ -37,7 +37,7 @@ clock = pygame.time.Clock()
 grid = Grid()
 drawing_col = BLACK
 size = 1
-frame_speed = 2000
+frame_speed = 1000
 animation_list = [grid]
 
 # list for x coordinates of some buttons
@@ -331,10 +331,13 @@ while using: # Running while the user does not close the window
         add_frame.add = False
     elif play.button_activated:
         for drawing in animation_list:
+            pygame.event.set_blocked(pygame.MOUSEBUTTONDOWN)
             grid = drawing
             create_all(WINDOW,grid,is_picker_opened)
             pygame.time.wait(frame_speed)
+        grid = animation_list[current_frame_index]
         play.button_activated = False
+        pygame.event.set_allowed(pygame.MOUSEBUTTONDOWN)
     # Creating a window and then creating a grid : continuously updated.
     else :
         create_all(WINDOW, grid,is_picker_opened)
