@@ -37,7 +37,7 @@ clock = pygame.time.Clock()
 grid = Grid()
 drawing_col = BLACK
 size = 1
-frame_speed = 1
+frame_speed = 2000
 animation_list = [grid]
 
 # list for x coordinates of some buttons
@@ -95,14 +95,14 @@ previous_frame = ChooseFrame(730, HEIGHT - 85, button_w_h + 20, button_w_h + 20,
 next_frame = ChooseFrame(730 + 160, HEIGHT - 85, button_w_h + 20, button_w_h + 20, WHITE, LGREY, "next frame", LGREY)
 
 speeds = [
-    Speed(120 + X[0], HEIGHT - 80, button_w_h, button_w_h, 1, WHITE,LGREY, "1", ORANGE),
-    Speed(120 + X[1], HEIGHT - 80, button_w_h, button_w_h, 2, WHITE, LGREY, "2", ORANGE),
-    Speed(120 + X[2], HEIGHT - 80, button_w_h, button_w_h, 3, WHITE, LGREY, "3", ORANGE),
-    Speed(120 + X[3], HEIGHT - 80, button_w_h, button_w_h, 4, WHITE, LGREY, "4", ORANGE),
-    Speed(120 + X[4], HEIGHT - 80, button_w_h, button_w_h, 5, WHITE, LGREY, "5", ORANGE),
-    Speed(120 + X[5], HEIGHT - 80, button_w_h, button_w_h, 6, WHITE, LGREY, "6", ORANGE),
-    Speed(120 + X[6], HEIGHT - 80, button_w_h, button_w_h, 7, WHITE, LGREY, "7", ORANGE),
-    Speed(120 + X[7], HEIGHT - 80, button_w_h, button_w_h, 8, WHITE, LGREY, "8", ORANGE)
+    Speed(120 + X[0], HEIGHT - 80, button_w_h, button_w_h, 1000, WHITE,LGREY, "1", ORANGE),
+    Speed(120 + X[1], HEIGHT - 80, button_w_h, button_w_h, 800, WHITE, LGREY, "2", ORANGE),
+    Speed(120 + X[2], HEIGHT - 80, button_w_h, button_w_h, 600, WHITE, LGREY, "3", ORANGE),
+    Speed(120 + X[3], HEIGHT - 80, button_w_h, button_w_h, 400, WHITE, LGREY, "4", ORANGE),
+    Speed(120 + X[4], HEIGHT - 80, button_w_h, button_w_h, 200, WHITE, LGREY, "5", ORANGE),
+    Speed(120 + X[5], HEIGHT - 80, button_w_h, button_w_h, 100, WHITE, LGREY, "6", ORANGE),
+    Speed(120 + X[6], HEIGHT - 80, button_w_h, button_w_h, 50, WHITE, LGREY, "7", ORANGE),
+    Speed(120 + X[7], HEIGHT - 80, button_w_h, button_w_h, 25, WHITE, LGREY, "8", ORANGE)
     ]
 
 play = Play(730 + 80, HEIGHT - 85, button_w_h + 20, button_w_h + 20, animation_list, WHITE, LGREY, "PLAY", LGREY)
@@ -329,6 +329,12 @@ while using: # Running while the user does not close the window
         create_all(WINDOW, new_frame,is_picker_opened)
         grid = new_frame
         add_frame.add = False
+    elif play.button_activated:
+        for drawing in animation_list:
+            grid = drawing
+            create_all(WINDOW,grid,is_picker_opened)
+            pygame.time.wait(frame_speed)
+        play.button_activated = False
     # Creating a window and then creating a grid : continuously updated.
     else :
         create_all(WINDOW, grid,is_picker_opened)
