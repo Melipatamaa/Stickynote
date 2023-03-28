@@ -134,7 +134,7 @@ def create_all(canvas, grid:Grid,open_picker,visible):
         ui_manager.update(time_delta)
         ui_manager.draw_ui(WINDOW)
     if(visible):
-        layer.stick_layer(WINDOW,visible,current_frame_index = 1)
+        layer.stick_layer(WINDOW,visible,current_frame_index)
     else:
         draw_grid_on_canvas(canvas,grid)
         display_interface(WINDOW,sticky)
@@ -306,6 +306,7 @@ while using: # Running while the user does not close the window
                         if(current_frame_index>=1):
                             #previous_frame.choose = True
                             current_frame_index-=1
+                            print(current_frame_index)
                             grid = animation_list[current_frame_index]
                     if next_frame.clicked(position):
                         if(current_frame_index < len(animation_list)-1):
