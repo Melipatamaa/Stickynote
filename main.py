@@ -19,6 +19,7 @@ from scripts.add_frame import AddFrame
 from scripts.choose_frame import ChooseFrame
 from scripts.speed import Speed
 from scripts.play import Play
+from scripts.copy_frame import CopyFrame
 
 from scripts.grid import *
 from scripts.utils import *
@@ -37,6 +38,8 @@ clock = pygame.time.Clock()
 grid = Grid()
 drawing_col = BLACK
 size = 1
+current_frame_index = 1
+visible = False
 frame_speed = 1000
 animation_list = [grid]
 
@@ -89,6 +92,8 @@ color_picker = ColorPicker(button_x + 45, X[7], button_w_h, button_w_h, WHITE, i
 filler = Filler(button_x + 45, X[8], button_w_h, button_w_h, 1, 1, WHITE, icon=pygame.image.load('scripts\icons\\fill.png'))
 # Adding a new frame to the animation
 add_frame = AddFrame(1068, X[9], button_w_h + 60, button_w_h + 20, WHITE, LGREY, "Add frame", LGREY)
+
+copy_frame = CopyFrame(1068, X[10], button_w_h + 60, button_w_h + 20, WHITE, LGREY, "Copy frame", LGREY)
 # Getting back to a previous frame already created
 previous_frame = ChooseFrame(730, HEIGHT - 85, button_w_h + 20, button_w_h + 20, WHITE, LGREY, "prev frame", LGREY)
 # Getting forward to the next frame already created
@@ -111,7 +116,7 @@ play = Play(730 + 80, HEIGHT - 85, button_w_h + 20, button_w_h + 20, animation_l
 sticky = pygame.image.load('scripts\icons\\sticky.png')
 sticky = pygame.transform.scale(sticky, (250, 72))
 
-def create_all(canvas, grid:Grid,open_picker):
+def create_all(canvas, grid:Grid,open_picker,visible):
     """
     This method creates the interface of Stickynote Studio. It draws the grid, the colors, the brushes, 
     the clear button, the save button, the layer button, the pipette button, the cancel button, 
@@ -128,9 +133,12 @@ def create_all(canvas, grid:Grid,open_picker):
     if(open_picker):
         ui_manager.update(time_delta)
         ui_manager.draw_ui(WINDOW)
+    if(visible):
+        layer.stick_layer(WINDOW,visible,current_frame_index = 1)
     else:
         draw_grid_on_canvas(canvas,grid)
         display_interface(WINDOW,sticky)
+        get_frame_number(WINDOW,current_frame_index)
         for color in colors:
             color.draw(canvas)
         for brush in brushes:
@@ -143,6 +151,7 @@ def create_all(canvas, grid:Grid,open_picker):
         color_picker.draw(canvas)
         filler.draw(canvas)
         add_frame.draw(canvas)
+        copy_frame.draw(canvas)
         previous_frame.draw(canvas)
         next_frame.draw(canvas)
         for speed in speeds:
@@ -151,12 +160,11 @@ def create_all(canvas, grid:Grid,open_picker):
     pygame.display.update()
     
 # Initializing other variables that will be used in the program.
-visible = False
 cancelled = False
 ui_manager = pygame_gui.UIManager((800, 600))
 is_picker_opened = False
 states_of_drawing = [deepcopy(grid)]
-current_frame_index = 0
+
 
 while using: # Running while the user does not close the window
     clear.button_activated = False
@@ -240,7 +248,7 @@ while using: # Running while the user does not close the window
                     if save.clicked(position):
                         if not save.clicked(position):
                             continue
-                        save.save(WINDOW)
+                        save.save(WINDOW,current_frame_index)
                         save.button_activated = True
                     # Checking if the pipette button is clicked. If it is, it sets the pipette button
                     # to activated. If the pipette button is activated, it sets the pipette button to
@@ -288,6 +296,10 @@ while using: # Running while the user does not close the window
                         current_frame_index+=1
                         new_frame = Grid()
                         animation_list.append(new_frame)
+                    if copy_frame.clicked(position):
+                        copy_frame.copy = True
+                        new_frame = grid
+                        animation_list.append(new_frame)
                     # Checking if the previous frame button is clicked. If it is, it sets the grid to the
                     # last frame in the animation list.
                     if previous_frame.clicked(position):
@@ -324,23 +336,26 @@ while using: # Running while the user does not close the window
         if(len(states_of_drawing)>0):
             grid = states_of_drawing[-1]
             del states_of_drawing[-1]
-        create_all(WINDOW, grid,is_picker_opened)
+        create_all(WINDOW, grid,is_picker_opened,visible)
     elif add_frame.add:
-        create_all(WINDOW, new_frame,is_picker_opened)
+        create_all(WINDOW,new_frame,is_picker_opened,visible)
         grid = new_frame
         add_frame.add = False
+    elif copy_frame.copy:
+        create_all(WINDOW,new_frame,is_picker_opened,visible)
+        grid = new_frame
+        copy_frame.copy = False
     elif play.button_activated:
         for drawing in animation_list:
             pygame.event.set_blocked(pygame.MOUSEBUTTONDOWN)
             grid = drawing
-            create_all(WINDOW,grid,is_picker_opened)
+            create_all(WINDOW,grid,is_picker_opened,visible)
             pygame.time.wait(frame_speed)
         grid = animation_list[current_frame_index]
         play.button_activated = False
         pygame.event.set_allowed(pygame.MOUSEBUTTONDOWN)
     # Creating a window and then creating a grid : continuously updated.
     else :
-        create_all(WINDOW, grid,is_picker_opened)
-    layer.stick_layer(WINDOW,visible)
+        create_all(WINDOW, grid,is_picker_opened,visible)
     cancelled = False
 pygame.quit()

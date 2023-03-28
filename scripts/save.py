@@ -8,7 +8,7 @@ class Save(Button) :
         super().__init__(x,y,width,height,color,border_color,text,text_color,icon)
         self.screen = screen
 
-    def save(self,screen):
+    def save(self,screen,current_frame_index):
         """
         It takes a screenshot of the canvas and saves it as a jpg file.
         
@@ -18,5 +18,6 @@ class Save(Button) :
         sub = screen.subsurface(rect)
         screenshot = pygame.Surface((CANVAS_WIDTH-5, CANVAS_HEIGHT-5))
         screenshot.blit(sub, (0,0))
-        pygame.image.save(screenshot, "screenshot1.jpg")
+        pygame.image.save(screenshot, f"screenshot{current_frame_index}.jpg")
+        
             

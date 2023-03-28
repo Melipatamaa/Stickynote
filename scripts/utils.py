@@ -4,6 +4,7 @@ import pygame
 font = pygame.font.SysFont(None, 24)
 text_speed = font.render('Speed : ', True, ORANGE)
 
+
 def draw_grid_on_canvas(canvas,grid:Grid):
     """
     It draws a grid on the canvas on the center of the screen.
@@ -155,3 +156,8 @@ def display_interface(WINDOW,sticky):
     WINDOW.blit(sticky,(460,25))
 
     WINDOW.blit(text_speed, (BORDERS_ROWS - 8, HEIGHT - 72))
+
+def get_frame_number(WINDOW,current_frame_index):
+    pygame.draw.rect(WINDOW,ORANGE,(1050,600,50,50))
+    cfi = font.render(str(current_frame_index),True, WHITE)
+    WINDOW.blit(cfi, (1050,600))

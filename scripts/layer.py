@@ -7,9 +7,10 @@ from .button import *
 class Layer(Button) :
     def __init__(self,x,y,width,height,screen,color,border_color=LGREY,text=None,text_color=BLACK,icon=None):
         super().__init__(x,y,width,height,color,border_color,text,text_color,icon)
+        self.screen = screen
 
-    def stick_layer(self,screen,visible):
-        layer = pygame.image.load('screenshot1.jpg')
+    def stick_layer(self,screen,visible,current_frame_index):
+        layer = pygame.image.load(f"screenshot{current_frame_index}.jpg")
         if visible:
             pygame.Surface.set_alpha(layer,100)
             screen.blit(layer,(BORDERS_ROWS,BORDERS_COLS))
@@ -17,7 +18,7 @@ class Layer(Button) :
             pygame.Surface.set_alpha(layer,0)
             screen.blit(layer,(BORDERS_ROWS,BORDERS_COLS))
         #màj de l'écran
-        pygame.display.update()
+        #pygame.display.update()
             
         
         
