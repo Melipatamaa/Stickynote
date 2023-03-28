@@ -298,15 +298,16 @@ while using: # Running while the user does not close the window
                         animation_list.append(new_frame)
                     if copy_frame.clicked(position):
                         copy_frame.copy = True
+                        current_frame_index+=1
                         new_frame = grid
                         animation_list.append(new_frame)
                     # Checking if the previous frame button is clicked. If it is, it sets the grid to the
                     # last frame in the animation list.
                     if previous_frame.clicked(position):
-                        if(current_frame_index>=1):
+                        if(current_frame_index>1):
                             #previous_frame.choose = True
+                            animation_list[current_frame_index] = grid
                             current_frame_index-=1
-                            print(current_frame_index)
                             grid = animation_list[current_frame_index]
                     if next_frame.clicked(position):
                         if(current_frame_index < len(animation_list)-1):

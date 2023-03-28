@@ -160,4 +160,4 @@ def display_interface(WINDOW,sticky):
 def get_frame_number(WINDOW,current_frame_index):
     pygame.draw.rect(WINDOW,ORANGE,(1050,600,50,50))
     cfi = font.render(str(current_frame_index),True, WHITE)
-    WINDOW.blit(cfi, (1075,650))
+    WINDOW.blit(cfi, (1060,610))
