@@ -38,10 +38,10 @@ clock = pygame.time.Clock()
 grid = Grid()
 drawing_col = BLACK
 size = 1
-current_frame_index = 1
+current_frame_index = 0
 visible = False
 frame_speed = 1000
-animation_list = [grid]
+animation_list = [grid] 
 
 # list for x coordinates of some buttons
 X = []
@@ -91,9 +91,9 @@ color_picker = ColorPicker(button_x + 45, X[7], button_w_h, button_w_h, WHITE, i
 # Filling a cell with the drawing color
 filler = Filler(button_x + 45, X[8], button_w_h, button_w_h, 1, 1, WHITE, icon=pygame.image.load('scripts\icons\\fill.png'))
 # Adding a new frame to the animation
-add_frame = AddFrame(1068, X[9], button_w_h + 60, button_w_h + 20, WHITE, LGREY, "Add frame", LGREY)
+add_frame = AddFrame(1068, X[7], button_w_h + 60, button_w_h + 20, WHITE, LGREY, "Add frame", LGREY)
 
-copy_frame = CopyFrame(1068, X[10], button_w_h + 60, button_w_h + 20, WHITE, LGREY, "Copy frame", LGREY)
+copy_frame = CopyFrame(1068, X[8] + 20, button_w_h + 60, button_w_h + 20, WHITE, LGREY, "Copy frame", LGREY)
 # Getting back to a previous frame already created
 previous_frame = ChooseFrame(730, HEIGHT - 85, button_w_h + 20, button_w_h + 20, WHITE, LGREY, "prev frame", LGREY)
 # Getting forward to the next frame already created
@@ -138,7 +138,7 @@ def create_all(canvas, grid:Grid,open_picker,visible):
     else:
         draw_grid_on_canvas(canvas,grid)
         display_interface(WINDOW,sticky)
-        get_frame_number(WINDOW,current_frame_index)
+        get_frame_number(WINDOW,current_frame_index,animation_list)
         for color in colors:
             color.draw(canvas)
         for brush in brushes:
@@ -295,18 +295,18 @@ while using: # Running while the user does not close the window
                         add_frame.add = True
                         current_frame_index+=1
                         new_frame = Grid()
-                        animation_list.append(new_frame)
+                        animation_list.insert(current_frame_index,new_frame)
                     if copy_frame.clicked(position):
                         copy_frame.copy = True
                         current_frame_index+=1
                         new_frame = grid
-                        animation_list.append(new_frame)
+                        animation_list.insert(current_frame_index,new_frame)
                     # Checking if the previous frame button is clicked. If it is, it sets the grid to the
                     # last frame in the animation list.
                     if previous_frame.clicked(position):
-                        if(current_frame_index>1):
+                        if(current_frame_index>=1):
                             #previous_frame.choose = True
-                            animation_list[current_frame_index] = grid
+                            print(current_frame_index)
                             current_frame_index-=1
                             grid = animation_list[current_frame_index]
                     if next_frame.clicked(position):

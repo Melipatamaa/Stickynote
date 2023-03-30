@@ -157,7 +157,8 @@ def display_interface(WINDOW,sticky):
 
     WINDOW.blit(text_speed, (BORDERS_ROWS - 8, HEIGHT - 72))
 
-def get_frame_number(WINDOW,current_frame_index):
-    pygame.draw.rect(WINDOW,ORANGE,(1050,600,50,50))
-    cfi = font.render(str(current_frame_index),True, WHITE)
-    WINDOW.blit(cfi, (1060,610))
+def get_frame_number(WINDOW,current_frame_index,animation_list):
+    pygame.draw.rect(WINDOW,ORANGE,(1053,610,62,50))
+    font = pygame.font.SysFont("calibri", 18)
+    cfi = font.render(str(current_frame_index+1) + "/" + str(len(animation_list)),True, WHITE)
+    WINDOW.blit(cfi, (1060,620))
