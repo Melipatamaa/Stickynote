@@ -95,9 +95,9 @@ add_frame = AddFrame(1068, X[7], button_w_h + 60, button_w_h + 20, WHITE, LGREY,
 
 copy_frame = CopyFrame(1068, X[8] + 20, button_w_h + 60, button_w_h + 20, WHITE, LGREY, "Copy frame", LGREY)
 # Getting back to a previous frame already created
-previous_frame = ChooseFrame(730, HEIGHT - 85, button_w_h + 20, button_w_h + 20, WHITE, LGREY, "prev frame", LGREY)
+previous_frame = ChooseFrame(730, HEIGHT - 85, button_w_h + 20, button_w_h + 20, WHITE, icon=pygame.image.load('scripts\icons\\prev.png'))
 # Getting forward to the next frame already created
-next_frame = ChooseFrame(730 + 160, HEIGHT - 85, button_w_h + 20, button_w_h + 20, WHITE, LGREY, "next frame", LGREY)
+next_frame = ChooseFrame(730 + 160, HEIGHT - 85, button_w_h + 20, button_w_h + 20, WHITE, icon=pygame.image.load('scripts\icons\\next.png'))
 
 speeds = [
     Speed(120 + X[0], HEIGHT - 80, button_w_h, button_w_h, 1000, WHITE,LGREY, "1", ORANGE),
@@ -110,7 +110,7 @@ speeds = [
     Speed(120 + X[7], HEIGHT - 80, button_w_h, button_w_h, 25, WHITE, LGREY, "8", ORANGE)
     ]
 
-play = Play(730 + 80, HEIGHT - 85, button_w_h + 20, button_w_h + 20, animation_list, WHITE, LGREY, "PLAY", LGREY)
+play = Play(730 + 80, HEIGHT - 85, button_w_h + 20, button_w_h + 20, animation_list, WHITE,icon=pygame.image.load('scripts\icons\\play.png'))
 
 # Loading the image of Stikynote Studio and rescaling it.
 sticky = pygame.image.load('scripts\icons\\sticky.png')
@@ -296,24 +296,25 @@ while using: # Running while the user does not close the window
                         current_frame_index+=1
                         new_frame = Grid()
                         animation_list.insert(current_frame_index,new_frame)
+                        add_frame.button_activated = True
                     if copy_frame.clicked(position):
                         copy_frame.copy = True
                         current_frame_index+=1
                         new_frame = grid
                         animation_list.insert(current_frame_index,new_frame)
+                        copy_frame.button_activated = True
                     # Checking if the previous frame button is clicked. If it is, it sets the grid to the
                     # last frame in the animation list.
                     if previous_frame.clicked(position):
                         if(current_frame_index>=1):
-                            #previous_frame.choose = True
-                            print(current_frame_index)
                             current_frame_index-=1
                             grid = animation_list[current_frame_index]
+                            previous_frame.button_activated = True
                     if next_frame.clicked(position):
                         if(current_frame_index < len(animation_list)-1):
                             current_frame_index+=1
-                            #next_frame.choose = True
                             grid = animation_list[current_frame_index]
+                            next_frame.button_activated = True
                     for speed in speeds:
                         if not speed.clicked(position):
                             continue
@@ -343,10 +344,12 @@ while using: # Running while the user does not close the window
         create_all(WINDOW,new_frame,is_picker_opened,visible)
         grid = new_frame
         add_frame.add = False
+        add_frame.button_activated = False
     elif copy_frame.copy:
         create_all(WINDOW,new_frame,is_picker_opened,visible)
         grid = new_frame
         copy_frame.copy = False
+        copy_frame.button_activated = False
     elif play.button_activated:
         for drawing in animation_list:
             pygame.event.set_blocked(pygame.MOUSEBUTTONDOWN)
@@ -360,4 +363,6 @@ while using: # Running while the user does not close the window
     else :
         create_all(WINDOW, grid,is_picker_opened,visible)
     cancelled = False
+    previous_frame.button_activated = False
+    next_frame.button_activated = False
 pygame.quit()
