@@ -339,6 +339,7 @@ while using: # Running while the user does not close the window
     if cancelled:
         if(len(states_of_drawing)>0):
             grid = states_of_drawing[-1]
+            animation_list[current_frame_index] = grid
             del states_of_drawing[-1]
         create_all(WINDOW, grid,is_picker_opened,visible)
     elif add_frame.add:
