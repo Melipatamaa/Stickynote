@@ -81,7 +81,7 @@ clear = Clear(button_x, X[10], button_w_h, button_w_h, WHITE, icon=pygame.image.
 # Saving the drawing
 save = Save(1085, X[1] + 30, button_w_h + 20, button_w_h + 20, WINDOW, WHITE, icon=pygame.image.load('scripts\icons\\save.png'))
 # Adding a reference layer
-layer = Layer(1068, X[3] + 20, button_w_h + 60, button_w_h + 20, WINDOW, WHITE, LGREY, "Layer", LGREY)
+layer = Layer(1068, X[3] + 20, button_w_h + 60, button_w_h + 20, WINDOW, WHITE, icon=pygame.image.load('scripts\icons\\layer.png'))
 # Getting the color of any pixel on the drawing
 pipette = Pipette(button_x + 45, X[6], button_w_h, button_w_h, 1, 1, WHITE, icon=pygame.image.load('scripts\icons\\pipette.png'))
 # Cancelling the previous drawings
@@ -91,9 +91,9 @@ color_picker = ColorPicker(button_x + 45, X[7], button_w_h, button_w_h, WHITE, i
 # Filling a cell with the drawing color
 filler = Filler(button_x + 45, X[8], button_w_h, button_w_h, 1, 1, WHITE, icon=pygame.image.load('scripts\icons\\fill.png'))
 # Adding a new frame to the animation
-add_frame = AddFrame(1068, X[7], button_w_h + 60, button_w_h + 20, WHITE, LGREY, "Add frame", LGREY)
+add_frame = AddFrame(1068, X[7], button_w_h + 60, button_w_h + 20, WHITE, icon=pygame.image.load('scripts\icons\\add.png'))
 
-copy_frame = CopyFrame(1068, X[8] + 20, button_w_h + 60, button_w_h + 20, WHITE, LGREY, "Copy frame", LGREY)
+copy_frame = CopyFrame(1068, X[8] + 20, button_w_h + 60, button_w_h + 20, WHITE, icon=pygame.image.load('scripts\icons\\copy.png'))
 # Getting back to a previous frame already created
 previous_frame = ChooseFrame(730, HEIGHT - 85, button_w_h + 20, button_w_h + 20, WHITE, icon=pygame.image.load('scripts\icons\\prev.png'))
 # Getting forward to the next frame already created
