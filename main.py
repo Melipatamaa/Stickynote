@@ -130,15 +130,15 @@ def create_all(canvas, grid:Grid,open_picker,visible):
     :param open_picker: boolean, if true, the color picker is opened
     """
     #canvas.fill(BACKGROUND_COLOR)
+    draw_grid_on_canvas(canvas,grid)
+    display_interface(WINDOW,sticky)
+    get_frame_number(WINDOW,current_frame_index,animation_list)
     if(open_picker):
         ui_manager.update(time_delta)
         ui_manager.draw_ui(WINDOW)
-    if(visible):
-        layer.stick_layer(WINDOW,visible,current_frame_index)
     else:
-        draw_grid_on_canvas(canvas,grid)
-        display_interface(WINDOW,sticky)
-        get_frame_number(WINDOW,current_frame_index,animation_list)
+        if(visible):
+            layer.stick_layer(WINDOW,visible,current_frame_index)
         for color in colors:
             color.draw(canvas)
         for brush in brushes:
@@ -272,6 +272,7 @@ while using: # Running while the user does not close the window
                         visible = True
                         if(layer.button_activated):
                             layer.button_activated = False
+                            visible = False
                         else:
                             layer.button_activated = True
                     # Checking if the cancel button is clicked and setting it to activated.
