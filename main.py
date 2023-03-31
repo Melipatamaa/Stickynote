@@ -293,12 +293,14 @@ while using: # Running while the user does not close the window
                             pipette.button_activated = False
                     # Adding a new frame to the animation list if the button is clicked.
                     if add_frame.clicked(position):
+                        save_frame(WINDOW,current_frame_index)
                         add_frame.add = True
                         current_frame_index+=1
                         new_frame = Grid()
                         animation_list.insert(current_frame_index,new_frame)
                         add_frame.button_activated = True
                     if copy_frame.clicked(position):
+                        save_frame(WINDOW,current_frame_index)
                         copy_frame.copy = True
                         current_frame_index+=1
                         new_frame = grid
@@ -308,11 +310,13 @@ while using: # Running while the user does not close the window
                     # last frame in the animation list.
                     if previous_frame.clicked(position):
                         if(current_frame_index>=1):
+                            save_frame(WINDOW,current_frame_index)
                             current_frame_index-=1
                             grid = animation_list[current_frame_index]
                             previous_frame.button_activated = True
                     if next_frame.clicked(position):
                         if(current_frame_index < len(animation_list)-1):
+                            save_frame(WINDOW,current_frame_index)
                             current_frame_index+=1
                             grid = animation_list[current_frame_index]
                             next_frame.button_activated = True
@@ -338,6 +342,7 @@ while using: # Running while the user does not close the window
     # list of drawings and update the grid with the previous drawing.
     if cancelled:
         if(len(states_of_drawing)>0):
+            save_frame(WINDOW,current_frame_index)
             grid = states_of_drawing[-1]
             animation_list[current_frame_index] = grid
             del states_of_drawing[-1]

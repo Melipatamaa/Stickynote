@@ -162,3 +162,15 @@ def get_frame_number(WINDOW,current_frame_index,animation_list):
     font = pygame.font.SysFont("calibri", 18)
     cfi = font.render(str(current_frame_index+1) + "/" + str(len(animation_list)),True, WHITE)
     WINDOW.blit(cfi, (1060,620))
+
+def save_frame(screen,current_frame_index):
+    """
+    It takes a screenshot of the canvas and saves it as a jpg file.
+    
+    :param screen: the screen that you want to save
+    """
+    rect = pygame.Rect(BORDERS_ROWS, BORDERS_COLS, CANVAS_WIDTH-5, CANVAS_HEIGHT-5)
+    sub = screen.subsurface(rect)
+    screenshot = pygame.Surface((CANVAS_WIDTH-5, CANVAS_HEIGHT-5))
+    screenshot.blit(sub, (0,0))
+    pygame.image.save(screenshot, f"screenshot{current_frame_index+1}.jpg")
