@@ -20,6 +20,7 @@ from scripts.choose_frame import ChooseFrame
 from scripts.speed import Speed
 from scripts.play import Play
 from scripts.copy_frame import CopyFrame
+from scripts.grid_pattern import GridPattern
 
 from scripts.grid import *
 from scripts.utils import *
@@ -33,6 +34,7 @@ WINDOW = pygame.display.set_mode((WIDTH,HEIGHT))
 pygame.display.set_caption("Stickynote Studio")
 
 # Initializing the variables.
+is_grid_pattern_on = False
 using =  True
 clock = pygame.time.Clock()
 grid = Grid()
@@ -49,6 +51,8 @@ for i in range(11):
     X.append(105 + i*45)
 button_x = 50
 button_w_h = 30
+
+grid_pattern = GridPattern(1068, X[4], button_w_h + 60, button_w_h + 20, WHITE, icon=pygame.image.load('scripts\icons\\gridpattern.png'))
 
 # Creating a list of colors
 colors = [
@@ -81,7 +85,7 @@ clear = Clear(button_x, X[10], button_w_h, button_w_h, WHITE, icon=pygame.image.
 # Saving the drawing
 save = Save(1085, X[1] + 30, button_w_h + 20, button_w_h + 20, WINDOW, WHITE, icon=pygame.image.load('scripts\icons\\save.png'))
 # Adding a reference layer
-layer = Layer(1068, X[3] + 20, button_w_h + 60, button_w_h + 20, WINDOW, WHITE, icon=pygame.image.load('scripts\icons\\layer.png'))
+layer = Layer(1068, X[6], button_w_h + 60, button_w_h + 20, WINDOW, WHITE, icon=pygame.image.load('scripts\icons\\layer.png'))
 # Getting the color of any pixel on the drawing
 pipette = Pipette(button_x + 45, X[6], button_w_h, button_w_h, 1, 1, WHITE, icon=pygame.image.load('scripts\icons\\pipette.png'))
 # Cancelling the previous drawings
@@ -91,9 +95,9 @@ color_picker = ColorPicker(button_x + 45, X[7], button_w_h, button_w_h, WHITE, i
 # Filling a cell with the drawing color
 filler = Filler(button_x + 45, X[8], button_w_h, button_w_h, 1, 1, WHITE, icon=pygame.image.load('scripts\icons\\fill.png'))
 # Adding a new frame to the animation
-add_frame = AddFrame(1068, X[7], button_w_h + 60, button_w_h + 20, WHITE, icon=pygame.image.load('scripts\icons\\add.png'))
+add_frame = AddFrame(1068, X[7] + 20, button_w_h + 60, button_w_h + 20, WHITE, icon=pygame.image.load('scripts\icons\\add.png'))
 
-copy_frame = CopyFrame(1068, X[8] + 20, button_w_h + 60, button_w_h + 20, WHITE, icon=pygame.image.load('scripts\icons\\copy.png'))
+copy_frame = CopyFrame(1068, X[8] + 40, button_w_h + 60, button_w_h + 20, WHITE, icon=pygame.image.load('scripts\icons\\copy.png'))
 # Getting back to a previous frame already created
 previous_frame = ChooseFrame(730, HEIGHT - 85, button_w_h + 20, button_w_h + 20, WHITE, icon=pygame.image.load('scripts\icons\\prev.png'))
 # Getting forward to the next frame already created
@@ -130,7 +134,7 @@ def create_all(canvas, grid:Grid,open_picker,visible):
     :param open_picker: boolean, if true, the color picker is opened
     """
     #canvas.fill(BACKGROUND_COLOR)
-    draw_grid_on_canvas(canvas,grid)
+    draw_grid_on_canvas(canvas,grid,is_grid_pattern_on)
     display_interface(WINDOW,sticky)
     get_frame_number(WINDOW,current_frame_index,animation_list)
     if(open_picker):
@@ -143,6 +147,7 @@ def create_all(canvas, grid:Grid,open_picker,visible):
             color.draw(canvas)
         for brush in brushes:
             brush.draw(canvas)
+        grid_pattern.draw(canvas)
         clear.draw(canvas)
         save.draw(canvas)
         layer.draw(canvas)
@@ -207,6 +212,13 @@ while using: # Running while the user does not close the window
                             states_of_drawing.append(newgrid)
                 # If a button is clicked
                 except IndexError:
+                    if grid_pattern.clicked(position):
+                        is_grid_pattern_on = True
+                        if(grid_pattern.button_activated):
+                            grid_pattern.button_activated = False
+                            is_grid_pattern_on = False
+                        else:
+                            grid_pattern.button_activated = True
                     # Checking if the mouse is clicked on the color button. If it is, it sets the
                     # drawing color to the color of the button. It also deselects all other color
                     # buttons and the color picker and pipette.

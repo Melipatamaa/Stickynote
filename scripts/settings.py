@@ -37,12 +37,6 @@ TOOLBAR = WIDTH - 1140
 # Setting the background color of the canvas to white.
 BACKGROUND_COLOR = WHITE
 
-# A variable that is used to determine whether or not the grid is displayed.
-GRID = False
-
-# A variable that is used to determine whether or not the grid is displayed.
-CANVAS_GRID = True
-
 # Defining the dimensions of the borders of the screen.
 BORDERS_ROWS = 160
 BORDERS_COLS = 100

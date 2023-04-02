@@ -5,7 +5,7 @@ font = pygame.font.SysFont(None, 24)
 text_speed = font.render('Speed : ', True, ORANGE)
 
 
-def draw_grid_on_canvas(canvas,grid:Grid):
+def draw_grid_on_canvas(canvas,grid:Grid,grid_pattern):
     """
     It draws a grid on the canvas on the center of the screen.
     
@@ -17,13 +17,7 @@ def draw_grid_on_canvas(canvas,grid:Grid):
     for i, row in enumerate(grid.grid):
         for j, pixel in enumerate(row):
             pygame.draw.rect(canvas,pixel,(j*PX_SIZE,i*PX_SIZE,PX_SIZE,PX_SIZE)) #original and final coordinates
-    if GRID:
-        #+1 so the grid won't be cropped by the window 
-        for i in range(ROWS + 1):
-            pygame.draw.line(canvas,LGREY,(0,i*PX_SIZE),(WIDTH,i*PX_SIZE))
-        for j in range(COLS + 1):
-            pygame.draw.line(canvas,LGREY,(j*PX_SIZE,0),(j*PX_SIZE,HEIGHT-TOOLBAR))
-    if CANVAS_GRID:
+    if grid_pattern:
         for i in range(ROWS):
             #+2 pour bien fermer la grille
             pygame.draw.line(canvas,LGREY,(BORDERS_ROWS,BORDERS_COLS+i*PX_SIZE),(WIDTH - BORDERS_ROWS+2,BORDERS_COLS+i*PX_SIZE))
