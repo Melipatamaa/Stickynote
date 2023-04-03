@@ -1,4 +1,5 @@
 from scripts.grid import *
+import os
 import pygame
 
 font = pygame.font.SysFont(None, 24)
@@ -157,14 +158,17 @@ def get_frame_number(WINDOW,current_frame_index,animation_list):
     cfi = font.render(str(current_frame_index+1) + "/" + str(len(animation_list)),True, WHITE)
     WINDOW.blit(cfi, (1060,620))
 
-def save_frame(screen,current_frame_index):
+def save_frame(screen,current_frame_index,unique_id):
     """
     It takes a screenshot of the canvas and saves it as a jpg file.
     
     :param screen: the screen that you want to save
     """
+    dossier = f"{os.getcwd()}\\frames_{unique_id}"
     rect = pygame.Rect(BORDERS_ROWS, BORDERS_COLS, CANVAS_WIDTH-5, CANVAS_HEIGHT-5)
     sub = screen.subsurface(rect)
     screenshot = pygame.Surface((CANVAS_WIDTH-5, CANVAS_HEIGHT-5))
     screenshot.blit(sub, (0,0))
-    pygame.image.save(screenshot, f"screenshot{current_frame_index+1}.jpg")
+    if not os.path.exists(dossier):
+        os.makedirs(dossier)
+    pygame.image.save(screenshot, f"{dossier}\\frame{current_frame_index+1}.jpg")

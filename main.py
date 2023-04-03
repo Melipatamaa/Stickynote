@@ -1,8 +1,8 @@
 import pygame
 import pygame_gui
+import time
 
 from pygame_gui.windows import UIColourPickerDialog
-#from moviepy.editor import *
 
 # Importing the modules from the scripts folder.
 from scripts.settings import *
@@ -44,6 +44,7 @@ current_frame_index = 0
 visible = False
 frame_speed = 1000
 animation_list = [grid] 
+unique_id = str(time.time())
 
 # list for x coordinates of some buttons
 X = []
@@ -81,11 +82,12 @@ brushes = [
 # Creating the other buttons needed
 
 # Clearing the canvas, erasing everything
-clear = Clear(button_x, X[10], button_w_h, button_w_h, WHITE, icon=pygame.image.load('scripts\icons\\clear.png'))
+
+clear = Clear(button_x, X[10], button_w_h, button_w_h, WHITE, icon=pygame.image.load(f'{os.getcwd()}\\scripts\icons\\clear.png'))
 # Saving the drawing
-save = Save(1085, X[1] + 30, button_w_h + 20, button_w_h + 20, WINDOW, WHITE, icon=pygame.image.load('scripts\icons\\save.png'))
+save = Save(1085, X[1] + 30, button_w_h + 20, button_w_h + 20, WINDOW, WHITE, unique_id=unique_id, icon=pygame.image.load('scripts\icons\\save.png'))
 # Adding a reference layer
-layer = Layer(1068, X[6], button_w_h + 60, button_w_h + 20, WINDOW, WHITE, icon=pygame.image.load('scripts\icons\\layer.png'))
+layer = Layer(1068, X[6], button_w_h + 60, button_w_h + 20, WINDOW, WHITE,unique_id=unique_id, icon=pygame.image.load('scripts\icons\\layer.png'))
 # Getting the color of any pixel on the drawing
 pipette = Pipette(button_x + 45, X[6], button_w_h, button_w_h, 1, 1, WHITE, icon=pygame.image.load('scripts\icons\\pipette.png'))
 # Cancelling the previous drawings
@@ -256,11 +258,11 @@ while using: # Running while the user does not close the window
                     if clear.clicked(position):
                         grid = Grid()
                         clear.button_activated = True
-                    # Saving the drawing
+                    # Saving the drawing as an animation
                     if save.clicked(position):
                         if not save.clicked(position):
                             continue
-                        save.save(WINDOW,current_frame_index)
+                        save.save(frame_speed)
                         save.button_activated = True
                     # Checking if the pipette button is clicked. If it is, it sets the pipette button
                     # to activated. If the pipette button is activated, it sets the pipette button to
@@ -305,14 +307,14 @@ while using: # Running while the user does not close the window
                             pipette.button_activated = False
                     # Adding a new frame to the animation list if the button is clicked.
                     if add_frame.clicked(position):
-                        save_frame(WINDOW,current_frame_index)
+                        save_frame(WINDOW,current_frame_index,unique_id)
                         add_frame.add = True
                         current_frame_index+=1
                         new_frame = Grid()
                         animation_list.insert(current_frame_index,new_frame)
                         add_frame.button_activated = True
                     if copy_frame.clicked(position):
-                        save_frame(WINDOW,current_frame_index)
+                        save_frame(WINDOW,current_frame_index,unique_id)
                         copy_frame.copy = True
                         current_frame_index+=1
                         new_frame = grid
@@ -322,13 +324,13 @@ while using: # Running while the user does not close the window
                     # last frame in the animation list.
                     if previous_frame.clicked(position):
                         if(current_frame_index>=1):
-                            save_frame(WINDOW,current_frame_index)
+                            save_frame(WINDOW,current_frame_index,unique_id)
                             current_frame_index-=1
                             grid = animation_list[current_frame_index]
                             previous_frame.button_activated = True
                     if next_frame.clicked(position):
                         if(current_frame_index < len(animation_list)-1):
-                            save_frame(WINDOW,current_frame_index)
+                            save_frame(WINDOW,current_frame_index,unique_id)
                             current_frame_index+=1
                             grid = animation_list[current_frame_index]
                             next_frame.button_activated = True
@@ -354,7 +356,7 @@ while using: # Running while the user does not close the window
     # list of drawings and update the grid with the previous drawing.
     if cancelled:
         if(len(states_of_drawing)>0):
-            save_frame(WINDOW,current_frame_index)
+            save_frame(WINDOW,current_frame_index,unique_id)
             grid = states_of_drawing[-1]
             animation_list[current_frame_index] = grid
             del states_of_drawing[-1]
