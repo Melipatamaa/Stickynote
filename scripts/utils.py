@@ -172,3 +172,7 @@ def save_frame(screen,current_frame_index,unique_id):
     if not os.path.exists(dossier):
         os.makedirs(dossier)
     pygame.image.save(screenshot, f"{dossier}\\frame{current_frame_index+1}.jpg")
+
+def delete_frame(current_frame_index,unique_id):
+    dossier = f"{os.getcwd()}\\frames_{unique_id}"
+    os.remove(f"{dossier}\\frame{current_frame_index+1}.jpg")
