@@ -43,6 +43,7 @@ drawing_col = BLACK
 size = 1
 current_frame_index = 0
 visible = False
+was_visible = False
 frame_speed = 1000
 animation_list = [grid] 
 unique_id = str(time.time())
@@ -372,14 +373,21 @@ while using: # Running while the user does not close the window
         create_all(WINDOW,grid,is_picker_opened,visible)
         remove_frame.button_activated = False
     elif play.button_activated:
+        if visible:
+            was_visible = True
+            visible = False
         for drawing in animation_list:
             pygame.event.set_blocked(pygame.MOUSEBUTTONDOWN)
             grid = drawing
             create_all(WINDOW,grid,is_picker_opened,visible)
+            save_frame(WINDOW,current_frame_index,unique_id)
             pygame.time.wait(frame_speed)
+        if was_visible:
+            visible = True
         grid = animation_list[current_frame_index]
         play.button_activated = False
         pygame.event.set_allowed(pygame.MOUSEBUTTONDOWN)
+
     # Creating a window and then creating a grid : continuously updated.
     else :
         create_all(WINDOW, grid,is_picker_opened,visible)
