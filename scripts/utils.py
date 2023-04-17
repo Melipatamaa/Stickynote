@@ -1,6 +1,9 @@
 from scripts.grid import *
 import os
 import pygame
+import cv2
+import numpy as np
+import glob
 
 font = pygame.font.SysFont(None, 24)
 text_speed = font.render('Speed : ', True, ORANGE)
@@ -205,3 +208,19 @@ def clean_for_save(unique_id):
     folder = f"{os.getcwd()}\\frames_{unique_id}"
     for frame in os.listdir(folder):
         os.remove(os.path.join(folder,frame))
+
+def save_video(unique_id,frame_speed):
+    frames = []
+    folder = f"{os.getcwd()}\\frames_{unique_id}\\*.jpg"
+    for frame in glob.glob(folder):
+        img = cv2.imread(frame)
+        height, width, layer = img.shape
+        size = (width,height)
+        frames.append(img)
+    
+    out = cv2.VideoWriter('myanimation.avi',cv2.VideoWriter_fourcc(*'DIVX'), frame_speed, size)
+    
+    for i in range(len(frames)):
+        out.write(frames[i])
+    out.release()
+    return

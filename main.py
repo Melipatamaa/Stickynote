@@ -420,6 +420,8 @@ while using: # Running while the user does not close the window
             frame_number += 1
         grid = animation_list[current_frame_index]
         play.button_activated = False
+        if save.button_activated:
+            save_video(unique_id,frame_speed)
         save.button_activated = False
         pygame.event.set_allowed(pygame.MOUSEBUTTONDOWN)
         if was_visible:
