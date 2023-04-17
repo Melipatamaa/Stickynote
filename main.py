@@ -59,6 +59,7 @@ for i in range(11):
 button_x = 50
 button_w_h = 30
 
+# Displaying a grid on the canvas so it can be used as a reference
 grid_pattern = GridPattern(1068, X[3] + 20, button_w_h + 60, button_w_h + 20, WHITE, icon=pygame.image.load('scripts\icons\\gridpattern.png'))
 
 # Creating a list of colors
@@ -88,7 +89,6 @@ brushes = [
 # Creating the other buttons needed
 
 # Clearing the canvas, erasing everything
-
 clear = Clear(button_x, X[10], button_w_h, button_w_h, WHITE, icon=pygame.image.load(f'{os.getcwd()}\\scripts\icons\\clear.png'))
 # Saving the drawing
 save = Save(1085, X[1] + 30, button_w_h + 20, button_w_h + 20, WINDOW, WHITE, unique_id=unique_id, icon=pygame.image.load('scripts\icons\\save.png'))
@@ -104,15 +104,15 @@ color_picker = ColorPicker(button_x + 45, X[7], button_w_h, button_w_h, WHITE, i
 filler = Filler(button_x + 45, X[8], button_w_h, button_w_h, 1, 1, WHITE, icon=pygame.image.load('scripts\icons\\fill.png'))
 # Adding a new frame to the animation
 add_frame = AddFrame(1068, X[6] + 30, button_w_h + 60, button_w_h + 20, WHITE, icon=pygame.image.load('scripts\icons\\add.png'))
-
+# Copying the current frame for the next one
 copy_frame = CopyFrame(1068, X[7] + 50, button_w_h + 60, button_w_h + 20, WHITE, icon=pygame.image.load('scripts\icons\\copy.png'))
 # Getting back to a previous frame already created
 previous_frame = ChooseFrame(730, HEIGHT - 85, button_w_h + 20, button_w_h + 20, WHITE, icon=pygame.image.load('scripts\icons\\prev.png'))
 # Getting forward to the next frame already created
 next_frame = ChooseFrame(730 + 160, HEIGHT - 85, button_w_h + 20, button_w_h + 20, WHITE, icon=pygame.image.load('scripts\icons\\next.png'))
-
+# Removing a whole frame from the animation
 remove_frame = RemoveFrame(1068, X[8] + 70, button_w_h + 60, button_w_h + 20, WHITE, icon=pygame.image.load('scripts\icons\\copy.png'))
-
+# Setting the frame rate of the animation with 8 differents speeds
 speeds = [
     Speed(120 + X[0], HEIGHT - 80, button_w_h, button_w_h, 1000, WHITE,LGREY, "1", ORANGE),
     Speed(120 + X[1], HEIGHT - 80, button_w_h, button_w_h, 800, WHITE, LGREY, "2", ORANGE),
@@ -123,7 +123,7 @@ speeds = [
     Speed(120 + X[6], HEIGHT - 80, button_w_h, button_w_h, 50, WHITE, LGREY, "7", ORANGE),
     Speed(120 + X[7], HEIGHT - 80, button_w_h, button_w_h, 25, WHITE, LGREY, "8", ORANGE)
     ]
-
+# Playing a preview of the animation
 play = Play(730 + 80, HEIGHT - 85, button_w_h + 20, button_w_h + 20, animation_list, WHITE,icon=pygame.image.load('scripts\icons\\play.png'))
 
 # Loading the image of Stikynote Studio and rescaling it.
@@ -131,6 +131,19 @@ sticky = pygame.image.load('scripts\icons\\sticky.png')
 sticky = pygame.transform.scale(sticky, (250, 72))
 
 def create_all(canvas, grid:Grid,open_picker,visible):
+    """
+    This function creates all the necessary elements on the canvas for a drawing program, including the
+    grid, interface, color and brush options, and buttons for various actions.
+    
+    :param canvas: The canvas on which the drawing will be displayed
+    :param grid: A Grid object that represents the grid on which the user can draw
+    :type grid: Grid
+    :param open_picker: A boolean value that indicates whether the color picker UI should be open or
+    not. If it is True, the color picker UI will be updated and drawn on the canvas. If it is False, the
+    regular drawing tools and buttons will be displayed on the canvas
+    :param visible: A boolean value indicating whether or not a layer is currently visible. If it is
+    True, the layer will be displayed on the canvas. If it is False, the layer will not be displayed
+    """
     draw_grid_on_canvas(canvas,grid,is_grid_pattern_on)
     display_interface(WINDOW,sticky)
     get_frame_number(WINDOW,current_frame_index,animation_list)
@@ -194,22 +207,30 @@ while using: # Running while the user does not close the window
                     else:
                         grid.grid[row][col] = drawing_col
                         draw_on_grid(grid,drawing_col,row,col,size)
+                        # Dealing with cancel related actions. A save of the canvas is made in the states_of_drawing,
+                        # which is a FIFO, and it can save a maximum of 100 canvas.
                         if(len(states_of_drawing)<=100):
+                            # Recreating the whole drawing by hand instead of calling deepcopy for speed purposes
                             newgrid = Grid([[i for i in row] for row in grid.grid])
                             states_of_drawing.append(newgrid)
                         else:
+                            # According to the FIFO method, the first drawing saved is deleted to make place for 
+                            # the new canvas.
                             del states_of_drawing[0]
                             newgrid = Grid([[i for i in row] for row in grid.grid])
                             states_of_drawing.append(newgrid)
                 # If a button is clicked
                 except IndexError:
+                    # Checking if the mouse is clicked on the grid_pattern button. If so, it displays a grid reference
+                    # if it was not already on screen by setting the parameters to True. To desactivate this tool, the user
+                    # clicks on the button again and the parameters are updated and set up to False.
                     if grid_pattern.clicked(position):
-                        is_grid_pattern_on = True
                         if(grid_pattern.button_activated):
                             grid_pattern.button_activated = False
                             is_grid_pattern_on = False
                         else:
                             grid_pattern.button_activated = True
+                            is_grid_pattern_on = True
                     # Checking if the mouse is clicked on the color button. If it is, it sets the
                     # drawing color to the color of the button. It also deselects all other color
                     # buttons and the color picker and pipette.
@@ -218,7 +239,6 @@ while using: # Running while the user does not close the window
                             continue
                         drawing_col = color.color
                         color.button_activated = True
-                        # desactive tous les autres boutons colors
                         for c in colors:
                             if(c!=color):
                                 c.button_activated=False
@@ -302,6 +322,7 @@ while using: # Running while the user does not close the window
                         new_frame = Grid()
                         animation_list.insert(current_frame_index,new_frame)
                         add_frame.button_activated = True
+                    # Adding a new frame by copying the current one. It is added to the animation list.
                     if copy_frame.clicked(position):
                         save_frame(WINDOW,current_frame_index,unique_id)
                         copy_frame.copy = True
@@ -317,6 +338,7 @@ while using: # Running while the user does not close the window
                             current_frame_index-=1
                             grid = animation_list[current_frame_index]
                             previous_frame.button_activated = True
+                    # Same thing, but it sets the grid to the next frame in the animation list.
                     if next_frame.clicked(position):
                         if(current_frame_index < len(animation_list)-1):
                             save_frame(WINDOW,current_frame_index,unique_id)
@@ -324,14 +346,18 @@ while using: # Running while the user does not close the window
                             grid = animation_list[current_frame_index]
                             delete_frame.delete = True
                             next_frame.button_activated = True
+                    # Removing a whole frame from the animation list.
                     if remove_frame.clicked(position):
                         if(current_frame_index>=1):
+                            # Calling delete_frame in utils
                             delete_frame(current_frame_index,unique_id)
                             frame_to_delete = grid
                             animation_list.remove(frame_to_delete)
                             current_frame_index-=1
                             grid = animation_list[current_frame_index]
                             remove_frame.button_activated = True
+                    # Setting the frame rate of the animation preview. It also desactivates the other 
+                    # speeds on the screen when one is clicked.
                     for speed in speeds:
                         if not speed.clicked(position):
                             continue
@@ -340,6 +366,7 @@ while using: # Running while the user does not close the window
                         for s in speeds:
                             if(s!=speed):
                                 s.button_activated=False
+                    # Playing the animation preview by setting the boolean to True
                     if play.clicked(position):
                         play.button_activated = True
         else:
@@ -359,19 +386,27 @@ while using: # Running while the user does not close the window
             animation_list[current_frame_index] = grid
             del states_of_drawing[-1]
         create_all(WINDOW,grid,is_picker_opened,visible)
+    # Checking if the user has added a new frame. If so, the screen is updated and booleans back to False.
     elif add_frame.add:
         create_all(WINDOW,new_frame,is_picker_opened,visible)
         grid = new_frame
         add_frame.add = False
         add_frame.button_activated = False
+    # Checking if the user has copied a frame. If so, the screen is updated and booleans back to False.
     elif copy_frame.copy:
         create_all(WINDOW,new_frame,is_picker_opened,visible)
         grid = new_frame
         copy_frame.copy = False
         copy_frame.button_activated = False
+    # Checking if the user has removed a frame. 
     elif remove_frame.delete :
         create_all(WINDOW,grid,is_picker_opened,visible)
         remove_frame.button_activated = False
+    # Checking if the "play" button has been activated. If it has been activated, it is iterating through
+    # the drawings of animation list and does not display the layer (visible) during the preview if it was activated. 
+    # It waits for a certain amount of time which is equal to the frame speed before moving on to the
+    # next frame. During this event, the user can't interact with the interface. Once all frames have been saved, 
+    # it sets the visibility of the animation to True if was previously activated and allows mouse button events again.
     elif play.button_activated:
         for drawing in animation_list:
             frame_number = 1
