@@ -111,7 +111,7 @@ previous_frame = ChooseFrame(730, HEIGHT - 85, button_w_h + 20, button_w_h + 20,
 # Getting forward to the next frame already created
 next_frame = ChooseFrame(730 + 160, HEIGHT - 85, button_w_h + 20, button_w_h + 20, WHITE, icon=pygame.image.load('scripts\icons\\next.png'))
 # Removing a whole frame from the animation
-remove_frame = RemoveFrame(1068, X[8] + 70, button_w_h + 60, button_w_h + 20, WHITE, icon=pygame.image.load('scripts\icons\\copy.png'))
+remove_frame = RemoveFrame(1068, X[8] + 70, button_w_h + 60, button_w_h + 20, WHITE, icon=pygame.image.load('scripts\icons\\remove.png'))
 # Setting the frame rate of the animation with 8 differents speeds
 speeds = [
     Speed(120 + X[0], HEIGHT - 80, button_w_h, button_w_h, 1000, WHITE,LGREY, "1", ORANGE),
