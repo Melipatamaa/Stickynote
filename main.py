@@ -345,10 +345,10 @@ while using: # Running while the user does not close the window
         else:
             # Setting the color of the color picker to the color that was picked and closing it when it is done.
             if event.type == pygame_gui.UI_COLOUR_PICKER_COLOUR_PICKED:
-                is_picker_opened=False
+                is_picker_opened = False
                 drawing_col = event.colour
                 color_picker.color = event.colour
-            if event.type ==pygame_gui.UI_WINDOW_CLOSE:
+            if event.type == pygame_gui.UI_WINDOW_CLOSE:
                 is_picker_opened = False
     # Checking if the user has cancelled the drawing. If so, it will remove the last drawing from the
     # list of drawings and update the grid with the previous drawing.
@@ -394,7 +394,7 @@ while using: # Running while the user does not close the window
 
     # Creating a window and then creating a grid : continuously updated.
     else :
-        create_all(WINDOW, grid,is_picker_opened,visible)
+        create_all(WINDOW,grid,is_picker_opened,visible)
     cancelled = False
     previous_frame.button_activated = False
     next_frame.button_activated = False

@@ -42,7 +42,7 @@ def get_coord_position(pos):
     x, y = pos
     row = y // PX_SIZE
     col = x // PX_SIZE
-    #modification des valeurs rentrées en focntion des paramètres : pour + tard
+    # modification des valeurs rentrées en focntion des paramètres : pour + tard
     if (col <= 26 or col >= 174 or row <= 16 or row >= 101):
         raise IndexError
     return row, col
@@ -113,6 +113,14 @@ def draw_on_grid(grid:Grid,drawing_col,row,col,size):
         grid.grid[row][col-3] = drawing_col
 
 def display_interface(WINDOW,sticky):
+    """
+    This function displays an interface with various graphical elements such as borders, rectangles, and
+    a logo.
+    
+    :param WINDOW: The Pygame window surface on which the interface will be displayed
+    :param sticky: The "sticky" parameter is an image representing the logo of
+    Stickynote Studio, which is displayed on the interface using the `WINDOW.blit()` method
+    """
     a = 20
 
     # White background of the interface
@@ -153,6 +161,15 @@ def display_interface(WINDOW,sticky):
     WINDOW.blit(text_speed, (BORDERS_ROWS - 8, HEIGHT - 72))
 
 def get_frame_number(WINDOW,current_frame_index,animation_list):
+    """
+    This function displays the current frame number and total number of frames in an animation on a
+    Pygame window.
+    
+    :param WINDOW: The Pygame window surface on which the frame number will be displayed
+    :param current_frame_index: The index of the current frame in the animation_list
+    :param animation_list: A list of frames in an animation. Each frame is a separate image that is
+    displayed in sequence to create the illusion of motion
+    """
     pygame.draw.rect(WINDOW,ORANGE,(1053,610,62,50))
     font = pygame.font.SysFont("calibri", 18)
     cfi = font.render(str(current_frame_index+1) + "/" + str(len(animation_list)),True, WHITE)
@@ -174,5 +191,12 @@ def save_frame(screen,current_frame_index,unique_id):
     pygame.image.save(screenshot, f"{dossier}\\frame{current_frame_index+1}.jpg")
 
 def delete_frame(current_frame_index,unique_id):
+    """
+    This function deletes a specific frame from a directory based on its index and a unique identifier.
+    
+    :param current_frame_index: The index of the frame that needs to be deleted
+    :param unique_id: The unique_id parameter is a string that represents a unique identifier for a set
+    of frames. It is used to create a folder where the frames are stored and retrieved from
+    """
     dossier = f"{os.getcwd()}\\frames_{unique_id}"
     os.remove(f"{dossier}\\frame{current_frame_index+1}.jpg")

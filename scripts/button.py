@@ -2,6 +2,7 @@ from .settings import *
 
 # The Button class is an abstract class that creates a button object that can be used to create a button on the
 # StickyNote interface.
+
 class Button :
     def __init__(self,x,y,width,height,color,border_color=LGREY,text=None,text_color=LGREY,icon=None):
         self.x = x
