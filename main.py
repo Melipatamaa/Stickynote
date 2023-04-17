@@ -406,12 +406,12 @@ while using: # Running while the user does not close the window
     # next frame. During this event, the user can't interact with the interface. Once all frames have been saved, 
     # it sets the visibility of the animation to True if was previously activated and allows mouse button events again.
     elif play.button_activated or save.button_activated:
+        if visible:
+            was_visible = True
+            visible = False
+            layer.button_activated = False
+        frame_number = 0
         for drawing in animation_list:
-            frame_number = 1
-            if visible:
-                was_visible = True
-                visible = False
-                layer.button_activated = False
             pygame.event.set_blocked(pygame.MOUSEBUTTONDOWN)
             grid = drawing
             create_all(WINDOW,grid,is_picker_opened,visible)
