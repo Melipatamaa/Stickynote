@@ -267,12 +267,6 @@ while using: # Running while the user does not close the window
                     if clear.clicked(position):
                         grid = Grid()
                         clear.button_activated = True
-                    # Saving the drawing as an animation
-                    if save.clicked(position):
-                        if not save.clicked(position):
-                            continue
-                        save.save(frame_speed)
-                        save.button_activated = True
                     # Checking if the pipette button is clicked. If it is, it sets the pipette button
                     # to activated. If the pipette button is activated, it sets the pipette button to
                     # not activated. If the pipette button is not activated, it sets the pipette
@@ -366,6 +360,10 @@ while using: # Running while the user does not close the window
                         for s in speeds:
                             if(s!=speed):
                                 s.button_activated=False
+                    # Saving the animation
+                    if save.clicked(position):
+                        clean_for_save(unique_id)
+                        save.button_activated = True
                     # Playing the animation preview by setting the boolean to True
                     if play.clicked(position):
                         play.button_activated = True
@@ -407,7 +405,7 @@ while using: # Running while the user does not close the window
     # It waits for a certain amount of time which is equal to the frame speed before moving on to the
     # next frame. During this event, the user can't interact with the interface. Once all frames have been saved, 
     # it sets the visibility of the animation to True if was previously activated and allows mouse button events again.
-    elif play.button_activated:
+    elif play.button_activated or save.button_activated:
         for drawing in animation_list:
             frame_number = 1
             if visible:
@@ -422,11 +420,11 @@ while using: # Running while the user does not close the window
             frame_number += 1
         grid = animation_list[current_frame_index]
         play.button_activated = False
+        save.button_activated = False
         pygame.event.set_allowed(pygame.MOUSEBUTTONDOWN)
         if was_visible:
             visible = True
             layer.button_activated = True
-
     # Creating a window and then creating a grid : continuously updated.
     else :
         create_all(WINDOW,grid,is_picker_opened,visible)

@@ -181,14 +181,14 @@ def save_frame(screen,current_frame_index,unique_id):
     
     :param screen: the screen that you want to save
     """
-    dossier = f"{os.getcwd()}\\frames_{unique_id}"
+    folder = f"{os.getcwd()}\\frames_{unique_id}"
     rect = pygame.Rect(BORDERS_ROWS, BORDERS_COLS, CANVAS_WIDTH-5, CANVAS_HEIGHT-5)
     sub = screen.subsurface(rect)
     screenshot = pygame.Surface((CANVAS_WIDTH-5, CANVAS_HEIGHT-5))
     screenshot.blit(sub, (0,0))
-    if not os.path.exists(dossier):
-        os.makedirs(dossier)
-    pygame.image.save(screenshot, f"{dossier}\\frame{current_frame_index+1}.jpg")
+    if not os.path.exists(folder):
+        os.makedirs(folder)
+    pygame.image.save(screenshot, f"{folder}\\frame{current_frame_index+1}.jpg")
 
 def delete_frame(current_frame_index,unique_id):
     """
@@ -198,5 +198,10 @@ def delete_frame(current_frame_index,unique_id):
     :param unique_id: The unique_id parameter is a string that represents a unique identifier for a set
     of frames. It is used to create a folder where the frames are stored and retrieved from
     """
-    dossier = f"{os.getcwd()}\\frames_{unique_id}"
-    os.remove(f"{dossier}\\frame{current_frame_index+1}.jpg")
+    folder = f"{os.getcwd()}\\frames_{unique_id}"
+    os.remove(f"{folder}\\frame{current_frame_index+1}.jpg")
+
+def clean_for_save(unique_id):
+    folder = f"{os.getcwd()}\\frames_{unique_id}"
+    for frame in os.listdir(folder):
+        os.remove(os.path.join(folder,frame))

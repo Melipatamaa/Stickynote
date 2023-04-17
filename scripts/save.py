@@ -10,8 +10,4 @@ class Save(Button) :
         super().__init__(x,y,width,height,color,border_color,text,text_color,icon)
         self.screen = screen
         self.unique_id = unique_id
-        self.dossier = f"{os.getcwd()}\\frames_{unique_id}"
-
-    def save(self,frame_speed):
-        #essayer avec la librairie opencv ?????????
-        return
+        self.folder = f"{os.getcwd()}\\frames_{unique_id}"
