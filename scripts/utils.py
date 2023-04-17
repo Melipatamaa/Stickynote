@@ -209,18 +209,39 @@ def clean_for_save(unique_id):
     for frame in os.listdir(folder):
         os.remove(os.path.join(folder,frame))
 
+def change_type_rate(frame_speed):
+    new_frame_speed = 0
+    if (frame_speed == 1000):
+        new_frame_speed = 1
+    if (frame_speed == 800):
+        new_frame_speed = 2
+    if (frame_speed == 600):
+        new_frame_speed = 3
+    if (frame_speed == 400):
+        new_frame_speed = 4
+    if (frame_speed == 200):
+        new_frame_speed = 5
+    if (frame_speed == 100):
+        new_frame_speed = 6
+    if (frame_speed == 50):
+        new_frame_speed = 7
+    else:
+        new_frame_speed = 8
+    return new_frame_speed
+
 def save_video(unique_id,frame_speed):
     frames = []
-    folder = f"{os.getcwd()}\\frames_{unique_id}\\*.jpg"
-    for frame in glob.glob(folder):
+    folder_files = f"{os.getcwd()}\\frames_{unique_id}\\*.jpg"
+    for frame in glob.glob(folder_files):
         img = cv2.imread(frame)
         height, width, layer = img.shape
         size = (width,height)
         frames.append(img)
-    
-    out = cv2.VideoWriter('myanimation.avi',cv2.VideoWriter_fourcc(*'DIVX'), frame_speed, size)
-    
+    new_frame_speed = change_type_rate(frame_speed)
+    out = cv2.VideoWriter(f"{os.getcwd()}\\frames_{unique_id}\\my_animation.avi",cv2.VideoWriter_fourcc(*'XVID'), 15, size)
     for i in range(len(frames)):
         out.write(frames[i])
+        if cv2.waitKey(new_frame_speed) & 0xFF == ord('q'):
+            break
     out.release()
     return
