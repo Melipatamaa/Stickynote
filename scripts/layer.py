@@ -17,11 +17,6 @@ class Layer(Button) :
             if visible:
                 pygame.Surface.set_alpha(layer,50)
                 screen.blit(layer,(BORDERS_ROWS,BORDERS_COLS))
-            #else:
-            #    pygame.Surface.set_alpha(layer,0)
-            #    screen.blit(layer,(BORDERS_ROWS,BORDERS_COLS))
-            #màj de l'écran
-            #pygame.display.update()
             
         
         

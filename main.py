@@ -124,7 +124,7 @@ speeds = [
     Speed(120 + X[7], HEIGHT - 80, button_w_h, button_w_h, 25, WHITE, LGREY, "8", ORANGE)
     ]
 # Playing a preview of the animation
-play = Play(730 + 80, HEIGHT - 85, button_w_h + 20, button_w_h + 20, animation_list, WHITE,icon=pygame.image.load('scripts\icons\\play.png'))
+play = Play(730 + 80, HEIGHT - 85, button_w_h + 20, button_w_h + 20, WHITE,icon=pygame.image.load('scripts\icons\\play.png'))
 
 # Loading the image of Stikynote Studio and rescaling it.
 sticky = pygame.image.load('scripts\icons\\sticky.png')
