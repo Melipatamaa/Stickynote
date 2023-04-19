@@ -1,4 +1,4 @@
-from .settings import *
+from ..settings import *
 from .button import *
 
 # The ChooseFrame class is a subclass of the Button class with an added attribute "choose" initialized

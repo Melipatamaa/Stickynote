@@ -6,22 +6,22 @@ from pygame_gui.windows import UIColourPickerDialog
 
 # Importing the modules from the scripts folder.
 from scripts.settings import *
-from scripts.color import Color
-from scripts.brush import Brush
-from scripts.clear import Clear
-from scripts.save import Save
-from scripts.layer import Layer
-from scripts.pipette import Pipette
-from scripts.cancel import Cancel
-from scripts.color_picker import ColorPicker
-from scripts.filler import Filler
-from scripts.add_frame import AddFrame
-from scripts.choose_frame import ChooseFrame
-from scripts.remove_frame import RemoveFrame
-from scripts.speed import Speed
-from scripts.play import Play
-from scripts.copy_frame import CopyFrame
-from scripts.grid_pattern import GridPattern
+from scripts.buttons.color import Color
+from scripts.buttons.brush import Brush
+from scripts.buttons.clear import Clear
+from scripts.buttons.save import Save
+from scripts.buttons.layer import Layer
+from scripts.buttons.pipette import Pipette
+from scripts.buttons.cancel import Cancel
+from scripts.buttons.color_picker import ColorPicker
+from scripts.buttons.filler import Filler
+from scripts.buttons.add_frame import AddFrame
+from scripts.buttons.choose_frame import ChooseFrame
+from scripts.buttons.remove_frame import RemoveFrame
+from scripts.buttons.speed import Speed
+from scripts.buttons.play import Play
+from scripts.buttons.copy_frame import CopyFrame
+from scripts.buttons.grid_pattern import GridPattern
 
 from scripts.grid import *
 from scripts.utils import *

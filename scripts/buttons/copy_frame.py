@@ -1,4 +1,4 @@
-from .settings import *
+from ..settings import *
 from .add_frame import *
 
 # The CopyFrame class inherits from the AddFrame class and adds a boolean attribute "copy". Instead of creating a new

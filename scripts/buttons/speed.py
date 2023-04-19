@@ -1,4 +1,4 @@
-from .settings import *
+from ..settings import *
 from .button import *
 
 # The Speed class is a subclass of the Button class that initializes with a frame speed attribute. 8 speeds are available 

@@ -1,4 +1,4 @@
-from .settings import *
+from ..settings import *
 from .button import *
 
 # Brush is a subclass of Button. It has the same attributes as Button, plus size, row, and col.

@@ -1,4 +1,4 @@
-from .settings import *
+from ..settings import *
 
 # The Button class is an abstract class that creates a button object that can be used to create a button on the
 # StickyNote interface.

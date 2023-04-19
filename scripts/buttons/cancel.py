@@ -1,4 +1,4 @@
-from .settings import *
+from ..settings import *
 from .button import *
 
 # The Cancel class is a subclass of the Button class with additional parameters for screen and icon. If the user wants

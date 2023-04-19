@@ -1,4 +1,4 @@
-from .settings import *
+from ..settings import *
 from .button import *
 
 # The Play class is a subclass of the Button class that adds an animation list attribute. By clicking on Play, the user can 

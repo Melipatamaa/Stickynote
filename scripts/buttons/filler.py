@@ -2,7 +2,7 @@ import sys
 # Setting the recursion limit to 10^9 so that fillRec is not limited.
 sys.setrecursionlimit(10**9)
 
-from .settings import *
+from ..settings import *
 from .button import *
 
 # It's a button that can be clicked to fill a cell in a grid. It inherits from Button.
@@ -30,7 +30,6 @@ class Filler(Button) :
             return
         screen[row][col] = new_color
         self.fillRec(screen, row + 1, col, prev_color, new_color)
-        print("dsoijoij")
         self.fillRec(screen, row - 1, col, prev_color, new_color)
         self.fillRec(screen, row, col + 1, prev_color, new_color)
         self.fillRec(screen, row, col - 1, prev_color, new_color)

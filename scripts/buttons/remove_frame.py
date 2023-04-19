@@ -1,4 +1,4 @@
-from .settings import *
+from ..settings import *
 from .button import *
 
 # The RemoveFrame class is a subclass of Button that initializes with a delete attribute set to False, so as the user can 

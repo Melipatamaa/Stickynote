@@ -1,4 +1,4 @@
-from .settings import *
+from ..settings import *
 from .button import *
 from .save import *
 

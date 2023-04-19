@@ -1,4 +1,4 @@
-from .settings import *
+from ..settings import *
 from .button import *
 
 # The AddFrame class is a subclass of the Button class with an additional attribute "add" initialized

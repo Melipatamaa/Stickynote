@@ -1,4 +1,4 @@
-from .settings import *
+from ..settings import *
 from .button import *
 
 # The class Pipette is a subclass of the class Button. It gets the color of the pixel with (row,col) coordinates
