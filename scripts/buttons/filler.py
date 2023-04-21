@@ -1,7 +1,3 @@
-import sys
-# Setting the recursion limit to 10^9 so that fillRec is not limited.
-sys.setrecursionlimit(10**9)
-
 from ..settings import *
 from .button import *
 
@@ -12,6 +8,7 @@ class Filler(Button) :
         self.row = row
         self.col = col
         self.filling = False
+        self.recursive_call_cpt = 0
 
     def fillRec(self,screen, row, col, prev_color, new_color):
         """
@@ -26,13 +23,28 @@ class Filler(Button) :
         :param new_color: the color you want to fill the area with,
         :return: the screen with the new color.
         """
-        if (row < 0 or row >= (CANVAS_HEIGHT) or col < 0 or col >= (CANVAS_WIDTH) or screen[row][col] != prev_color or screen[row][col] == new_color):
+
+        # POUR QUE CA MARCHE LAISSE CA ICI:
+        if(self.recursive_call_cpt>2500):
+            return
+
+        # POUR LE TEST ET VOIR JUSQU4A COMBIEN DE RECURSIVE CALL TON PC VA
+        # COMMENTE LES LIGNES 35 ET 36 ET DECOMMENTE CETTE LIGNE EN DESSOUS
+        print(self.recursive_call_cpt)
+        
+        grid_row_min = 17
+        grid_col_min = 27
+        grid_row_max = 110
+        grid_col_max = 175
+        self.recursive_call_cpt+=1
+        if (row < grid_row_min or row >= grid_row_max or col < grid_col_min or col >= grid_col_max or screen[row][col] != prev_color or screen[row][col] == new_color):
             return
         screen[row][col] = new_color
-        self.fillRec(screen, row + 1, col, prev_color, new_color)
-        self.fillRec(screen, row - 1, col, prev_color, new_color)
         self.fillRec(screen, row, col + 1, prev_color, new_color)
         self.fillRec(screen, row, col - 1, prev_color, new_color)
+        self.fillRec(screen, row + 1, col, prev_color, new_color)
+        self.fillRec(screen, row - 1, col, prev_color, new_color)
+
  
     def fill(self,screen, row, col, new_color):
         """
@@ -47,6 +59,7 @@ class Filler(Button) :
         prev_color = screen[row][col]
         if(prev_color==new_color):
             return
+        self.recursive_call_cpt=0
         self.fillRec(screen, row, col, prev_color, new_color)
 
     def desactivate_filler(self):
