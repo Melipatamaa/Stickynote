@@ -5,7 +5,7 @@ import time
 from pygame_gui.windows import UIColourPickerDialog
 
 # Importing the modules from the scripts folder.
-from scripts.settings import *
+
 from scripts.buttons.color import Color
 from scripts.buttons.brush import Brush
 from scripts.buttons.clear import Clear
@@ -24,6 +24,7 @@ from scripts.buttons.copy_frame import CopyFrame
 from scripts.buttons.grid_pattern import GridPattern
 
 from scripts.grid import *
+from scripts.settings import *
 from scripts.utils import *
 
 from copy import deepcopy

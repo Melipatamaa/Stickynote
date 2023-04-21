@@ -45,7 +45,6 @@ def get_coord_position(pos):
     x, y = pos
     row = y // PX_SIZE
     col = x // PX_SIZE
-    # modification des valeurs rentrées en focntion des paramètres : pour + tard
     if (col <= 26 or col >= 174 or row <= 16 or row >= 101):
         raise IndexError
     return row, col
