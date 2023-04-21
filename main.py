@@ -323,30 +323,24 @@ while using: # Running while the user does not close the window
                     # Adding a new frame by copying the current one. It is added to the animation list.
                     if copy_frame.clicked(position):
                         save_frame(WINDOW,current_frame_index,unique_id)
-                        print(current_frame_index)
                         copy_frame.copy = True
                         current_frame_index+=1
-                        new_frame = grid
+                        new_frame = Grid([[i for i in row] for row in grid.grid])
                         animation_list.insert(current_frame_index,new_frame)
                         copy_frame.button_activated = True
-                        print(current_frame_index)
                     # Checking if the previous frame button is clicked. If it is, it sets the grid to the
                     # last frame in the animation list.
                     if previous_frame.clicked(position):
                         if(current_frame_index>=1):
-                            print(current_frame_index)
                             save_frame(WINDOW,current_frame_index,unique_id)
                             current_frame_index-=1
-                            print(current_frame_index)
                             grid = animation_list[current_frame_index]
                             previous_frame.button_activated = True
                     # Same thing, but it sets the grid to the next frame in the animation list.
                     if next_frame.clicked(position):
                         if(current_frame_index < len(animation_list)-1):
-                            print(current_frame_index)
                             save_frame(WINDOW,current_frame_index,unique_id)
                             current_frame_index+=1
-                            print(current_frame_index)
                             grid = animation_list[current_frame_index]
                             next_frame.button_activated = True
                     # Removing a whole frame from the animation list.
