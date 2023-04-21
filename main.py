@@ -271,6 +271,7 @@ while using: # Running while the user does not close the window
                     if clear.clicked(position):
                         grid = Grid()
                         clear.button_activated = True
+                        animation_list[current_frame_index] = grid
                     # Checking if the pipette button is clicked. If it is, it sets the pipette button
                     # to activated. If the pipette button is activated, it sets the pipette button to
                     # not activated. If the pipette button is not activated, it sets the pipette

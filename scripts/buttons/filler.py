@@ -24,13 +24,8 @@ class Filler(Button) :
         :return: the screen with the new color.
         """
 
-        # POUR QUE CA MARCHE LAISSE CA ICI:
         if(self.recursive_call_cpt>2500):
             return
-
-        # POUR LE TEST ET VOIR JUSQU4A COMBIEN DE RECURSIVE CALL TON PC VA
-        # COMMENTE LES LIGNES 35 ET 36 ET DECOMMENTE CETTE LIGNE EN DESSOUS
-        print(self.recursive_call_cpt)
         
         grid_row_min = 17
         grid_col_min = 27
