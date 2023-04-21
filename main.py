@@ -180,6 +180,9 @@ while using: # Running while the user does not close the window
     clear.button_activated = False
     cancel.button_activated = False
     save.button_activated = False
+    previous_frame.button_activated = False
+    next_frame.button_activated = False
+    remove_frame.button_activated = False
     # Setting the FPS
     time_delta = clock.tick(FPS)/1000
     for event in pygame.event.get():
@@ -320,26 +323,31 @@ while using: # Running while the user does not close the window
                     # Adding a new frame by copying the current one. It is added to the animation list.
                     if copy_frame.clicked(position):
                         save_frame(WINDOW,current_frame_index,unique_id)
+                        print(current_frame_index)
                         copy_frame.copy = True
                         current_frame_index+=1
                         new_frame = grid
                         animation_list.insert(current_frame_index,new_frame)
                         copy_frame.button_activated = True
+                        print(current_frame_index)
                     # Checking if the previous frame button is clicked. If it is, it sets the grid to the
                     # last frame in the animation list.
                     if previous_frame.clicked(position):
                         if(current_frame_index>=1):
+                            print(current_frame_index)
                             save_frame(WINDOW,current_frame_index,unique_id)
                             current_frame_index-=1
+                            print(current_frame_index)
                             grid = animation_list[current_frame_index]
                             previous_frame.button_activated = True
                     # Same thing, but it sets the grid to the next frame in the animation list.
                     if next_frame.clicked(position):
                         if(current_frame_index < len(animation_list)-1):
+                            print(current_frame_index)
                             save_frame(WINDOW,current_frame_index,unique_id)
                             current_frame_index+=1
+                            print(current_frame_index)
                             grid = animation_list[current_frame_index]
-                            delete_frame.delete = True
                             next_frame.button_activated = True
                     # Removing a whole frame from the animation list.
                     if remove_frame.clicked(position):
@@ -432,6 +440,5 @@ while using: # Running while the user does not close the window
     else :
         create_all(WINDOW,grid,is_picker_opened,visible)
     cancelled = False
-    previous_frame.button_activated = False
-    next_frame.button_activated = False
+    
 pygame.quit()
