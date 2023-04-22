@@ -4,6 +4,7 @@ import pygame
 import cv2
 import numpy as np
 import glob
+import time
 
 font = pygame.font.SysFont(None, 24)
 text_speed = font.render('Speed : ', True, ORANGE)
@@ -210,22 +211,23 @@ def clean_for_save(unique_id):
 
 def change_type_rate(frame_speed):
     new_frame_speed = 0
+    print(frame_speed)
     if (frame_speed == 1000):
         new_frame_speed = 1
-    if (frame_speed == 800):
+    elif (frame_speed == 800):
+        new_frame_speed = 1.5
+    elif (frame_speed == 600):
+        new_frame_speed = 2
+    elif (frame_speed == 400):
+        new_frame_speed = 2.5
+    elif (frame_speed == 200):
+        new_frame_speed = 3
+    elif (frame_speed == 100):
+        new_frame_speed = 3.5
+    elif (frame_speed == 50):
         new_frame_speed = 4
-    if (frame_speed == 600):
-        new_frame_speed = 8
-    if (frame_speed == 400):
-        new_frame_speed = 12
-    if (frame_speed == 200):
-        new_frame_speed = 16
-    if (frame_speed == 100):
-        new_frame_speed = 20
-    if (frame_speed == 50):
-        new_frame_speed = 24
-    else:
-        new_frame_speed = 30
+    elif (frame_speed == 25):
+        new_frame_speed = 4.5
     return new_frame_speed
 
 def save_video(unique_id,frame_speed):
@@ -237,7 +239,7 @@ def save_video(unique_id,frame_speed):
         size = (width,height)
         frames.append(img)
     new_frame_speed = change_type_rate(frame_speed)
-    out = cv2.VideoWriter(f"{os.getcwd()}\\frames_{unique_id}\\my_animation.avi",cv2.VideoWriter_fourcc(*'XVID'), 24, size)
+    out = cv2.VideoWriter(f"{os.getcwd()}\\frames_{unique_id}\\my_animation.avi",cv2.VideoWriter_fourcc(*'XVID'), new_frame_speed, size)
     for i in range(len(frames)):
         out.write(frames[i])
     out.release()

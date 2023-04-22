@@ -1,3 +1,7 @@
+import sys
+# Setting the recursion limit to 10^9 so that fillRec is not limited.
+sys.setrecursionlimit(10**9)
+
 from ..settings import *
 from .button import *
 
@@ -26,7 +30,7 @@ class Filler(Button) :
 
         if(self.recursive_call_cpt>2500):
             return
-        
+
         grid_row_min = 17
         grid_col_min = 27
         grid_row_max = 110
