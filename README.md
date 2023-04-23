@@ -8,7 +8,7 @@ This is a computer science project made with Python for my 2nd year in engineeri
 
 ## How do I install and run this project ?
 
-If you only want to run the project, you can download the project executable [on that link](https://drive.google.com/file/d/1TA5sFe7A86OtN9kfzm421x26UZ5aVNVR/view?usp=sharing).
+If you only want to run the project, you can download the project executable [on that link](https://drive.google.com/file/d/1TA5sFe7A86OtN9kfzm421x26UZ5aVNVR/view?usp=sharing). After extracting the files, you can run Stickynote Studio by double-clikcing on dist/main.exe.
 
 Few packages are needed to run Sticky. It includes Pygame, Pygame-GUI and OpenCV.
 To install these packages, do the following request in a prompt :
