@@ -31,6 +31,12 @@ PX_SIZE = WIDTH // ROWS
 CANVAS_WIDTH = 883
 CANVAS_HEIGHT = 505
 
+# Limits of the drawing grid
+GRID_ROW_MIN = 17
+GRID_COL_MIN = 27
+GRID_ROW_MAX = 110
+GRID_COL_MAX = 175
+
 # Defining the width of the toolbar containing the different buttons.
 TOOLBAR = WIDTH - 1140
 

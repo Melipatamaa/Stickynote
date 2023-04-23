@@ -12,6 +12,7 @@ class Filler(Button) :
         self.row = row
         self.col = col
         self.filling = False
+        # to counter the problem of recursive call crashing
         self.recursive_call_cpt = 0
 
     def fillRec(self,screen, row, col, prev_color, new_color):
@@ -29,14 +30,11 @@ class Filler(Button) :
         """
 
         if(self.recursive_call_cpt>2500):
+            # stop looping recursively when reaching the threshold
             return
 
-        grid_row_min = 17
-        grid_col_min = 27
-        grid_row_max = 110
-        grid_col_max = 175
         self.recursive_call_cpt+=1
-        if (row < grid_row_min or row >= grid_row_max or col < grid_col_min or col >= grid_col_max or screen[row][col] != prev_color or screen[row][col] == new_color):
+        if (row < GRID_ROW_MIN or row >= GRID_ROW_MAX or col < GRID_COL_MIN or col >= GRID_COL_MAX or screen[row][col] != prev_color or screen[row][col] == new_color):
             return
         screen[row][col] = new_color
         self.fillRec(screen, row, col + 1, prev_color, new_color)

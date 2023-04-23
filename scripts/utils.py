@@ -205,11 +205,23 @@ def delete_frame(current_frame_index,unique_id):
     os.remove(f"{folder}\\frame{current_frame_index+1}.jpg")
 
 def clean_for_save(unique_id):
+    """
+    This function deletes all files in a folder with a given unique ID.
+    
+    :param unique_id: The unique identifier for a set of frames that need to be cleaned and saved
+    """
     folder = f"{os.getcwd()}\\frames_{unique_id}"
     for frame in os.listdir(folder):
         os.remove(os.path.join(folder,frame))
 
 def change_type_rate(frame_speed):
+    """
+    The function takes a frame speed value (ms interval per frame) and returns a new frame speed value (frame per second). 
+    
+    :param frame_speed: The input parameter to the function, representing the interval between frames in
+    milliseconds
+    :return: the new frame speed value in frame per seconds based on the input frame speed value.
+    """
     new_frame_speed = 0
     print(frame_speed)
     if (frame_speed == 1000):
@@ -223,24 +235,35 @@ def change_type_rate(frame_speed):
     elif (frame_speed == 200):
         new_frame_speed = 3
     elif (frame_speed == 100):
-        new_frame_speed = 3.5
-    elif (frame_speed == 50):
         new_frame_speed = 4
+    elif (frame_speed == 50):
+        new_frame_speed = 5
     elif (frame_speed == 25):
-        new_frame_speed = 4.5
+        new_frame_speed = 6
     return new_frame_speed
 
 def save_video(unique_id,frame_speed):
+    """
+    This function create a video from all the drawings with the given frame speed
+    
+    :param unique_id: A unique identifier for the video being saved.
+    :param frame_speed: The speed at which the frames should be played in the final video. It is
+    measured in frames per second (fps)
+    """
     frames = []
     folder_files = f"{os.getcwd()}\\frames_{unique_id}\\*.jpg"
+    # loop through the frames in the folder
     for frame in glob.glob(folder_files):
+        # read it
         img = cv2.imread(frame)
-        height, width, layer = img.shape
+        height, width, _ = img.shape
         size = (width,height)
+        # add it to the list of frames that will be used to create the video
         frames.append(img)
     new_frame_speed = change_type_rate(frame_speed)
+    # crete the the video writter object
     out = cv2.VideoWriter(f"{os.getcwd()}\\frames_{unique_id}\\my_animation.avi",cv2.VideoWriter_fourcc(*'XVID'), new_frame_speed, size)
+    # write the video in the file
     for i in range(len(frames)):
         out.write(frames[i])
     out.release()
-    return

@@ -53,7 +53,7 @@ ui_manager = pygame_gui.UIManager((800, 600))
 is_picker_opened = False
 states_of_drawing = [deepcopy(grid)]
 
-# list for x coordinates of some buttons
+# list for x coordinates for the buttons
 X = []
 for i in range(11):
     X.append(105 + i*45)
@@ -134,7 +134,8 @@ sticky = pygame.transform.scale(sticky, (250, 72))
 def create_all(canvas, grid:Grid,open_picker,visible):
     """
     This function creates all the necessary elements on the canvas for a drawing program, including the
-    grid, interface, color and brush options, and buttons for various actions.
+    grid, interface, color and brush options, and buttons for various actions. It is called periodically in the 
+    main while loop.
     
     :param canvas: The canvas on which the drawing will be displayed
     :param grid: A Grid object that represents the grid on which the user can draw
@@ -145,13 +146,18 @@ def create_all(canvas, grid:Grid,open_picker,visible):
     :param visible: A boolean value indicating whether or not a layer is currently visible. If it is
     True, the layer will be displayed on the canvas. If it is False, the layer will not be displayed
     """
+    # draw the grid on the frame
     draw_grid_on_canvas(canvas,grid,is_grid_pattern_on)
+    # display UI elements
     display_interface(WINDOW,sticky)
+    # display the index of the current frame
     get_frame_number(WINDOW,current_frame_index,animation_list)
     if(open_picker):
+        # only display the picker elements
         ui_manager.update(time_delta)
         ui_manager.draw_ui(WINDOW)
     else:
+        # draw all necessary elemnents
         if(visible):
             layer.stick_layer(WINDOW,visible,current_frame_index)
         for color in colors:
@@ -174,6 +180,7 @@ def create_all(canvas, grid:Grid,open_picker,visible):
         for speed in speeds:
             speed.draw(canvas)
         play.draw(canvas)
+    # update the pygame window
     pygame.display.update()
 
 while using: # Running while the user does not close the window

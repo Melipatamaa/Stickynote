@@ -23,6 +23,6 @@ class Grid:
         grid = []
         for i in range(self.rows):
             grid.append([])
-            for j in range(self.cols):
+            for _ in range(self.cols):
                 grid[i].append(self.color)
         return grid
